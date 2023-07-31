@@ -8,6 +8,9 @@ from telegram.ext import (
     CommandHandler,  # adds commands to the bot
 )
 
+# importing custom text from a local text storage file
+from text_responses import wakeup
+
 # monitoring the bot's behavior
 from logging import basicConfig, INFO
 
@@ -25,6 +28,25 @@ basicConfig(
     # how much we want to observe
     level=INFO
 )
+
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Displays a message on a /start command and initiates
+    the main conversation line, sending the first message.
+    This function adds an option to the quick reply keyboard
+    for the user to use. It intended to be used right away.
+
+    This function returns one of the constant var-s.
+
+    This function doesn't raise any errors.
+    """
+
+    # the bot's respond to the 'start' command
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,  # recipient
+        text=wakeup,
+    )
 
 
 async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
