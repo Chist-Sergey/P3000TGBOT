@@ -73,9 +73,11 @@ if __name__ == '__main__':
 
     # setting up the commands
     birthday_set_handler = CommandHandler('give_birth', birthday_set)
+    start_handler = CommandHandler('give_birth', start)
 
     # applying said commands for the bot to recognize them
     # POSITION MATTERS: the bot will check them in order of appearence
+    application.add_handler(start_handler)
     application.add_handler(birthday_set_handler)
 
     # asking the server for anything new every couple of seconds
