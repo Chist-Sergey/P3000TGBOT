@@ -32,13 +32,11 @@ basicConfig(
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
-    Displays a message on a /start command and initiates
-    the main conversation line, sending the first message.
-    This function adds an option to the quick reply keyboard
-    for the user to use. It intended to be used right away.
+    Displays a message on a /start command.
+    Acts as the placeholder, because all bots
+    have to have a 'start' command (I guess).
 
-    This function returns one of the constant var-s.
-
+    This function returns nothing
     This function doesn't raise any errors.
     """
 
