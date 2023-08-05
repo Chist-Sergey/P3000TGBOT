@@ -1,2 +1,2 @@
-def wakeup() -> str:
+def text_start() -> str:
     return "Опять работать."

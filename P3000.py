@@ -9,7 +9,7 @@ from telegram.ext import (
 )
 
 # importing custom text from a local text storage file
-from text_responses import wakeup
+from text_responses import text_start
 
 # monitoring the bot's behavior
 from logging import basicConfig, INFO
@@ -43,7 +43,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # the bot's respond to the 'start' command
     await context.bot.send_message(
         chat_id=update.effective_chat.id,  # recipient
-        text=wakeup(),
+        text=text_start(),
     )
 
 
