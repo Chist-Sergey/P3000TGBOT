@@ -43,7 +43,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # the bot's respond to the 'start' command
     await context.bot.send_message(
         chat_id=update.effective_chat.id,  # recipient
-        text=wakeup,
+        text=wakeup(),
     )
 
 
