@@ -27,28 +27,4 @@ Available commands:
 
 
 Instructions for the bot set-up:
-    WINDOWS OS:
-        open a cmd console
-        type in console the following commands (with no brackets):
-            "git clone https://github.com/Chist-Sergey/P3000TLBOT"
-            "cd P3000TLBOT"
-            "python -m venv venv"
-            "source venv/scripts/Activate"
-            "pip install -r requirements.txt"
-            "touch .env"
-        fill up the ".env" file with your telegram bot key
-        type in console:
-            "python P3000.py"
-
-    MAC/LINUX OS:
-        open a cmd console
-        type in console the following commands (with no brackets):
-            "git clone https://github.com/Chist-Sergey/P3000TLBOT"
-            "cd P3000TLBOT"
-            "python3 -m venv venv"
-            "source venv/bin/activate"
-            "pip3 install -r requirements.txt"
-            "touch .env"
-        fill up the ".env" file with your telegram bot key
-        type in console:
-            "python3 P3000.py"
+    in development!
