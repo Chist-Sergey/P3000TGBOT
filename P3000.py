@@ -8,9 +8,6 @@ from telegram.ext import (
     CommandHandler,  # adds commands to the bot
 )
 
-# importing custom text from a local text storage file
-from text_responses import text_start
-
 # monitoring the bot's behavior
 from logging import basicConfig, INFO
 
@@ -43,7 +40,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # the bot's respond to the 'start' command
     await context.bot.send_message(
         chat_id=update.effective_chat.id,  # recipient
-        text=text_start(),
+        text="Опять работать.",
     )
 
 
@@ -65,14 +62,27 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     add THAT user as the birthday person and
     set their birthday day to that DATE.
 
-    if anything goes wrong, send a message with "n/a"
+    if anything goes wrong, send a message to the
+    developer, including the text of an error.
 
     This function returns nothing.
     This function doesn't raise any errors.
     """
+    # https://core.telegram.org/bots/api#available-types
+    # prepearing the data file for use in this function
+    database = open('database.txt', 'a')
 
-    # WIP
-    pass
+    # if arguments are present
+    if context.args:
+        #  write all arguments in a loop
+        for argument in context.args:
+            database.write(argument)
+    # debug
+    else:
+        database.write('\ndebug: no args\n')
+    
+    # prevent file from leaking
+    database.close()
 
 
 async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
