@@ -62,8 +62,11 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     add THAT user as the birthday person and
     set their birthday day to that DATE.
 
-    if anything goes wrong, send a message to the
-    developer, including the text of an error.
+    If the arguments are invalid,
+    react to the message with a thumb down emoji.
+
+    If the operation was done successfully,
+    react to the message with a thumb up emoji.
 
     This function returns nothing.
     This function doesn't raise any errors.
@@ -100,7 +103,11 @@ async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Using it with one argument (date) will
     send a message with all users with matching birthday DATE.
 
-    If anything goes wrong, send a message with "n/a".
+    If the arguments are invalid,
+    react to the message with a thumb down emoji.
+
+    If the operation was done successfully,
+    react to the message with a thumb up emoji.
 
     This function returns nothing.
     This function doesn't raise any errors.
