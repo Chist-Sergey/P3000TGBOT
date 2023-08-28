@@ -8,6 +8,9 @@ from telegram.ext import (
     CommandHandler,  # adds commands to the bot
 )
 
+# place a day and the month of someone's birthday
+from datetime import date
+
 # monitoring the bot's behavior
 from logging import basicConfig, INFO
 
