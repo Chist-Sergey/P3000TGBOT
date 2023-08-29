@@ -78,14 +78,16 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # prepearing the data file for use in this function
     database = open('database.txt', 'a')
 
-    # if arguments are present
+    # write the some user as someday birthday person
     if context.args:
         #  write all arguments in a loop
         for argument in context.args:
             database.write(argument)
-    # debug
+    # write that user as today's birthday person
     else:
-        database.write('\ndebug: no args\n')
+        username = update.effective_user
+        birthday_date = date.today()
+        database.write(username, birthday_date)
     
     # prevent file from leaking
     database.close()
