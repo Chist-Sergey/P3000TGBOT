@@ -78,7 +78,7 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # prepearing the data file for use in this function
     database = open('database.txt', 'a')
 
-    # write the some user as someday birthday person
+    # write the some user as someday's birthday person
     if context.args:
         #  write all arguments in a loop
         for argument in context.args:
@@ -87,7 +87,8 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         username = update.effective_user
         birthday_date = date.today()
-        database.write(username, birthday_date)
+        data_row = f"{username}|{birthday_date}"
+        database.write(data_row)
     
     # prevent file from leaking
     database.close()
