@@ -32,19 +32,14 @@ basicConfig(
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
-    Displays a message on a /start command.
-    Acts as the placeholder, because all bots
-    have to have a 'start' command (I guess).
+    Reacts on a message with thumbsup on a /start command.
+    Acts as the placeholder, because all bots have to have
+    a 'start' command (I guess).
 
     This function returns nothing
     This function doesn't raise any errors.
     """
-
-    # the bot's respond to the 'start' command
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id,  # recipient
-        text="Опять работать.",
-    )
+    # WIP
 
 
 async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
