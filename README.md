@@ -28,3 +28,7 @@ Available commands:
 
 Instructions for the bot set-up:
     in development!
+    TODO: Docker-compose for all three platforms: Linux,
+    macOS, Windows.
+
+The DB consists of two columns: the username and a birthday date in formate DD:MM.
