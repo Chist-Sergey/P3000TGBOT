@@ -32,14 +32,20 @@ basicConfig(
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
-    Reacts on a message with thumbsup on a /start command.
+    Sends a message on a /start command (what a waste of visual
+    resources. I can't wait to replace it with a simple message
+    reaction).
     Acts as the placeholder, because all bots have to have
     a 'start' command (I guess).
 
     This function returns nothing
     This function doesn't raise any errors.
     """
-    # WIP
+    # the bot's respond to the 'start' command
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,  # recipient
+        text="Опять работать.",
+    )
 
 
 async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -84,7 +90,7 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
         birthday_date = date.today()
         data_row = f"{username}|{birthday_date}"
         database.write(data_row)
-    
+
     # prevent file from leaking
     database.close()
 
