@@ -86,9 +86,12 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
             database.write(argument)
     # write that user as today's birthday person
     else:
-        username = update.effective_user
+        # taking a name of the person who called this command
+        username = update.effective_user.name
+        # constructing today's date in DATETIME format(!)
         birthday_date = date.today()
-        data_row = f"{username}|{birthday_date}"
+        # collecting data together in a single string
+        data_row = f"{username}|{birthday_date}\n"
         database.write(data_row)
 
     # prevent file from leaking
