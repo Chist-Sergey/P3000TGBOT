@@ -44,8 +44,21 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # the bot's respond to the 'start' command
     await context.bot.send_message(
         chat_id=update.effective_chat.id,  # recipient
-        text="Опять работать.",
+        text='Опять работать.',
     )
+
+
+def database_format(arguments: list) -> str:
+    """
+    Format the input data to write it to the database.
+
+    This function returns a string.
+
+    This function does raise a custom error.
+    """
+    user_name = arguments[0]
+    birthday_date = arguments[1]
+    return f'{user_name}|{birthday_date}'
 
 
 async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -81,9 +94,8 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # write the some user as someday's birthday person
     if context.args:
-        #  write all arguments in a loop
-        for argument in context.args:
-            database.write(argument)
+        # WIP
+        pass
     # write that user as today's birthday person
     else:
         # taking a name of the person who called this command
