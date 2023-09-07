@@ -56,8 +56,10 @@ def database_format(arguments: list) -> str:
 
     This function does raise a custom error.
     """
-    user_name = arguments[0]
-    birthday_date = arguments[1]
+    if (arguments[0])[0] != '@':
+        raise Exception('The first argument should be a tagged user!')
+    if (arguments[1]).isnumeric:
+        raise Exception('The second argument should be a DD:MM date!')
     return f'{user_name}|{birthday_date}'
 
 
