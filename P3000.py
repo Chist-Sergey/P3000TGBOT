@@ -25,7 +25,7 @@ load_dotenv()
 basicConfig(
     # what it would look like
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    # how much we want to observe
+    # how much we want to observe (INFO == all of it)
     level=INFO
 )
 
@@ -54,13 +54,13 @@ def database_format(arguments: list) -> str:
 
     This function returns a string.
 
-    This function does raise a custom error.
+    This function does raise two custom errors.
     """
     if (arguments[0])[0] != '@':
         raise Exception('The first argument should be a tagged user!')
-    if (arguments[1]).isnumeric:
+    if (arguments[1]):
         raise Exception('The second argument should be a DD:MM date!')
-    return f'{user_name}|{birthday_date}'
+    return (f'{arguments[0]}|{arguments[1]}')
 
 
 async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
