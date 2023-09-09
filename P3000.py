@@ -33,12 +33,12 @@ basicConfig(
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Sends a message on a /start command (what a waste of visual
-    resources. I can't wait to replace it with a simple message
-    reaction).
+    space. I can't wait to replace all of the messages with
+    a simple reaction on a message).
     Acts as the placeholder, because all bots have to have
     a 'start' command (I guess).
 
-    This function returns nothing
+    This function returns nothing.
     This function doesn't raise any errors.
     """
     # the bot's respond to the 'start' command
@@ -48,19 +48,19 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-def database_format(arguments: list) -> str:
+def database_write(user_name: str, birthday_date) -> None:
     """
-    Format the input data to write it to the database.
+    Use this function to write a pair of user name
+    and birthday date to a database text file.
+    A simple open-format-write-close operation.
 
-    This function returns a string.
-
-    This function does raise two custom errors.
+    This function returns nothing.
+    This function doesn't raise any errors.
     """
-    if (arguments[0])[0] != '@':
-        raise Exception('The first argument should be a tagged user!')
-    if (arguments[1]):
-        raise Exception('The second argument should be a DD:MM date!')
-    return (f'{arguments[0]}|{arguments[1]}')
+    database = open('database.txt', 'a')
+    data_row = f"{user_name}|{birthday_date}\n"
+    database.write(data_row)
+    database.close()
 
 
 async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -90,26 +90,24 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    # https://core.telegram.org/bots/api#available-types
-    # prepearing the data file for use in this function
-    database = open('database.txt', 'a')
+    # implementing a case where no arguments were given
+    # taking a name of the person who used this command
+    user_name = update.effective_user.name
+    # getting the current date in a 'datetime' format
+    birthday_date = date.today()
 
-    # write the some user as someday's birthday person
+    # check for the command to have any text
     if context.args:
-        # WIP
-        pass
-    # write that user as today's birthday person
-    else:
-        # taking a name of the person who called this command
-        username = update.effective_user.name
-        # constructing today's date in DATETIME format(!)
-        birthday_date = date.today()
-        # collecting data together in a single string
-        data_row = f"{username}|{birthday_date}\n"
-        database.write(data_row)
-
-    # prevent file from leaking
-    database.close()
+        # the first argument is guranteed to be there
+        user_name = context.args[0]
+        # check for the second argument
+        if context.args[1]:
+            # updating the date with the second argument
+            birthday_date = context.args[1]
+        # any other argument beside these two is discarded
+        
+    # delegating the further work to a special function
+    database_write(user_name, birthday_date)
 
 
 async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
