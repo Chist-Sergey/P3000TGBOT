@@ -57,15 +57,10 @@ def database_write(user_name: str, birthday_date) -> None:
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    print('debug - database_write - begins\n')
-    print('debug - database_write - args:\n'
-          f'username == {user_name}\n'
-          f'bday == {birthday_date}\n')
     database = open('database.txt', 'a')
     data_row = f"{user_name}|{birthday_date}\n"
     database.write(data_row)
     database.close()
-    print('debug - database_write - ends\n')
 
 
 async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -95,7 +90,6 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    print('debug - birthday_set - begins\n')
     # implementing a case where no arguments were given
     # taking a name of the person who used this command
     user_name = update.effective_user.name
@@ -104,21 +98,17 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # check for the command to have any text
     if context.args:
-        print('debug - birthday_set - args detected\n')
+
         # the first argument is guranteed to be there
         user_name = context.args[0]
         # check for the second argument
         if context.args[1]:
             # updating the date with the second argument
             birthday_date = context.args[1]
-        print('debug - birthday_set - args are:\n'
-              f'username == {user_name}\n'
-              f'bdate == {birthday_date}\n')
         # any other argument beside these two is discarded
         
     # delegating the further work to a special function
     database_write(user_name, birthday_date)
-    print('debug - birthday_set - ends\n')
 
 
 async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
