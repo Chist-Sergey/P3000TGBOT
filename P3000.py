@@ -63,6 +63,19 @@ def database_write(user_name: str, birthday_date) -> None:
     database.close()
 
 
+def database_read(user_name=None, birthday_date=None):
+    if birthday_date:
+        search = birthday_date
+    if user_name:
+        search = user_name
+    database = open('database.txt', 'r')
+    for line in database:
+        if search in line:
+            return line
+    database.close()
+    return None
+
+
 async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Set the user's birthday date.
