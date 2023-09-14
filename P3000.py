@@ -8,6 +8,15 @@ from telegram.ext import (
     CommandHandler,  # adds commands to the bot
 )
 
+# pulling up text responses individually (for safety reasons)
+from text_responses import (
+    greeting,
+    db_write_success,
+    search_name_fail,
+    search_date_success,
+    search_date_fail,
+)
+
 # place a day and the month of someone's birthday
 from datetime import date
 
@@ -44,36 +53,62 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # the bot's respond to the 'start' command
     await context.bot.send_message(
         chat_id=update.effective_chat.id,  # recipient
-        text='Опять работать.',
+        text=greeting(),
     )
 
 
-def database_write(user_name: str, birthday_date) -> None:
+def database_write(name: str, date) -> None:
     """
     Use this function to write a pair of user name
     and birthday date to a database text file.
-    A simple open-format-write-close operation.
+    It's a simple open-format-write-close operation.
 
     This function returns nothing.
     This function doesn't raise any errors.
     """
     database = open('database.txt', 'a')
-    data_row = f"{user_name}|{birthday_date}\n"
+    data_row = f"{name}|{date}\n"
     database.write(data_row)
     database.close()
 
 
-def database_read(user_name=None, birthday_date=None):
-    if birthday_date:
-        search = birthday_date
-    if user_name:
-        search = user_name
-    database = open('database.txt', 'r')
-    for line in database:
-        if search in line:
-            return line
-    database.close()
+def database_search_by_name(target: str):
+    """
+    Use this function to search and retrive
+    a string in a database text file.
+    It's a simple O(n) search algorithm,
+    checking one line at a time.
+
+    This function returns a whole line if the
+    string is matched, None if not mached.
+
+    This function doesn't raise any errors.
+    """
+    with open('database.txt', 'r') as database:
+        for line in database:
+            if target in line:
+                return line
     return None
+
+
+def database_search_by_date(target: str):
+    """
+    Use this function to search and retrive
+    all matches on the given string.
+    It's a simple O(n) search algorithm,
+    checking one line at a time.
+
+    This function returns a multiline string if the
+    string is matched, an empty string if not mached.
+
+    This function doesn't raise any errors.
+    """
+    target_list = ''
+    with open('database.txt', 'r') as database:
+        for line in database:
+            if target in line:
+                target_list += line + '\n'
+    return target_list
 
 
 async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -111,7 +146,6 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # check for the command to have any text
     if context.args:
-
         # the first argument is guranteed to be there
         user_name = context.args[0]
         # check for the second argument
@@ -119,9 +153,15 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
             # updating the date with the second argument
             birthday_date = context.args[1]
         # any other argument beside these two is discarded
-        
+
     # delegating the further work to a special function
     database_write(user_name, birthday_date)
+
+    # sending feedback to the user
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,  # recipient
+        text=db_write_success(),
+    )
 
 
 async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -148,9 +188,20 @@ async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
     This function returns nothing.
     This function doesn't raise any errors.
     """
+    if context.args:
+        target = context.args[0]
+        if target.isnumeric():
+            search_result = database_search_by_date(target)
+        else:
+            search_result = database_search_by_name(target)
 
-    # WIP
-    pass
+    if search_result is None:
+        search_result = search_name_fail()
+
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,  # recipient
+        text=search_result,
+    )
 
 
 if __name__ == '__main__':
