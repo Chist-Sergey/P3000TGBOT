@@ -11,14 +11,13 @@ from telegram.ext import (
 # pulling up text responses individually (for safety reasons)
 from text_responses import (
     greeting,
-    db_write_success,
-    search_name_fail,
-    search_date_success,
-    search_date_fail,
+    write_success,
+    write_fail,
+    search_fail,
 )
 
 # place a day and the month of someone's birthday
-from datetime import date
+from datetime import datetime as date
 
 # monitoring the bot's behavior
 from logging import basicConfig, INFO
@@ -67,7 +66,7 @@ def database_write(name: str, date) -> None:
     This function doesn't raise any errors.
     """
     database = open('database.txt', 'a')
-    data_row = f"{name}|{date}\n"
+    data_row = f"{name} {date}\n"
     database.write(data_row)
     database.close()
 
@@ -103,12 +102,15 @@ def database_search_by_date(target: str):
 
     This function doesn't raise any errors.
     """
-    target_list = ''
     with open('database.txt', 'r') as database:
         for line in database:
-            if target in line:
-                target_list += line + '\n'
-    return target_list
+            if target[:5] in line:
+                target += line + '\n'
+    
+    if target[:5] == target:
+        target = None
+
+    return target
 
 
 async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -130,6 +132,7 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     set their birthday day to that DATE.
 
     If the arguments are invalid,
+    or the user is already present in a database,
     react to the message with a thumb down emoji.
 
     If the operation was done successfully,
@@ -148,19 +151,31 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.args:
         # the first argument is guranteed to be there
         user_name = context.args[0]
+        """
+        unfortunally, 'if context.args[1]:' triggers an IndexError
+        so the only easy option is a big and cluncy try/except combo
+        """
         # check for the second argument
-        if context.args[1]:
+        try:
             # updating the date with the second argument
             birthday_date = context.args[1]
+        except IndexError:
+            pass
         # any other argument beside these two is discarded
 
-    # delegating the further work to a special function
-    database_write(user_name, birthday_date)
+    # negative feedback in case the user already exists
+    message = write_fail()
+    # check if the user is already exists
+    if database_search_by_name(user_name) is None:
+        # adding said user
+        database_write(user_name, birthday_date)
+        # giving a positive feedback on this action
+        message = write_success()
 
     # sending feedback to the user
     await context.bot.send_message(
         chat_id=update.effective_chat.id,  # recipient
-        text=db_write_success(),
+        text=message,
     )
 
 
@@ -188,15 +203,24 @@ async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
     This function returns nothing.
     This function doesn't raise any errors.
     """
+    # branchless programming isn't going to work here
     if context.args:
+        # making sure we take only a single argument
         target = context.args[0]
+        # check to decide which search function to use
         if target.isnumeric():
             search_result = database_search_by_date(target)
-        else:
+        else:  # a name can't be numeric, right?
             search_result = database_search_by_name(target)
+    # using the user's own name to search a date for
+    else:
+        target = update.effective_user.name
+        search_result = database_search_by_name(target)
 
+    # check for a valid result
     if search_result is None:
-        search_result = search_name_fail()
+        # replace result's "None" with a fail message
+        search_result = search_fail()
 
     await context.bot.send_message(
         chat_id=update.effective_chat.id,  # recipient
