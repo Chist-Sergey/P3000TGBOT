@@ -17,7 +17,7 @@ from text_responses import (
 )
 
 # place a day and the month of someone's birthday
-from datetime import datetime as date
+from datetime import datetime
 
 # monitoring the bot's behavior
 from logging import basicConfig, INFO
@@ -106,7 +106,8 @@ def database_search_by_date(target: str):
         for line in database:
             if target[:5] in line:
                 target += line + '\n'
-    
+
+    # not working when target is <5 characters
     if target[:5] == target:
         target = None
 
@@ -144,8 +145,8 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # implementing a case where no arguments were given
     # taking a name of the person who used this command
     user_name = update.effective_user.name
-    # getting the current date in a 'datetime' format
-    birthday_date = date.today()
+    # getting the current day and month in a 'DD:MM' format
+    birthday_date = datetime.now().strftime('%d.%m')
 
     # check for the command to have any text
     if context.args:
