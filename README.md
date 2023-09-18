@@ -27,8 +27,16 @@ Available commands:
 
 
 Instructions for the bot set-up:
-    in development!
-    TODO: Docker-compose for all three platforms: Linux,
-    macOS, Windows.
+    From the bot's folder directory, write in a console:
+    "make {your_platform_here}"
+    Options: mac, win, unx.
 
 The DB consists of two columns: the username and a birthday date in formate DD:MM.
+
+TODO:
+make the bot to work in a group chat
+make the bot to announce when someone have a birthday
+docker-compose
+pytest
+/kogda_dr DATE to return multiple people
+make a wrapper for the results to look good
