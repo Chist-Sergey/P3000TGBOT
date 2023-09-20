@@ -31,10 +31,13 @@ Instructions for the bot set-up:
     "make {your_platform_here}"
     Options: mac, win, unx.
 
+To stop the bot, press the combination of keys
+while in a concole window:
+    control + C
+
 The DB consists of two columns: the username and a birthday date in formate DD:MM.
 
-TODO:
-make the bot to work in a group chat
+TODO ():
 make the bot to announce when someone have a birthday
 docker-compose
 pytest
