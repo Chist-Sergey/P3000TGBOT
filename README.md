@@ -37,9 +37,12 @@ while in a concole window:
 
 The DB consists of two columns: the username and a birthday date in formate DD:MM.
 
-TODO ():
+TODO (in order):
 make the bot to announce when someone have a birthday
-docker-compose
-pytest
+add TODO command
+add remove command
 /kogda_dr DATE to return multiple people
+pytest
+docker-compose
+get rid of makefile
 make a wrapper for the results to look good
