@@ -229,6 +229,22 @@ async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
+async def birthday_announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Celebrate a birth day!
+
+    This function is autonomous and takes no arguments.
+
+    Checks for someone's birthday daily,
+    sends a message if there are birthday,
+    does nothing if there isn't.
+
+    This function returns nothing.
+    This function doesn't raise any errors.
+    """
+    pass
+
+
 if __name__ == '__main__':
     # setting up the bot
     application = ApplicationBuilder().token(getenv('TG_BOT_TOKEN')).build()
