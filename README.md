@@ -40,9 +40,14 @@ The DB consists of two columns: the username and a birthday date in formate DD:M
 TODO (in order):
 make the bot to announce when someone have a birthday
 add TODO command
+add logging to commands
+add exception handling to database being open
 add remove command
 /kogda_dr DATE to return multiple people
 pytest
+make so commands are not being send immideatly
 docker-compose
 get rid of makefile
 make a wrapper for the results to look good
+refactor code, separate function into folders
+cut repetetive words in the code descriptions
