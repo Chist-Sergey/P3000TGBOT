@@ -14,6 +14,7 @@ from text_responses import (
     write_success,
     write_fail,
     search_fail,
+    celebrate
 )
 
 # place a day and the month of someone's birthday
@@ -229,7 +230,7 @@ async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-async def birthday_announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def birthday_announce(context: ContextTypes.DEFAULT_TYPE):
     """
     Celebrate a birth day!
 
@@ -242,7 +243,11 @@ async def birthday_announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    pass
+    job = context.job
+    await context.bot.send_message(
+        job.chat_id,  # recipient
+        text=celebrate(),
+    )
 
 
 if __name__ == '__main__':
