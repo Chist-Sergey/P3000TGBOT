@@ -13,3 +13,6 @@ def write_fail() -> str:
 
 def search_fail() -> str:
     return 'Не помню.'
+
+def celebrate() -> str:
+    return 'Помниться мне, сегодня надо кого-то поздравить!'
