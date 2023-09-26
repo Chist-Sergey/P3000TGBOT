@@ -230,7 +230,7 @@ async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-async def birthday_announce(context: ContextTypes.DEFAULT_TYPE):
+async def birthday_yell(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Celebrate a birth day!
 
@@ -243,11 +243,13 @@ async def birthday_announce(context: ContextTypes.DEFAULT_TYPE):
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    job = context.job
-    await context.bot.send_message(
-        job.chat_id,  # recipient
-        text=celebrate(),
-    )
+    target = datetime.now().strftime('%d.%m')
+    birthday_people = database_search_by_date(target)
+    if birthday_people:
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,  # recipient
+            text=celebrate(birthday_people),
+        )
 
 
 if __name__ == '__main__':
