@@ -5,14 +5,19 @@
 def greeting() -> str:
     return 'Опять работать.'
 
+
 def write_success() -> str:
     return 'Запомнил.'
+
 
 def write_fail() -> str:
     return 'Уже помню.'
 
+
 def search_fail() -> str:
     return 'Не помню.'
 
-def celebrate() -> str:
-    return 'Помниться мне, сегодня надо кого-то поздравить!'
+
+def celebrate(people: str) -> str:
+    return ('Помниться мне, сегодня надо кого-то поздравить!\n'
+            f'{people}')
