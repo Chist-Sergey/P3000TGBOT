@@ -49,18 +49,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    # separating a reaccuring variable
-    recipient = update.effective_chat.id
-
+    #
+    time = datetime.time(
+        hour=12,
+        minute=12,
+    )
     # initiating a function to celebrate birthdays
     context.job_queue.run_daily(
         birthday_yell,
-        chat_id=recipient,
+        time=time,
     )
 
     # the bot's respond to the 'start' command
     await context.bot.send_message(
-        chat_id=recipient,
+        chat_id=update.effective_chat.id,  # recipient
         text=greeting(),
     )
 
@@ -75,7 +77,7 @@ def database_write(name: str, date) -> None:
     This function doesn't raise any errors.
     """
     database = open('database.txt', 'a')
-    data_row = f"{name} {date}\n"
+    data_row = f'{name} {date}\n'
     database.write(data_row)
     database.close()
 
