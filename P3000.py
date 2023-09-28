@@ -44,15 +44,23 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Sends a message on a /start command (what a waste of visual
     space. I can't wait to replace all of the messages with
     a simple reaction on a message).
-    Acts as the placeholder, because all bots have to have
-    a 'start' command (I guess).
+    Initiates the bot's living cycle with 'jobQueue'.
 
     This function returns nothing.
     This function doesn't raise any errors.
     """
+    # separating a reaccuring variable
+    recipient = update.effective_chat.id
+
+    # initiating a function to celebrate birthdays
+    context.job_queue.run_daily(
+        birthday_yell,
+        chat_id=recipient,
+    )
+
     # the bot's respond to the 'start' command
     await context.bot.send_message(
-        chat_id=update.effective_chat.id,  # recipient
+        chat_id=recipient,
         text=greeting(),
     )
 
