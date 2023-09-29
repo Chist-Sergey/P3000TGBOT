@@ -17,8 +17,10 @@ from text_responses import (
     celebrate
 )
 
-# place a day and the month of someone's birthday
+# set the day and the month of someone's birthday
 from datetime import datetime
+# set the time zone for correct sechudes
+from pytz import timezone
 
 # monitoring the bot's behavior
 from logging import basicConfig, INFO
@@ -51,9 +53,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     #
     time = datetime.time(
-        hour=12,
+        hour=5,
         minute=12,
+        tzinfo=timezone('UTC')  # NSK = UTC + 7
     )
+
     # initiating a function to celebrate birthdays
     context.job_queue.run_daily(
         birthday_yell,

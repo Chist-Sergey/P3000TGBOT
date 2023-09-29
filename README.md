@@ -39,6 +39,7 @@ The DB consists of two columns: the username and a birthday date in formate DD:M
 
 TODO (in order):
 make the bot to announce when someone have a birthday
+redesign the bot
 add TODO command
 add logging to commands
 add exception handling to database being open
