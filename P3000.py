@@ -52,11 +52,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     This function doesn't raise any errors.
     """
     #
-    time = datetime.time(
-        hour=5,
-        minute=12,
-        tzinfo=timezone('UTC')  # NSK = UTC + 7
-    )
+    time = datetime.time(hour=5)
+    # , minute=12, tzinfo=timezone('UTC')  # NSK = UTC + 7
+    # )
 
     # initiating a function to celebrate birthdays
     context.job_queue.run_daily(
