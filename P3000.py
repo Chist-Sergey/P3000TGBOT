@@ -139,26 +139,20 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Set the user's birthday date.
 
-    This function takes up to two optional arguments.
+    This function takes one argument.
 
     Using it without any argument will
-    add THIS user as the birthday person and
-    set their birthday day to TODAY.
+    tell the user to use this command with a DATE.
 
-    Using it with one argument (person) will
-    add THAT user as the birthday person and
-    set their birthday day to TODAY.
+    Using it with one argument (DATE) will
+    add THAT user as the birthday person
+    and set their birthday up to DATE.
 
-    Using it with two arguments (person, date) will
-    add THAT user as the birthday person and
-    set their birthday day to that DATE.
-
-    If the arguments are invalid,
-    or the user is already present in a database,
-    react to the message with a thumb down emoji.
+    If the user is already present in a database,
+    tell the user that they are already on a list.
 
     If the operation was done successfully,
-    react to the message with a thumb up emoji.
+    tell the user that the operation was successful.
 
     This function returns nothing.
     This function doesn't raise any errors.
