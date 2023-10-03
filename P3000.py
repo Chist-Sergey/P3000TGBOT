@@ -157,35 +157,18 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    # implementing a case where no arguments were given
-    # taking a name of the person who used this command
-    user_name = update.effective_user.name
-    # getting the current day and month in a 'DD:MM' format
-    birthday_date = datetime.now().strftime('%d.%m')
-
-    # check for the command to have any text
-    if context.args:
-        # the first argument is guranteed to be there
-        user_name = context.args[0]
-        """
-        unfortunally, 'if context.args[1]:' triggers an IndexError
-        so the only easy option is a big and cluncy try/except combo
-        """
-        # check for the second argument
-        try:
-            # updating the date with the second argument
-            birthday_date = context.args[1]
-        except IndexError:
-            pass
-        # any other argument beside these two is discarded
-
-    # negative feedback in case the user already exists
+    # expection this thing to fail - one less branch to program
     message = write_fail()
-    # check if the user is already exists
-    if database_search_by_name(user_name) is None:
-        # adding said user
+
+    # check if the user have entered the date
+    if context.args:
+        # taking name (no kicking ass)
+        user_name = update.effective_user.name
+        # the first argument should be a date
+        birthday_date = context.args[0]
+        # putting this all together and pass it to another function
         database_write(user_name, birthday_date)
-        # giving a positive feedback on this action
+        # changing a bad message to a good one
         message = write_success()
 
     # sending feedback to the user
