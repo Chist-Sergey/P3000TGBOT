@@ -54,9 +54,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # complicated way to create an 'datetime' instance
     time = datetime(
         # these args are required, just ignore them
-        year=0,
-        month=0,
-        day=0,
+        year=1,
+        month=1,
+        day=1,
         # the actual thing to care about
     ).time(
         hour=12,
