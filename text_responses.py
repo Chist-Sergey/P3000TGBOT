@@ -11,6 +11,10 @@ def write_success() -> str:
 
 
 def write_fail() -> str:
+    return 'Забыл дату.'
+
+
+def write_exists() -> str:
     return 'Уже помню.'
 
 

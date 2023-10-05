@@ -12,6 +12,7 @@ from telegram.ext import (
 from text_responses import (
     greeting,
     write_success,
+    write_exists,
     write_fail,
     search_fail,
     celebrate
@@ -160,16 +161,22 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # expection this thing to fail - one less branch to program
     message = write_fail()
 
-    # check if the user have entered the date
+    # check the arguments for a date
     if context.args:
-        # taking name (no kicking ass)
+        # taking name
         user_name = update.effective_user.name
-        # the first argument should be a date
-        birthday_date = context.args[0]
-        # putting this all together and pass it to another function
-        database_write(user_name, birthday_date)
-        # changing a bad message to a good one
-        message = write_success()
+        # check if the user is already in there
+        if database_search_by_name(user_name):
+            # change a bad message to an even one
+            message = write_exists()
+        # so the user is good to go
+        else:
+            # the first argument should be a date
+            birthday_date = context.args[0]
+            # put this all together and pass it to another function
+            database_write(user_name, birthday_date)
+            # change a bad message to a good one
+            message = write_success()
 
     # sending feedback to the user
     await context.bot.send_message(
