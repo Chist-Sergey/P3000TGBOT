@@ -59,11 +59,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         month=1,
         day=1,
         # the actual thing to care about
-    ).time(
         hour=12,
         minute=12,
         tzinfo=timezone('UTC')  # NSK = UTC + 7
-    )
+    # extracting only the time part of this object
+    ).time()
 
     # initiating a function to celebrate birthdays
     context.job_queue.run_daily(
