@@ -10,7 +10,6 @@ from telegram.ext import (
 
 # pulling up text responses individually (for safety reasons)
 from text_responses import (
-    greeting,
     write_success,
     write_exists,
     write_fail,
@@ -42,16 +41,16 @@ basicConfig(
 )
 
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def birthday_checker():#context: ContextTypes.DEFAULT_TYPE):
     """
-    Sends a message on a /start command (what a waste of visual
-    space. I can't wait to replace all of the messages with
-    a simple reaction on a message).
-    Initiates the bot's living cycle with 'jobQueue'.
+    Initiates the bot's checking cycle with 'jobQueue'.
 
     This function returns nothing.
     This function doesn't raise any errors.
     """
+    # when declaring 'context' inside the function,
+    # the 'run_daily' part tunrs gray. :(
+    context = ContextTypes.DEFAULT_TYPE
     # complicated way to create an 'datetime' instance
     time = datetime(
         # these args are required, just ignore them
@@ -69,12 +68,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.job_queue.run_daily(
         birthday_yell,
         time=time,
-    )
-
-    # the bot's respond to the 'start' command
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id,  # recipient
-        text=greeting(),
     )
 
 
@@ -260,16 +253,17 @@ if __name__ == '__main__':
     # setting up the bot
     application = ApplicationBuilder().token(getenv('TG_BOT_TOKEN')).build()
 
+    # making the bot to check on people's birthday
+    birthday_checker()#context=ContextTypes.DEFAULT_TYPE)
+
     # setting up the commands
     birthday_set_handler = CommandHandler('ya_rodilsa', birthday_set)
     birthday_get_handler = CommandHandler('kogda_dr', birthday_get)
-    start_handler = CommandHandler('start', start)
 
-    # applying said commands for the bot to recognize them
+    # telling said commands for the bot to recognize them
     # POSITION MATTERS: the bot will check them in order of appearence
-    application.add_handler(start_handler)
-    application.add_handler(birthday_get_handler)
     application.add_handler(birthday_set_handler)
+    application.add_handler(birthday_get_handler)
 
     # asking the server for anything new every couple of seconds
     application.run_polling(poll_interval=3.0)
