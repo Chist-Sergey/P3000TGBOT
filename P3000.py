@@ -41,7 +41,7 @@ basicConfig(
 )
 
 
-async def birthday_checker():#context: ContextTypes.DEFAULT_TYPE):
+async def birthday_checker():
     """
     Initiates the bot's checking cycle with 'jobQueue'.
 
@@ -133,13 +133,13 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Set the user's birthday date.
 
-    This function takes one argument.
+    This function takes one reuqired argument.
 
     Using it without any argument will
     tell the user to use this command with a DATE.
 
     Using it with one argument (DATE) will
-    add THAT user as the birthday person
+    add THIS user as the birthday person
     and set their birthday up to DATE.
 
     If the user is already present in a database,
@@ -187,17 +187,16 @@ async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Using it without any argument will
     send a message with THIS user's birthday date.
 
-    Using it with one argument (person) will
+    Using it with one argument (USER) will
     send a message with THAT user's birthday date.
 
-    Using it with one argument (date) will
-    send a message with all users with matching birthday DATE.
+    Using it with one argument (DATE) will
+    send a message with all users whom birthday
+    is matching DATE.
 
-    If the arguments are invalid,
-    react to the message with a thumb down emoji.
-
-    If the operation was done successfully,
-    react to the message with a thumb up emoji.
+    If USER is not in the database,
+    tell the user that there's no such user
+    in the database.
 
     This function returns nothing.
     This function doesn't raise any errors.
@@ -254,7 +253,7 @@ if __name__ == '__main__':
     application = ApplicationBuilder().token(getenv('TG_BOT_TOKEN')).build()
 
     # making the bot to check on people's birthday
-    birthday_checker()#context=ContextTypes.DEFAULT_TYPE)
+    birthday_checker()
 
     # setting up the commands
     birthday_set_handler = CommandHandler('ya_rodilsa', birthday_set)
