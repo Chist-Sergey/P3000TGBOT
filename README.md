@@ -39,7 +39,7 @@ The DB consists of two columns: the username and a birthday date in formate DD:M
 
 TODO (in order):
 make the bot to announce when someone have a birthday
-redesign the bot (done?)
+make the bot to check for the birthday twice a day
 add remove command
 add exception handling to database being open
 /kogda_dr DATE to return multiple people
