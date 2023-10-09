@@ -19,8 +19,6 @@ from text_responses import (
 
 # set the day and the month of someone's birthday
 from datetime import datetime
-# set the time zone for correct sechudes
-from pytz import timezone
 
 # monitoring the bot's behavior
 from logging import basicConfig, INFO
@@ -41,33 +39,21 @@ basicConfig(
 )
 
 
-async def birthday_checker():
+async def birthday_checker(context: ContextTypes.DEFAULT_TYPE):
     """
     Initiates the bot's checking cycle with 'jobQueue'.
 
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    # when declaring 'context' inside the function,
-    # the 'run_daily' part tunrs gray. :(
-    context = ContextTypes.DEFAULT_TYPE
-    # complicated way to create an 'datetime' instance
-    time = datetime(
-        # these args are required, just ignore them
-        year=1,
-        month=1,
-        day=1,
-        # the actual thing to care about
-        hour=12,
-        minute=12,
-        tzinfo=timezone('UTC')  # NSK = UTC + 7
-    # extracting only the time part of this object
-    ).time()
-
-    # initiating a function to celebrate birthdays
-    context.job_queue.run_daily(
-        birthday_yell,
-        time=time,
+    # tell the bot to run a job repeatedly
+    context.job_queue.run_repeating(
+        # which job
+        callback=birthday_yell,
+        # at what interval (in seconds)
+        interval=42300,
+        # when it should start from now (in seconds)
+        first=60,
     )
 
 
@@ -253,7 +239,7 @@ if __name__ == '__main__':
     application = ApplicationBuilder().token(getenv('TG_BOT_TOKEN')).build()
 
     # making the bot to check on people's birthday
-    birthday_checker()
+    birthday_checker(context=ContextTypes.DEFAULT_TYPE)
 
     # setting up the commands
     birthday_set_handler = CommandHandler('ya_rodilsa', birthday_set)
