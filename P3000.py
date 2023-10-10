@@ -47,7 +47,7 @@ async def birthday_checker(context: ContextTypes.DEFAULT_TYPE):
     This function doesn't raise any errors.
     """
     # tell the bot to run a job repeatedly
-    context.job_queue.run_repeating(
+    await context.job_queue.run_repeating(
         # which job
         callback=birthday_yell,
         # at what interval (in seconds)
