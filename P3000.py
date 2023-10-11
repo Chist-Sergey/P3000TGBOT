@@ -10,7 +10,6 @@ from telegram.ext import (
 
 # pulling up text responses individually (for safety reasons)
 from text_responses import (
-    greeting,
     write_success,
     write_exists,
     write_fail,
@@ -20,8 +19,6 @@ from text_responses import (
 
 # set the day and the month of someone's birthday
 from datetime import datetime
-# set the time zone for correct sechudes
-from pytz import timezone
 
 # monitoring the bot's behavior
 from logging import basicConfig, INFO
@@ -42,39 +39,21 @@ basicConfig(
 )
 
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def birthday_checker(context: ContextTypes.DEFAULT_TYPE):
     """
-    Sends a message on a /start command (what a waste of visual
-    space. I can't wait to replace all of the messages with
-    a simple reaction on a message).
-    Initiates the bot's living cycle with 'jobQueue'.
+    Initiates the bot's checking cycle with 'jobQueue'.
 
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    # complicated way to create an 'datetime' instance
-    time = datetime(
-        # these args are required, just ignore them
-        year=1,
-        month=1,
-        day=1,
-        # the actual thing to care about
-        hour=12,
-        minute=12,
-        tzinfo=timezone('UTC')  # NSK = UTC + 7
-    # extracting only the time part of this object
-    ).time()
-
-    # initiating a function to celebrate birthdays
-    context.job_queue.run_daily(
-        birthday_yell,
-        time=time,
-    )
-
-    # the bot's respond to the 'start' command
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id,  # recipient
-        text=greeting(),
+    # tell the bot to run a job repeatedly
+    await context.job_queue.run_repeating(
+        # which job
+        callback=birthday_yell,
+        # at what interval (in seconds)
+        interval=42300,
+        # when it should start from now (in seconds)
+        first=60,
     )
 
 
@@ -140,13 +119,13 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Set the user's birthday date.
 
-    This function takes one argument.
+    This function takes one reuqired argument.
 
     Using it without any argument will
     tell the user to use this command with a DATE.
 
     Using it with one argument (DATE) will
-    add THAT user as the birthday person
+    add THIS user as the birthday person
     and set their birthday up to DATE.
 
     If the user is already present in a database,
@@ -194,17 +173,16 @@ async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Using it without any argument will
     send a message with THIS user's birthday date.
 
-    Using it with one argument (person) will
+    Using it with one argument (USER) will
     send a message with THAT user's birthday date.
 
-    Using it with one argument (date) will
-    send a message with all users with matching birthday DATE.
+    Using it with one argument (DATE) will
+    send a message with all users whom birthday
+    is matching DATE.
 
-    If the arguments are invalid,
-    react to the message with a thumb down emoji.
-
-    If the operation was done successfully,
-    react to the message with a thumb up emoji.
+    If USER is not in the database,
+    tell the user that there's no such user
+    in the database.
 
     This function returns nothing.
     This function doesn't raise any errors.
@@ -260,16 +238,17 @@ if __name__ == '__main__':
     # setting up the bot
     application = ApplicationBuilder().token(getenv('TG_BOT_TOKEN')).build()
 
+    # making the bot to check on people's birthday
+    birthday_checker(context=ContextTypes.DEFAULT_TYPE)
+
     # setting up the commands
     birthday_set_handler = CommandHandler('ya_rodilsa', birthday_set)
     birthday_get_handler = CommandHandler('kogda_dr', birthday_get)
-    start_handler = CommandHandler('start', start)
 
-    # applying said commands for the bot to recognize them
+    # telling said commands for the bot to recognize them
     # POSITION MATTERS: the bot will check them in order of appearence
-    application.add_handler(start_handler)
-    application.add_handler(birthday_get_handler)
     application.add_handler(birthday_set_handler)
+    application.add_handler(birthday_get_handler)
 
     # asking the server for anything new every couple of seconds
     application.run_polling(poll_interval=3.0)
