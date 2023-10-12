@@ -238,17 +238,16 @@ if __name__ == '__main__':
     # setting up the bot
     application = ApplicationBuilder().token(getenv('TG_BOT_TOKEN')).build()
 
-    # making the bot to check on people's birthday
-    birthday_checker(context=ContextTypes.DEFAULT_TYPE)
-
     # setting up the commands
     birthday_set_handler = CommandHandler('ya_rodilsa', birthday_set)
     birthday_get_handler = CommandHandler('kogda_dr', birthday_get)
+    birthday_check_handler = CommandHandler('ae', birthday_checker)
 
     # telling said commands for the bot to recognize them
     # POSITION MATTERS: the bot will check them in order of appearence
     application.add_handler(birthday_set_handler)
     application.add_handler(birthday_get_handler)
+    application.add_handler(birthday_check_handler)
 
     # asking the server for anything new every couple of seconds
     application.run_polling(poll_interval=3.0)
