@@ -27,6 +27,9 @@ Available commands:
 
 
 Instructions for the bot set-up:
+    From the bot's folder directory, create a ".env" file, wirte to it the following text:
+    "TG_BOT_TOKEN = ''".
+    Paste your telegram bot key in the empty brackets.
     From the bot's folder directory, write in a console:
     "make {your_platform_here}"
     Options: mac, win, unx.
@@ -39,13 +42,14 @@ The DB consists of two columns: the username and a birthday date in formate DD:M
 
 TODO (in order):
 make the bot to announce when someone have a birthday
-make the bot to check for the birthday twice a day
 add remove command
 add exception handling to database being open
 /kogda_dr DATE to return multiple people
 pytest
 make so commands are not being send immideatly
-docker-compose
+docker-compose (on hold 'til I find a way to sign up)
+migrate to PostgresQL
+have a birthday date validation
 get rid of makefile
 make a wrapper for the results to look good
 refactor code, separate function into folders
