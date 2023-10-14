@@ -39,7 +39,7 @@ basicConfig(
 )
 
 
-async def birthday_checker(context: ContextTypes.DEFAULT_TYPE):
+async def birthday_check(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Initiates the bot's checking cycle with 'jobQueue'.
 
@@ -241,7 +241,7 @@ if __name__ == '__main__':
     # setting up the commands
     birthday_set_handler = CommandHandler('ya_rodilsa', birthday_set)
     birthday_get_handler = CommandHandler('kogda_dr', birthday_get)
-    birthday_check_handler = CommandHandler('ae', birthday_checker)
+    birthday_check_handler = CommandHandler('ae', birthday_check)
 
     # telling said commands for the bot to recognize them
     # POSITION MATTERS: the bot will check them in order of appearence
