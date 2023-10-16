@@ -212,7 +212,7 @@ async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-async def birthday_yell(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def birthday_yell(context: ContextTypes.DEFAULT_TYPE) -> None:
     """
     Celebrate a birth day!
 
@@ -229,7 +229,7 @@ async def birthday_yell(update: Update, context: ContextTypes.DEFAULT_TYPE):
     birthday_people = database_search_by_date(target)
     if birthday_people:
         await context.bot.send_message(
-            chat_id=update.effective_chat.id,  # recipient
+            chat_id=context.job.chat_id,  # recipient
             text=celebrate(birthday_people),
         )
 
