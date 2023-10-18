@@ -72,6 +72,21 @@ def database_write(name: str, date) -> None:
     database.close()
 
 
+def database_remove(target: str) -> None:
+    """
+    Use this function to remove a line of user name
+    and birthday date from a database text file.
+    
+    It get a list of all lines from a file,
+    then, searches for a right line and then
+    replaces it with None.
+
+    This function returns nothing.
+    This function doesn't raise any errors.
+    """
+    # it's complicated
+
+
 def database_search_by_name(target: str):
     """
     Use this function to search and retrive
@@ -233,6 +248,24 @@ async def birthday_yell(context: ContextTypes.DEFAULT_TYPE) -> None:
             text=celebrate(birthday_people),
         )
 
+
+async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Remove a birthday.
+
+    This function takes no arguments.
+
+    Take a USER who called this function
+    and check if they are in a database.
+    If they are, remove their line from
+    the database and aknowledge them of this.
+    If they aren't, aknowledge them of this.
+
+    This function returns nothing.
+    This function doesn't raise any errors.
+    """
+    # WIP
+    pass
 
 if __name__ == '__main__':
     # setting up the bot
