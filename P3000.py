@@ -84,7 +84,15 @@ def database_remove(target: str) -> None:
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    # it's complicated
+    with open('database.txt', 'r') as database:
+        extracted = database.readlines()
+
+    extracted.remove(target)
+
+    with open('database.txt', 'w') as database:
+        for line in extracted:
+            database.write(line)
+            database.write('\n')
 
 
 def database_search_by_name(target: str):
@@ -120,6 +128,7 @@ def database_search_by_date(target: str):
     """
     with open('database.txt', 'r') as database:
         for line in database:
+            # the first 5 chracters are the day and month
             if target[:5] in line:
                 target += line + '\n'
 
