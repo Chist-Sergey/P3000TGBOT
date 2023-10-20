@@ -42,11 +42,10 @@ The DB consists of two columns: the username and a birthday date in formate DD:M
 
 TODO (in order):
 make the bot to announce when someone have a birthday
-add remove command
-add exception handling to database being open
 /kogda_dr DATE to return multiple people
 pytest
-make so commands are not being send immideatly
+make so commands are not being send immediatly
+unite the 'ya_rodilsa' and 'kogda_dr' commands
 docker-compose (on hold 'til I find a way to sign up)
 migrate to PostgresQL
 have a birthday date validation
