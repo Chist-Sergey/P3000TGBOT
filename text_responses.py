@@ -25,3 +25,11 @@ def search_fail() -> str:
 def celebrate(people: str) -> str:
     return ('Помниться мне, сегодня надо кого-то поздравить!\n'
             f'{people}')
+
+
+def remove_success() -> str:
+    return 'Забыл.'
+
+
+def remove_fail() -> str:
+    return 'Не забыл.'
