@@ -14,7 +14,9 @@ from text_responses import (
     write_exists,
     write_fail,
     search_fail,
-    celebrate
+    celebrate,
+    remove_success,
+    remove_fail,
 )
 
 # set the day and the month of someone's birthday
@@ -285,8 +287,19 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    # WIP
-    pass
+    message = remove_fail()
+    username = update.effective_user.name
+    target_line = database_search_by_name(username)
+
+    if target_line:
+        message = remove_success()
+        database_remove(target_line)
+
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=message,
+    )
+
 
 if __name__ == '__main__':
     # setting up the bot
@@ -296,11 +309,13 @@ if __name__ == '__main__':
     birthday_set_handler = CommandHandler('ya_rodilsa', birthday_set)
     birthday_get_handler = CommandHandler('kogda_dr', birthday_get)
     birthday_check_handler = CommandHandler('ae', birthday_check)
+    birthday_remove_handler = CommandHandler('ya_oshibsa', birthday_rm)
 
     # telling said commands for the bot to recognize them
     # POSITION MATTERS: the bot will check them in order of appearence
     application.add_handler(birthday_set_handler)
     application.add_handler(birthday_get_handler)
+    application.add_handler(birthday_remove_handler)
     application.add_handler(birthday_check_handler)
 
     # asking the server for anything new every couple of seconds
