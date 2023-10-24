@@ -96,8 +96,8 @@ def database_remove(target_line: str) -> None:
     extracted[-1] += '\n'
     # the same applies to the target line
     target_line += '\\n'
-    print(f'\n\n\nLOGGING:\ttarget_line: {target_line}\n\n\n')
-    print(f'\n\n\nLOGGING:\textracted: {extracted}\n\n\n')
+    print(f'\n\nLOGGING: database_remove\ttarget_line: {target_line}\n\n')
+    print(f'\n\nLOGGING: database_remove\textracted: {extracted}\n\n')
     # with all lines are now equal, you can safely remove one of them
     extracted.remove(target_line)
     # the reverse of the first step of this branchless circus
@@ -292,7 +292,7 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = remove_fail()
     username = update.effective_user.name
     target_line = database_search_by_name(username)
-    print(f'\n\n\nLOGGING:\ttarget_line: {target_line}\n\n\n')
+    print(f'\n\nLOGGING: birthday_rm\ttarget_line: {target_line}\n\n')
     if target_line:
         message = remove_success()
         database_remove(target_line)
