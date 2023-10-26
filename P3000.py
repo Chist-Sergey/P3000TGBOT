@@ -243,7 +243,7 @@ async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # check for a valid result
     if search_result is None:
-        # replace result's "None" with a fail message
+        # replace result's 'None' with a fail message
         search_result = search_fail()
 
     await context.bot.send_message(
