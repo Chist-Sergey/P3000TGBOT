@@ -95,11 +95,12 @@ def database_remove(target_line: str) -> None:
     # make sure that the last is similar to the other lines
     extracted[-1] += '\n'
     # the same applies to the target line
-    target_line += '\\n'
+    target_line += '\n'
     print(f'\n\nLOGGING: database_remove\ttarget_line: {target_line}\n\n')
     print(f'\n\nLOGGING: database_remove\textracted: {extracted}\n\n')
     # with all lines are now equal, you can safely remove one of them
-    extracted.remove(target_line)
+    workaround_of_remove = extracted.index(target_line)
+    extracted.pop(workaround_of_remove)
     # the reverse of the first step of this branchless circus
     extracted[-1] = extracted[-1][:-1]
 
