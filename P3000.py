@@ -96,8 +96,6 @@ def database_remove(target_line: str) -> None:
     extracted[-1] += '\n'
     # the same applies to the target line
     target_line += '\n'
-    print(f'\n\nLOGGING: database_remove\ttarget_line: {target_line}\n\n')
-    print(f'\n\nLOGGING: database_remove\textracted: {extracted}\n\n')
     # with all lines are now equal, you can safely remove one of them
     workaround_of_remove = extracted.index(target_line)
     extracted.pop(workaround_of_remove)
@@ -178,25 +176,25 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    # expection this thing to fail - one less branch to program
+    # any further check will replace the 'fail' text
     message = write_fail()
 
-    # check the arguments for a date
-    if context.args:
-        # taking name
-        user_name = update.effective_user.name
-        # check if the user is already in there
-        if database_search_by_name(user_name):
-            # change a bad message to an even one
-            message = write_exists()
-        # so the user is good to go
-        else:
-            # the first argument should be a date
-            birthday_date = context.args[0]
-            # put this all together and pass it to another function
-            database_write(user_name, birthday_date)
-            # change a bad message to a good one
-            message = write_success()
+    # taking their user name to check on it in a database
+    user_name = update.effective_user.name
+    # check and remember if the user is already in there
+    exists = database_search_by_name(user_name)
+
+    # check for the arguments
+    if context.args and exists is None:
+       # the first argument should be a date
+       birthday_date = context.args[0]
+       # write a user name and a date to a database
+       database_write(user_name, birthday_date)
+       # replace the 'fail' message to a 'success' one
+       message = write_success()
+    else:
+        # replace the 'fail' text with 'exists' one
+        message = write_exists()
 
     # sending feedback to the user
     await context.bot.send_message(
@@ -293,7 +291,6 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = remove_fail()
     username = update.effective_user.name
     target_line = database_search_by_name(username)
-    print(f'\n\nLOGGING: birthday_rm\ttarget_line: {target_line}\n\n')
     if target_line:
         message = remove_success()
         database_remove(target_line)
