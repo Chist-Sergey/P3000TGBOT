@@ -23,7 +23,7 @@ from text_responses import (
 from datetime import datetime
 
 # monitoring the bot's behavior
-from logging import basicConfig, INFO
+from logging import basicConfig, WARNING
 
 # virtual enviroment for a safe key interaction
 from dotenv import load_dotenv
@@ -37,7 +37,7 @@ basicConfig(
     # what it would look like
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     # how much we want to observe (INFO == all of it)
-    level=INFO
+    level=WARNING
 )
 
 
