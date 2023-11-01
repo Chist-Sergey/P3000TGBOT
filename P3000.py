@@ -184,6 +184,11 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # check and remember if the user is already in there
     exists = database_search_by_name(user_name)
 
+    # check for the presence of the user in a database
+    if exists:
+        # replace the 'fail' text with 'exists' one
+        message = write_exists()
+
     # check for the arguments
     if context.args and exists is None:
        # the first argument should be a date
@@ -192,9 +197,6 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
        database_write(user_name, birthday_date)
        # replace the 'fail' message to a 'success' one
        message = write_success()
-    else:
-        # replace the 'fail' text with 'exists' one
-        message = write_exists()
 
     # sending feedback to the user
     await context.bot.send_message(
