@@ -56,6 +56,8 @@ async def birthday_check(update: Update, context: ContextTypes.DEFAULT_TYPE):
         interval=42300,
         # when it should start from now (in seconds)
         first=60,
+        # where the text will be sent
+        chat_id=update.effective_message.chat_id
     )
 
 
