@@ -305,6 +305,21 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
+async def quick_migrate(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    A temporary function to sync database quickly.
+    """
+
+    with open('database.txt', 'w') as database:
+        for line in context.args:
+            database.write(line)
+
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text='This Message Will Self Destruct In Five Seconds'
+    )
+
+
 if __name__ == '__main__':
     # setting up the bot
     application = ApplicationBuilder().token(getenv('TG_BOT_TOKEN')).build()
