@@ -41,12 +41,11 @@ while in a concole window:
 The DB consists of two columns: the username and a birthday date in formate DD:MM.
 
 TODO (in order):
-make the bot to announce when someone have a birthday
 pytest
 make so commands are not being send immediatly
 unite the 'ya_rodilsa' and 'kogda_dr' commands
 docker-compose (on hold 'til I find a way to sign up)
-migrate to PostgresQL
+migrate to a database
 have a birthday date validation
 get rid of makefile
 make a wrapper for the results to look good
