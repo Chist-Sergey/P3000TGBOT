@@ -305,21 +305,6 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-async def quick_migrate(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """
-    A temporary function to sync database quickly.
-    """
-
-    with open('database.txt', 'w') as database:
-        for line in context.args:
-            database.write(line)
-
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text='This Message Will Self Destruct In Five Seconds'
-    )
-
-
 if __name__ == '__main__':
     # setting up the bot
     application = ApplicationBuilder().token(getenv('TG_BOT_TOKEN')).build()
@@ -329,7 +314,6 @@ if __name__ == '__main__':
     birthday_get_handler = CommandHandler('kogda_dr', birthday_get)
     birthday_check_handler = CommandHandler('ae', birthday_check)
     birthday_remove_handler = CommandHandler('ya_oshibsa', birthday_rm)
-    quick_migrate_handler = CommandHandler('qm', quick_migrate)
 
     # telling said commands for the bot to recognize them
     # POSITION MATTERS: the bot will check them in order of appearence
@@ -337,7 +321,5 @@ if __name__ == '__main__':
     application.add_handler(birthday_get_handler)
     application.add_handler(birthday_remove_handler)
     application.add_handler(birthday_check_handler)
-    application.add_handler(quick_migrate_handler)
-
     # asking the server for anything new every couple of seconds
     application.run_polling(poll_interval=3.0)
