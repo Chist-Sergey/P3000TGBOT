@@ -2,7 +2,7 @@
 # I hope it will be replaced by far more
 # superior message 'reactions'.
 
-def greeting() -> str:
+def sechude_active() -> str:
     return 'Опять работать.'
 
 
