@@ -10,6 +10,7 @@ from telegram.ext import (
 
 # pulling up text responses individually (for safety reasons)
 from text_responses import (
+    sechude_active,
     write_success,
     write_exists,
     write_fail,
@@ -58,6 +59,12 @@ async def birthday_check(update: Update, context: ContextTypes.DEFAULT_TYPE):
         first=60,
         # where the text will be sent
         chat_id=update.effective_message.chat_id
+    )
+
+    # send a reply message to the user 
+    await context.bot.send_message(
+        chat_id=update.effective_message.chat_id,  # recipient
+        text=sechude_active(),
     )
 
 
@@ -312,7 +319,7 @@ if __name__ == '__main__':
     # setting up the commands
     birthday_set_handler = CommandHandler('ya_rodilsa', birthday_set)
     birthday_get_handler = CommandHandler('kogda_dr', birthday_get)
-    birthday_check_handler = CommandHandler('ae', birthday_check)
+    birthday_check_handler = CommandHandler('rabotay', birthday_check)
     birthday_remove_handler = CommandHandler('ya_oshibsa', birthday_rm)
 
     # telling said commands for the bot to recognize them
