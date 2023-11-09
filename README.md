@@ -41,13 +41,13 @@ while in a concole window:
 The DB consists of two columns: the username and a birthday date in formate DD:MM.
 
 TODO (in order):
-pytest
+make a wrapper for the results to look good
+have a birthday date validation
 make so commands are not being send immediatly
 unite the 'ya_rodilsa' and 'kogda_dr' commands
 docker-compose (on hold 'til I find a way to sign up)
 migrate to a database
-have a birthday date validation
 get rid of makefile
-make a wrapper for the results to look good
+pytest
 refactor code, separate function into folders
 cut repetetive words in the code descriptions
