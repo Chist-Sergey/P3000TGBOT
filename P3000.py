@@ -42,7 +42,7 @@ basicConfig(
 )
 
 
-async def birthday_check(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def birthday_loop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Initiates the bot's checking cycle with 'jobQueue'.
 
@@ -319,7 +319,7 @@ if __name__ == '__main__':
     # setting up the commands
     birthday_set_handler = CommandHandler('ya_rodilsa', birthday_set)
     birthday_get_handler = CommandHandler('kogda_dr', birthday_get)
-    birthday_check_handler = CommandHandler('rabotay', birthday_check)
+    birthday_loop_handler = CommandHandler('rabotay', birthday_loop)
     birthday_remove_handler = CommandHandler('ya_oshibsa', birthday_rm)
 
     # telling said commands for the bot to recognize them
@@ -327,6 +327,6 @@ if __name__ == '__main__':
     application.add_handler(birthday_set_handler)
     application.add_handler(birthday_get_handler)
     application.add_handler(birthday_remove_handler)
-    application.add_handler(birthday_check_handler)
+    application.add_handler(birthday_loop_handler)
     # asking the server for anything new every couple of seconds
     application.run_polling(poll_interval=3.0)
