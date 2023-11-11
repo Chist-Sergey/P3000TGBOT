@@ -200,18 +200,28 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # check for the arguments
     if context.args and exists is None:
-       # the first argument should be a date
-       birthday_date = context.args[0]
-       # write a user name and a date to a database
-       database_write(user_name, birthday_date)
-       # replace the 'fail' message to a 'success' one
-       message = write_success()
+        # the first argument should be a date
+        birthday_date = date_parse(context.args[0])
+        # see if the date entered is valid
+        if date_validate(context.args[0]):
+            # write a user name and a date to a database
+            database_write(user_name, birthday_date)
+            # replace the 'fail' message to a 'success' one
+            message = write_success()
 
     # sending feedback to the user
     await context.bot.send_message(
         chat_id=update.effective_chat.id,  # recipient
         text=message,
     )
+
+
+def date_parse(date: str) -> str:
+    pass
+
+
+def date_validate(date: str) -> str:
+    pass
 
 
 async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
