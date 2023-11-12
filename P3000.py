@@ -61,7 +61,7 @@ async def birthday_loop(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_id=update.effective_message.chat_id
     )
 
-    # send a reply message to the user 
+    # send a reply message to the user
     await context.bot.send_message(
         chat_id=update.effective_message.chat_id,  # recipient
         text=sechude_active(),
@@ -87,7 +87,7 @@ def database_remove(target_line: str) -> None:
     """
     Use this function to remove a line of user name
     and birthday date from a database text file.
-    
+
     It get a list of all lines from a file,
     formats the last line and the target line,
     removes the target line from the list,
@@ -100,7 +100,7 @@ def database_remove(target_line: str) -> None:
     # get every line from the database in a single list of strings
     with open('database.txt', 'r') as database:
         extracted = database.readlines()
-    
+
     # make sure that the last is similar to the other lines
     extracted[-1] += '\n'
     # the same applies to the target line
@@ -217,7 +217,10 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 def date_parse(date: str) -> str:
-    pass
+    numbers = []
+    for character in date:
+	if character.isnumeric():
+	    numbers.append(character)
 
 
 def date_validate(date: str) -> str:
