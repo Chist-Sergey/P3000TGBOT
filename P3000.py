@@ -188,6 +188,8 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # any further check will replace the 'fail' text
     message = write_fail()
 
+    # 
+    arguments = context.args
     # taking their user name to check on it in a database
     user_name = update.effective_user.name
     # check and remember if the user is already in there
@@ -199,11 +201,12 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
         message = write_exists()
 
     # check for the arguments
-    if context.args and exists is None:
+    if arguments and exists is None:
+        first_argument = arguments[0]
         # the first argument should be a date
-        birthday_date = date_parse(context.args[0])
+        birthday_date = date_parse(first_argument)
         # see if the date entered is valid
-        if date_validate(context.args[0]):
+        if date_validate(first_argument):
             # write a user name and a date to a database
             database_write(user_name, birthday_date)
             # replace the 'fail' message to a 'success' one
