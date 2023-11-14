@@ -193,15 +193,15 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # taking their user name to check on it in a database
     user_name = update.effective_user.name
     # check and remember if the user is already in there
-    exists = database_search_by_name(user_name)
+    user_exists = database_search_by_name(user_name)
 
     # check for the presence of the user in a database
-    if exists:
-        # replace the 'fail' text with 'exists' one
+    if user_exists:
+        # replace the 'fail' text with 'user_exists' one
         message = write_exists()
 
     # check for the arguments
-    if arguments and exists is None:
+    if arguments and user_exists is None:
         first_argument = arguments[0]
         # the first argument should be a date
         birthday_date = date_parse(first_argument)
@@ -222,12 +222,16 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def date_parse(date: str) -> str:
     numbers = []
     for character in date:
-	if character.isnumeric():
-	    numbers.append(character)
+        if character.isnumeric():
+            numbers.append(character)
 
 
-def date_validate(date: str) -> str:
-    pass
+def date_validate(date: str) -> bool:
+    try:
+        datetime.strptime(date, '%d.%m')
+    except ValueError:
+        return False
+    return True
 
 
 async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
