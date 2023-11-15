@@ -219,11 +219,26 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-def date_parse(date: str) -> str:
+def date_parse(data: str) -> str:
+    buffer = ''
     numbers = []
-    for character in date:
+    search_limit = 30
+
+    if len(data) > search_limit:
+        data = data[:search_limit]
+
+    for character in data:
         if character.isnumeric():
-            numbers.append(character)
+            buffer += character
+        else:
+            numbers.append(buffer)
+            buffer = ''
+
+    date_format(numbers)
+
+
+def date_format(dates: list) -> str:
+    pass
 
 
 def date_validate(date: str) -> bool:
