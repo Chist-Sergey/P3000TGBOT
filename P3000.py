@@ -238,6 +238,11 @@ def date_parse(data: str) -> str:
 
 
 def date_format(dates: list) -> str:
+    for number in dates:
+        number_length = len(number)
+        if number_length != 2 or number_length != 4:
+            dates.remove(number)
+    dates = map(list(int, dates))
     pass
 
 
