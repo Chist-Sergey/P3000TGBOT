@@ -188,9 +188,9 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # any further check will replace the 'fail' text
     message = write_fail()
 
-    # 
+    # what the user wrote with this command
     arguments = context.args
-    # taking their user name to check on it in a database
+    # their user name to check on it in a database
     user_name = update.effective_user.name
     # check and remember if the user is already in there
     user_exists = database_search_by_name(user_name)
@@ -202,15 +202,20 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # check for the arguments
     if arguments and user_exists is None:
-        first_argument = arguments[0]
         # the first argument should be a date
-        birthday_date = date_parse(first_argument)
+        birthday_date = arguments[0]
         # see if the date entered is valid
-        if date_validate(first_argument):
+        if date_validate(birthday_date):
             # write a user name and a date to a database
             database_write(user_name, birthday_date)
             # replace the 'fail' message to a 'success' one
             message = write_success()
+        
+        approximate_birthday_date = date_guess(birthday_date)
+        if date_validate(approximate_birthday_date):
+            database_write(user_name, approximate_birthday_date)
+            message=write_success()
+
 
     # sending feedback to the user
     await context.bot.send_message(
@@ -219,31 +224,29 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-def date_parse(data: str) -> str:
-    buffer = ''
-    numbers = []
-    search_limit = 30
+def date_guess(data: str) -> list:
+    numbers_buffer = ''
+    numbers_extracted = []
+    numbers_valid = []
+    limit_search = 31
 
-    if len(data) > search_limit:
-        data = data[:search_limit]
+    if len(data) > limit_search:
+        data = data[:limit_search]
 
     for character in data:
         if character.isnumeric():
-            buffer += character
+            numbers_buffer += character
         else:
-            numbers.append(buffer)
-            buffer = ''
+            numbers_extracted.append(numbers_buffer)
+            numbers_buffer = ''
 
-    date_format(numbers)
-
-
-def date_format(dates: list) -> str:
-    for i in range(len(dates)):
-        a = len(dates[i])
-        if a != 2 and a != 4:
-            dates[i] = None
     dates = list(map(int, dates))
-    pass
+
+    for number in dates:
+        if (number >= 1 and number <= 31):
+            numbers_valid.append(number)
+
+    return dates
 
 
 def date_validate(date: str) -> bool:
