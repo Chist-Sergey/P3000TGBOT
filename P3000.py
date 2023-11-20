@@ -23,6 +23,10 @@ from text_responses import (
 # set the day and the month of someone's birthday
 from datetime import datetime
 
+from re import (
+    sub,
+)
+
 # monitoring the bot's behavior
 from logging import basicConfig, WARNING
 
@@ -77,10 +81,12 @@ def database_write(name: str, date) -> None:
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    database = open('database.txt', 'a')
-    data_row = f'{name} {date}\n'
-    database.write(data_row)
-    database.close()
+    # 'a' == 'append' == 'apply at the end'
+    with open('database.txt', 'a') as database:
+    # 'f' == 'format' == 'replace the names with their values'
+    # 'n' == 'new line'
+        data_row = f'{name} {date}\n'
+        database.write(data_row)
 
 
 def database_remove(target_line: str) -> None:
@@ -88,35 +94,18 @@ def database_remove(target_line: str) -> None:
     Use this function to remove a line of user name
     and birthday date from a database text file.
 
-    It get a list of all lines from a file,
-    formats the last line and the target line,
-    removes the target line from the list,
-    erases the database and then writes with
-    the lines from the list of all lines.
-
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    # get every line from the database in a single list of strings
-    with open('database.txt', 'r') as database:
-        extracted = database.readlines()
-
-    # make sure that the last is similar to the other lines
-    extracted[-1] += '\n'
-    # the same applies to the target line
-    target_line += '\n'
-    # with all lines are now equal, you can safely remove one of them
-    workaround_of_remove = extracted.index(target_line)
-    extracted.pop(workaround_of_remove)
-    # the reverse of the first step of this branchless circus
-    extracted[-1] = extracted[-1][:-1]
-
-    # erase the database and wite it again using the extracted data row
-    with open('database.txt', 'w') as database:
-        # by
-        for row in extracted:
-            # row
-            database.write(row)
+    # 'r+' == 'reading and writing'
+    with open('database.txt', 'r+') as database:
+        content = database.read()
+        # 'sub' == 'find and replace' (this, that, there)
+        # '' == 'Nothing'
+        new_content = sub(target_line, '', content)
+        # 'seek' == 'move a coursor' == 'set a writing point'
+        database.seek(0)
+        database.write(new_content)
 
 
 def database_search_by_name(target: str):
@@ -246,7 +235,7 @@ def date_guess(data: str) -> list:
         if (number >= 1 and number <= 31):
             numbers_valid.append(number)
 
-    return dates
+    pass
 
 
 def date_validate(date: str) -> bool:
