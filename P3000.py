@@ -53,21 +53,24 @@ async def birthday_loop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     This function returns nothing.
     This function doesn't raise any errors.
     """
+    chat_id = update.effective_message.chat_id
     # tell the bot to run a job repeatedly
     context.job_queue.run_repeating(
         # which job
         callback=birthday_yell,
         # at what interval (in seconds)
+        # '42300 seconds' == '12 hours' == 'twice a day'
         interval=42300,
         # when it should start from now (in seconds)
+        # '60 seconds' == '1 minute'
         first=60,
         # where the text will be sent
-        chat_id=update.effective_message.chat_id
+        chat_id=chat_id
     )
 
     # send a reply message to the user
     await context.bot.send_message(
-        chat_id=update.effective_message.chat_id,  # recipient
+        chat_id=chat_id,  # recipient
         text=sechude_active(),
     )
 
@@ -76,6 +79,7 @@ def database_write(name: str, date) -> None:
     """
     Use this function to write a pair of user name
     and birthday date to a database text file.
+
     It's a simple open-format-write-close operation.
 
     This function returns nothing.
@@ -93,6 +97,9 @@ def database_remove(target_line: str) -> None:
     """
     Use this function to remove a line of user name
     and birthday date from a database text file.
+
+    It's a simple open-find-remove-close operation,
+    but it's actually replaces a line with nothing.
 
     This function returns nothing.
     This function doesn't raise any errors.
@@ -112,12 +119,12 @@ def database_search_by_name(target: str):
     """
     Use this function to search and retrive
     a string in a database text file.
+
     It's a simple O(n) search algorithm,
     checking one line at a time.
 
     This function returns a whole line if the
     string is matched, None if not mached.
-
     This function doesn't raise any errors.
     """
     with open('database.txt', 'r') as database:
@@ -131,12 +138,12 @@ def database_search_by_date(target: str):
     """
     Use this function to search and retrive
     all matches on the given string.
+
     It's a simple O(n) search algorithm,
-    checking one line at a time.
+    checking the database contents line by line.
 
     This function returns a multiline string if the
     string is matched, an empty string if not mached.
-
     This function doesn't raise any errors.
     """
     with open('database.txt', 'r') as database:
