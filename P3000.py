@@ -87,8 +87,8 @@ def database_write(name: str, date) -> None:
     """
     # 'a' == 'append' == 'apply at the end'
     with open('database.txt', 'a') as database:
-    # 'f' == 'format' == 'replace the names with their values'
-    # 'n' == 'new line'
+        # 'f' == 'format' == 'replace names with their values'
+        # '\n' == 'new line'
         data_row = f'{name} {date}\n'
         database.write(data_row)
 
@@ -99,7 +99,7 @@ def database_remove(target_line: str) -> None:
     and birthday date from a database text file.
 
     It's a simple open-find-remove-close operation,
-    but it's actually replaces a line with nothing.
+    horever, it's actually replaces a target line with nothing.
 
     This function returns nothing.
     This function doesn't raise any errors.
@@ -118,7 +118,7 @@ def database_remove(target_line: str) -> None:
 def database_search_by_name(target: str):
     """
     Use this function to search and retrive
-    a string in a database text file.
+    a string from a database text file.
 
     It's a simple O(n) search algorithm,
     checking one line at a time.
@@ -142,26 +142,29 @@ def database_search_by_date(target: str):
     It's a simple O(n) search algorithm,
     checking the database contents line by line.
 
-    This function returns a multiline string if the
-    string is matched, an empty string if not mached.
+    This function returns a multiline string
+    if the strings are found, or None if not.
     This function doesn't raise any errors.
     """
+    # an empty sting is equal to False
+    data = ''
+
     with open('database.txt', 'r') as database:
         for line in database:
-            # the first 5 chracters are the day and month
+            # the last 5 chracters are the day and month
             if target[:5] in line:
-                target += line + '\n'
+                data += line + '\n'
 
-    # not working when target is <5 characters
-    if target[:5] == target:
-        target = None
+    # check for any changes in the data
+    if data == '':
+        data = None
 
-    return target
+    return data
 
 
 async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
-    Set the user's birthday date.
+    Set a birthday date.
 
     This function takes one reuqired argument.
 
@@ -255,7 +258,7 @@ def date_validate(date: str) -> bool:
 
 async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
-    Peek the user's birthday date.
+    Peek a birthday date.
 
     This function takes up to one optional argument.
 
@@ -266,11 +269,11 @@ async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
     send a message with THAT user's birthday date.
 
     Using it with one argument (DATE) will
-    send a message with all users whom birthday
+    send a message with all users whose birthday
     is matching DATE.
 
     If USER is not in the database,
-    tell the user that there's no such user
+    tell the user that there's no such USER
     in the database.
 
     This function returns nothing.
