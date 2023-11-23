@@ -223,7 +223,7 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-def date_guess(data: str) -> list:
+def date_guess(data: str) -> str:
     numbers_buffer = ''
     numbers_extracted = []
     numbers_valid = []
@@ -245,7 +245,8 @@ def date_guess(data: str) -> list:
         if (number >= 1 and number <= 31):
             numbers_valid.append(number)
 
-    pass
+    final_string = ' '.join(numbers_valid)
+    return final_string
 
 
 def date_validate(date: str) -> bool:
