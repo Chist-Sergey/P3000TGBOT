@@ -41,6 +41,7 @@ while in a concole window:
 The DB consists of two columns: the username and a birthday date in formate DD:MM.
 
 TODO (in order):
+sync the bot to UTC+8
 make a wrapper for the results to look good
 have a birthday date validation
 make so commands are not being send immediatly
