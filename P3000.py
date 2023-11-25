@@ -25,6 +25,7 @@ from datetime import datetime
 
 from re import (
     sub,
+    search,
 )
 
 # monitoring the bot's behavior
@@ -109,10 +110,10 @@ def database_remove(target_line: str) -> None:
         content = database.read()
         # 'sub' == 'find and replace' (this, that, there)
         # '' == 'Nothing'
-        new_content = sub(target_line, '', content)
+        content_new = sub(target_line, '', content)
         # 'seek' == 'move a coursor' == 'set a writing point'
         database.seek(0)
-        database.write(new_content)
+        database.write(content_new)
 
 
 def database_search_by_name(target: str):
