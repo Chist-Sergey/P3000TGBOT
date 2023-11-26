@@ -129,9 +129,12 @@ def database_search_by_name(target: str):
     This function doesn't raise any errors.
     """
     with open('database.txt', 'r') as database:
-        for line in database:
-            if target in line:
-                return line
+        content = database.read()
+        found = search(target, content)
+
+    if found:
+        return found[0]
+
     return None
 
 
