@@ -130,10 +130,8 @@ def database_search_by_name(target: str):
     """
     with open('database.txt', 'r') as database:
         content = database.read()
+        target = r'[target] [numbers]'
         found = search(target, content)
-
-    if found:
-        return found[0]
 
     return None
 
