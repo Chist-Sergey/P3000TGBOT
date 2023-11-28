@@ -130,10 +130,12 @@ def database_search_by_name(target: str):
     """
     with open('database.txt', 'r') as database:
         content = database.read()
-        target = r'[target] [numbers]'
-        found = search(target, content)
-
-    return None
+    if target not in content:
+        return None
+    content = sub('\n', ' ', content)
+    target = target + r'+\s\d\d.\d\d'
+    found = search(target, content)
+    return found[0]
 
 
 def database_search_by_date(target: str):
