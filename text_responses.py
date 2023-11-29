@@ -7,19 +7,19 @@ def sechude_active() -> str:
 
 
 def write_success() -> str:
-    return 'Запомнил.'
+    return 'Запомнил.\nПосмотреть ДР - /kogda_dr'
 
 
 def write_fail() -> str:
-    return 'Забыл дату.'
+    return 'Не могу запомнить, когда не дописана дата.'
 
 
 def write_exists() -> str:
-    return 'Уже помню.'
+    return 'Уже помню.\nПосмотреть ДР - /kogda_dr'
 
 
 def search_fail() -> str:
-    return 'Не помню.'
+    return 'Не помню.\nЗапомнить ДР - /ya_rodilsa'
 
 
 def celebrate(people: str) -> str:
@@ -28,8 +28,8 @@ def celebrate(people: str) -> str:
 
 
 def remove_success() -> str:
-    return 'Забыл.'
+    return 'Забыл.\nЗапомнить ДР - /ya_rodilsa'
 
 
 def remove_fail() -> str:
-    return 'Не забыл.'
+    return 'Нельзя забыть того, чего не помнишь.'
