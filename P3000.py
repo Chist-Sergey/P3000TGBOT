@@ -110,7 +110,7 @@ def database_remove(target_line: str) -> None:
         content = database.read()
         # 'sub' == 'find and replace' (this, that, there)
         # '' == 'Nothing'
-        content_new = sub(target_line, '', content)
+        content_new = sub(target_line, 'None', content)
         # 'seek' == 'move a coursor' == 'set a writing point'
         database.seek(0)
         database.write(content_new)
@@ -132,7 +132,6 @@ def database_search_by_name(target: str):
         content = database.read()
     if target not in content:
         return None
-    content = sub('\n', ' ', content)
     target = target + r'+\s\d\d.\d\d'
     found = search(target, content)
     return found[0]
@@ -214,10 +213,10 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
             # replace the 'fail' message to a 'success' one
             message = write_success()
         
-        approximate_birthday_date = date_guess(birthday_date)
-        if date_validate(approximate_birthday_date):
-            database_write(user_name, approximate_birthday_date)
-            message=write_success()
+        # approximate_birthday_date = date_guess(birthday_date)
+        # if date_validate(approximate_birthday_date):
+        #     database_write(user_name, approximate_birthday_date)
+        #     message=write_success()
 
 
     # sending feedback to the user
