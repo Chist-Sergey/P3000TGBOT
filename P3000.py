@@ -108,10 +108,12 @@ def database_remove(target_line: str) -> None:
     # 'r+' == 'reading and writing'
     with open('database.txt', 'r+') as database:
         content = database.read()
+        # generate a white space for every character in target
+        filler = ' ' * len(target_line)
         # 'sub' == 'find and replace' (this, that, there)
-        # '' == 'Nothing'
-        content_new = sub(target_line, 'None', content)
+        content_new = sub(target_line, filler, content)
         # 'seek' == 'move a coursor' == 'set a writing point'
+        # '0' == 'at the beginnig of the file'
         database.seek(0)
         database.write(content_new)
 
