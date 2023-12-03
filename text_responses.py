@@ -11,7 +11,7 @@ def write_success() -> str:
 
 
 def write_fail() -> str:
-    return 'Не могу запомнить, когда не дописана дата.'
+    return 'Допишите к команде дату, пожалуйста.\nНапример, /ya_rodilsa 01.01'
 
 
 def write_exists() -> str:
@@ -19,7 +19,7 @@ def write_exists() -> str:
 
 
 def search_fail() -> str:
-    return 'Не помню.\nЗапомнить ДР - /ya_rodilsa'
+    return 'Не помню.\nЗапомнить ДР - /ya_rodilsa (дд.мм)'
 
 
 def celebrate(people: str) -> str:
@@ -28,8 +28,8 @@ def celebrate(people: str) -> str:
 
 
 def remove_success() -> str:
-    return 'Забыл.\nЗапомнить ДР - /ya_rodilsa'
+    return 'Забыл.\nЗапомнить ДР - /ya_rodilsa (дд.мм)'
 
 
 def remove_fail() -> str:
-    return 'Нельзя забыть того, чего не помнишь.'
+    return 'Уже забыл.\nЗапомнить ДР - /ya_rodilsa (дд.мм)'
