@@ -38,11 +38,10 @@ To stop the bot, press the combination of keys
 while in a concole window:
     control + C
 
-The DB consists of two columns: the username and a birthday date in formate DD:MM.
+The DB consists of two columns: the username and a birthday date in a format 'DD.MM' (without apostrophes).
 
 TODO (in order):
+make an inline keyboard
 sync the bot to UTC+8
-cut repetetive words in the code descriptions
 docker-compose (on hold 'til I find a way to sign up)
 migrate to a database
-pytest
