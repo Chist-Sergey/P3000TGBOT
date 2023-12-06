@@ -21,32 +21,42 @@ def database_remove(target_line: str) -> None:
     Use this function to remove a line of user name
     and birthday date from a database text file.
 
-    It's a simple open-remove-close operation.
+    It's a simple open-remove-write-close operation.
 
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    # 'r+' == 'reading and writing'
-    with open('database.txt', 'r+') as database:
-        # 'readlines' creates a list of strings,
-        # contains every line as a separate element
-        database_content = database.readlines()
+    # 'r' == 'reading'
+    database = open('database.txt', 'r')
+    # 'readlines' creates a list of strings,
+    # contains every line as a separate element
+    # note that every string in list have
+    # a newline (\n) at the end of it
+    database_contents = database.readlines()
+    database.close()
 
-        # a guard code in case the target is not found
-        # if the guard code is passed, this means that
-        # the target is in a database
-        if target_line not in database_content:
-            return None
+    # a newline is added to a 'target_line'
+    # to match the contents of a 'database_contents',
+    # as all elements in there have a newline,
+    # but the target line does not
+    # '\n' == 'newline' == 'same as "return" button on your keyboard'
+    target_line += '\n'
 
-        # remove a target string from a list of strings
-        new_content = database_content.remove(target_line)
-        # stich a list of strings back to a single string
-        new_content = ''.join(new_content)
+    # a guard code in case the target is not found
+    # if the guard code is passed, this means that
+    # the target is in a database
+    if target_line not in database_contents:
+        return None
 
-        # 'seek' == 'move a coursor' == 'set a writing point'
-        # '0' == 'at the beginnig of the file'
-        database.seek(0)
-        database.write(new_content)
+    # remove a target string from a list of strings
+    database_contents.remove(target_line)
+    # stitch the list of strings back to a single string
+    new_content = ''.join(database_contents)
+
+    # 'w' == 'erase everything in file and start writing fresh'
+    database = open('database.txt', 'w')
+    database.write(new_content)
+    database.close()
 
 
 def database_search_by_name(target: str):

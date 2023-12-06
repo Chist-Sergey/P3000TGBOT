@@ -60,8 +60,8 @@ basicConfig(
 
 
 if __name__ == '__main__':
-    # setup the bot
-    application = ApplicationBuilder().token(getenv('TG_BOT_TOKEN')).build()
+    # setup the bot in a single line to prevent security vulnerabilities
+    application = ApplicationBuilder().token(getenv('TOKEN')).build()
 
     # setup the commands
     birthday_set_handler = CommandHandler('ya_rodilsa', birthday_set)
@@ -94,7 +94,7 @@ to save time on creating them.
 if __name__ == '__main__':
     # change this to your needs
     test_function = database_remove
-    test_data_amount = 10
+    test_data_auto_amount = 10
     test_data_manual = [
         '@asdfg 56:78',
         '@sdlfk 76:58',
@@ -107,7 +107,7 @@ if __name__ == '__main__':
 
     # generates a data row
     test_data_list = []
-    for number in range(test_data_amount):
+    for number in range(test_data_auto_amount):
         test_data = '{} {}.{}'.format(
             1000 + number,
             10 + number,
