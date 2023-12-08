@@ -43,5 +43,7 @@ The DB consists of two columns: the username and a birthday date in a format 'DD
 TODO (in order):
 make an inline keyboard
 sync the bot to UTC+8
+update this documentation
+look at the option to make a keyboard constructor
 docker-compose (on hold 'til I find a way to sign up)
 migrate to a database
