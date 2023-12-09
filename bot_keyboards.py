@@ -1,9 +1,10 @@
 # python-telegram-bot to work with Telegram api
 from telegram import (
-    # allows usage of a message attached buttons 
+    # allows usage of a message attached buttons
     InlineKeyboardButton as keyboard_option,
     InlineKeyboardMarkup as keyboard_finalize,
 )
+
 
 def birthday_set_keyboard():
     keyboard = [
