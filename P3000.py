@@ -24,8 +24,6 @@ from telegram.ext import (
     ApplicationBuilder,
     # adds commands to the bot
     CommandHandler,
-    # adds a complex message behaviour to the bot
-    ConversationHandler,
     # to use an inline buttons data
     CallbackQueryHandler,
 )
@@ -36,6 +34,7 @@ from bot_functions import (
     birthday_loop,
     birthday_rm,
     birthday_set,
+    birthday_btn,
 )
 
 # monitor the bot's behavior
@@ -68,9 +67,11 @@ if __name__ == '__main__':
     birthday_get_handler = CommandHandler('kogda_dr', birthday_get)
     birthday_loop_handler = CommandHandler('rabotay', birthday_loop)
     birthday_remove_handler = CommandHandler('ya_oshibsa', birthday_rm)
+    birthday_button_handler = CallbackQueryHandler(birthday_btn)
 
     # tell said commands to the bot for it to recognize them
     # POSITION MATTERS: the bot will check them in order of appearence
+    application.add_handler(birthday_button_handler)
     application.add_handler(birthday_set_handler)
     application.add_handler(birthday_get_handler)
     application.add_handler(birthday_remove_handler)
@@ -82,8 +83,9 @@ if __name__ == '__main__':
 a template for testing functions.
 
 usage:
-copy an entire function from code
-and paste it in a separate *.py file,
+copy an entire function you want
+to test from the code and paste
+it in a separate *.py file,
 then copy and paste this template
 at the bottom of that file
 and edit it to your needs.
