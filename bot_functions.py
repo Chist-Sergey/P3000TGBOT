@@ -21,6 +21,11 @@ from text_responses import (
     celebrate,
     remove_fail,
     remove_success,
+    birthday_set_keyboard_text,
+)
+# for easier keyboard management
+from bot_keyboards import (
+    birthday_set_keyboard,
 )
 # to access database
 from database_functions import (
@@ -29,6 +34,7 @@ from database_functions import (
     database_search_by_name,
     database_write,
 )
+
 
 async def birthday_loop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
@@ -69,25 +75,23 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     If the user is already present in a database,
     tell the user their birthday date.
 
+    If there's no such users,
+    bring up a message with a keyboard for
+    the user to enter their birthday date.
+
     If the operation was done successfully,
     tell the user that the operation was successful.
 
     If the operation wasn't done successfully,
     remove this bot's message.
 
-    If used with DATE argument,
-    show all people with their birthday date matching DATE.
-
-    If there's no such users,
-    tell the user that there's no such users.
-
-    If the DATE isn't valid,
-    tell the user that the DATE they entered isn't valid.
-
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    pass
+    await update.message.reply_text(
+        text=birthday_set_keyboard_text(),
+        reply_markup=birthday_set_keyboard()
+    )
 
 
 async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -96,19 +100,19 @@ async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     This function takes up to one optional argument.
 
-    Using it with argument USER will
-    send a message with THAT user's birthday date.
-
-    Using it with argument DATE will
-    send a message with all users whose birthday
-    is matching DATE.
-
     Using it without any argument will
     send a message with THIS user's birthday date.
+
+    Using it with argument USER will
+    send a message with THAT user's birthday date.
 
     If USER is not in the database,
     tell the user that there's no such USER
     in the database.
+
+    Using it with argument DATE will
+    send a message with all users whose birthday
+    is matching DATE.
 
     This function returns nothing.
     This function doesn't raise any errors.
@@ -118,15 +122,14 @@ async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.args:
         # arguments is a list of strings
         arguments = context.args
-        # take the first argument (other arguments are discarded)
+        # take the first argument in the message,
+        # typically its either a numbers (DATE) or a text (USER)
         first_argument = arguments[0]
 
         # decide which search function to use
         # 'isnumeric()' == 'consists of mathematical characters'
         if first_argument.isnumeric():
             search_result = database_search_by_date(first_argument)
-        # if it's not numeric characters,
-        # then it's regular charatcters
         else:
             search_result = database_search_by_name(first_argument)
     # if there's no arguments,
@@ -198,4 +201,38 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # message destination is a chat where it was used
         chat_id=update.effective_chat.id,
         text=message,
+    )
+
+
+async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    dates = [
+        ['day', 1],
+        ['month', 1],
+        ['year', 1900],
+    ]
+    actions = {
+        'add_two': 2,
+        'substract_one': -1,
+    }
+    states = {
+        'continue': 'true!',
+        'abort': 'false...',
+    }
+
+    for date in dates:
+        interactive_text = f'{date[0]}: {date[1]}'
+
+        await query.answer()
+        data = query.data
+
+        if data in actions:
+            date[1] += actions[data]
+        if data in states:
+            interactive_text = states[data]
+            break
+
+    await query.edit_message_text(
+        text=interactive_text,
+        reply_markup=birthday_set_keyboard
     )
