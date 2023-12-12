@@ -33,3 +33,6 @@ def remove_success() -> str:
 
 def remove_fail() -> str:
     return 'Уже забыл.\nЗапомнить ДР - /ya_rodilsa (дд.мм)'
+
+def birthday_set_keyboard_text() -> str:
+    return 'Введите дату своего ДР, используя кнопки на сообщении.'
