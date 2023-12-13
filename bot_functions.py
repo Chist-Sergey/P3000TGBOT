@@ -206,33 +206,62 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
+    # JSON really dislikes Dictionaries
+    # that's why there's double lists instead
     dates = [
-        ['day', 1],
+        ['day',   1],
         ['month', 1],
-        ['year', 1900],
+        ['year',  1900],
     ]
-    actions = {
-        'add_two': 2,
-        'substract_one': -1,
-    }
-    states = {
-        'continue': 'true!',
-        'abort': 'false...',
-    }
+    # the intended use of those double-lists is:
+    # step 1: get an index
+    # step 2: use an index to get the first element
+    # step 3: use the same index to get the second element
+    # in general, the first list contains the headers to the second list
+    # the items in these lists are placed to match eatch other
+    # for example,
+    # calling 'actions[0][0], actions[0][1]'
+    # would result in 'add_two, 2'
+    actions = [
+        # numbers are present as strings because
+        # python is allergic to multi-types lists
+        ['add_two', 'substract_one'],
+        ['2',       '-1'],
+    ]
+    states = [
+        ['continue', 'abort'],
+        ['true!',    'false...'],
+    ]
 
     for date in dates:
-        interactive_text = f'{date[0]}: {date[1]}'
+        # 'date' is a list with two items
+        # first item
+        keys = 0
+        # second item
+        values = 1
+        # this text will change troughout the message interaction
+        interactive_text = f'{date[keys]}: {date[values]}'
 
+        # waiting for the user to press any button
         await query.answer()
+        # 'data' contains a callback value
+        # look at keyboards to find what the value might be
         data = query.data
 
-        if data in actions:
-            date[1] += actions[data]
-        if data in states:
-            interactive_text = states[data]
+        # check for upper row callback, the math part
+        if data in actions[keys]:
+            value = actions[keys].index()
+            # BAD CODE ALERT!
+            # Possible fixes: make values in 'actions' as integers
+            date[values] += int(actions[values][value])
+        # check for lower row callback, the command part
+        if data in states[keys]:
+            value = states[keys].index(data)
+            interactive_text = states[values][value]
+            # once the user have ended their interaction, abort this loop
             break
 
-    await query.edit_message_text(
-        text=interactive_text,
-        reply_markup=birthday_set_keyboard
-    )
+        await query.edit_message_text(
+            text=interactive_text,
+            reply_markup=birthday_set_keyboard
+        )
