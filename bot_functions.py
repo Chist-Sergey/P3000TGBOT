@@ -88,6 +88,22 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     This function returns nothing.
     This function doesn't raise any errors.
     """
+    # checking if the user is using the bot for the first time
+    # by trying to open a text file with the user's name
+    # and closing it to prevent any form of leaks
+    try:
+        open(
+            file=f'{update.effective_user.username}.txt',
+            mode='r',
+        ).close()
+    except FileNotFoundError:
+        user_file = open(
+            file=f'{update.effective_user.username}.txt',
+            mode='w',
+        )
+        user_file.write('0\n1\n1\n1900')
+        user_file.close()
+        
     await update.message.reply_text(
         text=birthday_set_keyboard_text(),
         reply_markup=birthday_set_keyboard()
@@ -205,63 +221,36 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # all this heafty stuff is a workaround remember the results
+    # of bot interaction
+    with open(
+        file=f'{update.effective_user.username}.txt',
+        mode='r'
+    ) as user_session:
+        session_data = user_session.readlines()
+
+    # convert a list of strings to a list of integers
+    session_data = list(map(int, session_data))
+    if session_data[0] == 0:
+        day = session_data[1]
+        month = session_data[2]
+        year = session_data[3]
+        interactive_text = f'\nDay: {day}.{month}.{year}'
+    
+    # I dunno
     query = update.callback_query
-    # JSON really dislikes Dictionaries
-    # that's why there's double lists instead
-    dates = [
-        ['day',   1],
-        ['month', 1],
-        ['year',  1900],
-    ]
-    # the intended use of those double-lists is:
-    # step 1: get an index
-    # step 2: use an index to get the first element
-    # step 3: use the same index to get the second element
-    # in general, the first list contains the headers to the second list
-    # the items in these lists are placed to match eatch other
-    # for example,
-    # calling 'actions[0][0], actions[0][1]'
-    # would result in 'add_two, 2'
-    actions = [
-        # numbers are present as strings because
-        # python is allergic to multi-types lists
-        ['add_two', 'substract_one'],
-        ['2',       '-1'],
-    ]
-    states = [
-        ['continue', 'abort'],
-        ['true!',    'false...'],
-    ]
+    # stop the function 'til the user responds
+    await query.answer()
+    # take the callback data from the keyboard button
+    data = query.data
 
-    for date in dates:
-        # 'date' is a list with two items
-        # first item
-        keys = 0
-        # second item
-        values = 1
-        # this text will change troughout the message interaction
-        interactive_text = f'{date[keys]}: {date[values]}'
+    with open(
+        file=f'{update.effective_user.username}.txt',
+        mode='w'
+    ) as user_session:
+        user_session.write(session_data)
 
-        # waiting for the user to press any button
-        await query.answer()
-        # 'data' contains a callback value
-        # look at keyboards to find what the value might be
-        data = query.data
-
-        # check for upper row callback, the math part
-        if data in actions[keys]:
-            value = actions[keys].index()
-            # BAD CODE ALERT!
-            # Possible fixes: make values in 'actions' as integers
-            date[values] += int(actions[values][value])
-        # check for lower row callback, the command part
-        if data in states[keys]:
-            value = states[keys].index(data)
-            interactive_text = states[values][value]
-            # once the user have ended their interaction, abort this loop
-            break
-
-        await query.edit_message_text(
-            text=interactive_text,
-            reply_markup=birthday_set_keyboard
-        )
+    await query.edit_message_text(
+        text=birthday_set_keyboard_text() + interactive_text,
+        reply_markup=birthday_set_keyboard()
+    )
