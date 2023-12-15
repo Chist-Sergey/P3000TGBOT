@@ -101,7 +101,7 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
             file=f'{update.effective_user.username}.txt',
             mode='w',
         )
-        user_file.write('0\n1\n1\n1900')
+        user_file.write('1\n1\n1900\n0')
         user_file.close()
         
     await update.message.reply_text(
@@ -225,17 +225,24 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # of bot interaction
     with open(
         file=f'{update.effective_user.username}.txt',
+        # 'r' == 'read'
         mode='r'
     ) as user_session:
+        # 'readlines' returns a list of strings
         session_data = user_session.readlines()
+
+    dates = [
+        'day',
+        'month',
+        'year',
+    ]
 
     # convert a list of strings to a list of integers
     session_data = list(map(int, session_data))
-    if session_data[0] == 0:
-        day = session_data[1]
-        month = session_data[2]
-        year = session_data[3]
-        interactive_text = f'\nDay: {day}.{month}.{year}'
+
+    step = session_data[-1]
+    interactive_date = session_data[step]
+    interactive_text = f'\n{dates[step]}: {interactive_date}'
     
     # I dunno
     query = update.callback_query
@@ -243,6 +250,29 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     # take the callback data from the keyboard button
     data = query.data
+
+    # main function of this button
+    if data == 'abort':
+        step -= 1
+    if data == 'continue':
+        step += 1
+    if data == 'add_two':
+        interactive_date -= 1
+    if data == 'substract_one':
+        interactive_date += 2
+
+    # guard check if the user has ended their interaction
+    if step <= 0 or step >= 3:
+        await query.edit_message_text(
+            text='over'
+        )
+    
+    # record the result, even if nothing has changed
+    session_data[step] = interactive_date
+    # convert a list of integers to a list of strings
+    session_data = list(map(str, session_data))
+    # stich up a list if strings to make a single string
+    session_data = '\n'.join(session_data)
 
     with open(
         file=f'{update.effective_user.username}.txt',
