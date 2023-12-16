@@ -93,12 +93,14 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # and closing it to prevent any form of leaks
     try:
         open(
-            file=f'{update.effective_user.username}.txt',
+            file=f'user_data/{update.effective_user.username}.txt',
+            # 'r' == 'read'
             mode='r',
         ).close()
     except FileNotFoundError:
         user_file = open(
-            file=f'{update.effective_user.username}.txt',
+            file=f'user_data/{update.effective_user.username}.txt',
+            # 'w' == 'write'
             mode='w',
         )
         user_file.write('1\n1\n1900\n0')
@@ -224,9 +226,9 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # all this heafty stuff is a workaround remember the results
     # of bot interaction
     with open(
-        file=f'{update.effective_user.username}.txt',
+        file=f'user_data/{update.effective_user.username}.txt',
         # 'r' == 'read'
-        mode='r'
+        mode='r',
     ) as user_session:
         # 'readlines' returns a list of strings
         session_data = user_session.readlines()
@@ -240,7 +242,7 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # convert a list of strings to a list of integers
     session_data = list(map(int, session_data))
 
-    step = session_data[-1]
+    step = session_data[3]
     interactive_date = session_data[step]
     interactive_text = f'\n{dates[step]}: {interactive_date}'
     
@@ -257,14 +259,14 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data == 'continue':
         step += 1
     if data == 'add_two':
-        interactive_date -= 1
-    if data == 'substract_one':
         interactive_date += 2
+    if data == 'substract_one':
+        interactive_date -= 1
 
     # guard check if the user has ended their interaction
     if step <= 0 or step >= 3:
         await query.edit_message_text(
-            text='over'
+            text='over',
         )
     
     # record the result, even if nothing has changed
@@ -275,8 +277,9 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     session_data = '\n'.join(session_data)
 
     with open(
-        file=f'{update.effective_user.username}.txt',
-        mode='w'
+        file=f'user_data/{update.effective_user.username}.txt',
+        # 'w' == 'write'
+        mode='w',
     ) as user_session:
         user_session.write(session_data)
 
