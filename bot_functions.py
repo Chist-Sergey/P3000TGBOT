@@ -2,9 +2,6 @@
 from telegram import (
     # core
     Update,
-    # allows usage of buttons attached to a message
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
 )
 from telegram.ext import (
     # core
@@ -23,9 +20,22 @@ from text_responses import (
     remove_success,
     birthday_set_keyboard_text,
 )
+# for working with keyboard's memory
+from session_functions import (
+    session_start,
+    session_user_data_extract,
+    session_user_data_write,
+)
 # for easier keyboard management
 from bot_keyboards import (
     birthday_set_keyboard,
+)
+# for syncing the callback names with keyboard
+from callback_manager import (
+    callback_add,
+    callback_abort,
+    callback_continue,
+    callback_substract,
 )
 # to access database
 from database_functions import (
@@ -40,8 +50,8 @@ async def birthday_loop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Initiates the bot's checking cycle with 'jobQueue'.
 
-    This function returns nothing.
-    This function doesn't raise any errors.
+    Returns nothing.
+    Doesn't raise any errors.
     """
     # message destination is a chat where it was used
     chat_id = update.effective_message.chat_id
@@ -70,12 +80,12 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Set a birthday date.
 
-    This function takes up to one optional argument (DATE).
+    Takes no arguments.
 
     If the user is already present in a database,
     tell the user their birthday date.
 
-    If there's no such users,
+    If there's no such user,
     bring up a message with a keyboard for
     the user to enter their birthday date.
 
@@ -85,27 +95,13 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     If the operation wasn't done successfully,
     remove this bot's message.
 
-    This function returns nothing.
-    This function doesn't raise any errors.
+    Returns nothing.
+    Doesn't raise any errors.
     """
-    # checking if the user is using the bot for the first time
-    # by trying to open a text file with the user's name
-    # and closing it to prevent any form of leaks
-    try:
-        open(
-            file=f'user_data/{update.effective_user.username}.txt',
-            # 'r' == 'read'
-            mode='r',
-        ).close()
-    except FileNotFoundError:
-        user_file = open(
-            file=f'user_data/{update.effective_user.username}.txt',
-            # 'w' == 'write'
-            mode='w',
-        )
-        user_file.write('1\n1\n1900\n0')
-        user_file.close()
-        
+    username = update.effective_user.name
+    # start the user session
+    session_start(username)
+
     await update.message.reply_text(
         text=birthday_set_keyboard_text(),
         reply_markup=birthday_set_keyboard()
@@ -116,8 +112,7 @@ async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Peek a birthday date.
 
-    This function takes up to one optional argument.
-
+    Takes up to one optional argument.D
     Using it without any argument will
     send a message with THIS user's birthday date.
 
@@ -132,8 +127,8 @@ async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
     send a message with all users whose birthday
     is matching DATE.
 
-    This function returns nothing.
-    This function doesn't raise any errors.
+    Returns nothing.
+    Doesn't raise any errors.
     """
     # 'context.args' == 'arguments of the message'
     # 'context.args' may be or may not be present
@@ -172,14 +167,13 @@ async def birthday_yell(context: ContextTypes.DEFAULT_TYPE) -> None:
     """
     Celebrate a birth day!
 
-    This function takes no arguments.
-
+    Takes no arguments.D
     Checks for someone's birthday today,
     sends a message if someone has a birthday,
     does nothing if there isn't.
 
-    This function returns nothing.
-    This function doesn't raise any errors.
+    Returns nothing.
+    Doesn't raise any errors.
     """
     today = datetime.now()
     # '%d.%m' == 'D.M' == 'Day.Month', ex.: '31.12'
@@ -197,19 +191,18 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Remove a birthday.
 
-    This function takes no arguments.
-
+    Takes no arguments.D
     Take a USER who called this function
     and check if they are in a database.
     If they are, remove their line from
     the database and aknowledge them of this.
     If they aren't, aknowledge them of this.
 
-    This function returns nothing.
-    This function doesn't raise any errors.
+    Returns nothing.
+    Doesn't raise any errors.
     """
     message = remove_fail()
-    username = update.effective_user.name
+    username = update.effective_user.username
     target_line = database_search_by_name(username)
     if target_line:
         message = remove_success()
@@ -223,67 +216,62 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # all this heafty stuff is a workaround remember the results
-    # of bot interaction
-    with open(
-        file=f'user_data/{update.effective_user.username}.txt',
-        # 'r' == 'read'
-        mode='r',
-    ) as user_session:
-        # 'readlines' returns a list of strings
-        session_data = user_session.readlines()
+    username = update.effective_user.username
+    session_data = session_user_data_extract(username)
+
+    # session_data contains at least 4 elements
+    # '[3]' == '4th element in list'
+    step = session_data[3]
+
+    # the date that will be changed in this function
+    interactive_date = session_data[step]
 
     dates = [
         'day',
         'month',
         'year',
     ]
-
-    # convert a list of strings to a list of integers
-    session_data = list(map(int, session_data))
-
-    step = session_data[3]
-    interactive_date = session_data[step]
+    # 'f' == 'format' == 'put variables in place of names'
     interactive_text = f'\n{dates[step]}: {interactive_date}'
-    
-    # I dunno
+
     query = update.callback_query
-    # stop the function 'til the user responds
     await query.answer()
     # take the callback data from the keyboard button
     data = query.data
 
     # main function of this button
-    if data == 'abort':
-        step -= 1
-    if data == 'continue':
-        step += 1
-    if data == 'add_two':
+    # looks bad, but sometimes simpler is better
+    if data == callback_add():
         interactive_date += 2
-    if data == 'substract_one':
+
+    if data == callback_substract():
         interactive_date -= 1
 
-    # guard check if the user has ended their interaction
-    if step <= 0 or step >= 3:
-        await query.edit_message_text(
-            text='over',
-        )
-    
+    if data == callback_abort():
+        step -= 1
+
+    if data == callback_continue():
+        step += 1
+
     # record the result, even if nothing has changed
     session_data[step] = interactive_date
-    # convert a list of integers to a list of strings
-    session_data = list(map(str, session_data))
-    # stich up a list if strings to make a single string
-    session_data = '\n'.join(session_data)
 
-    with open(
-        file=f'user_data/{update.effective_user.username}.txt',
-        # 'w' == 'write'
-        mode='w',
-    ) as user_session:
-        user_session.write(session_data)
+    # write the result back in the user file
+    session_user_data_write(username, session_data)
 
     await query.edit_message_text(
         text=birthday_set_keyboard_text() + interactive_text,
         reply_markup=birthday_set_keyboard()
     )
+
+    # guard check if the user have ended their interaction
+    # bad ending: the user refused to give their birthday
+    if step <= 0:
+        await query.edit_message_text(
+            text='over',
+        )
+    # good ending: the user gave their birthday
+    if step >= 3:
+        await query.edit_message_text(
+            text='done',
+        )
