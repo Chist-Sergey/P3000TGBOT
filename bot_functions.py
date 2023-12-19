@@ -54,7 +54,7 @@ async def birthday_loop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Doesn't raise any errors.
     """
     # message destination is a chat where it was used
-    chat_id = update.effective_message.chat_id
+    target_chat = update.effective_message.chat_id
     # tell the bot to run a job repeatedly
     context.job_queue.run_repeating(
         # which job
@@ -66,12 +66,12 @@ async def birthday_loop(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # '60 seconds' == '1 minute'
         first=60,
         # where the text will be sent
-        chat_id=chat_id
+        chat_id=target_chat
     )
 
     # send a reply message to the user
     await context.bot.send_message(
-        chat_id=chat_id,
+        chat_id=target_chat,
         text=sechude_active(),
     )
 
@@ -108,61 +108,6 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-async def birthday_get(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """
-    Peek a birthday date.
-
-    Takes up to one optional argument.D
-    Using it without any argument will
-    send a message with THIS user's birthday date.
-
-    Using it with argument USER will
-    send a message with THAT user's birthday date.
-
-    If USER is not in the database,
-    tell the user that there's no such USER
-    in the database.
-
-    Using it with argument DATE will
-    send a message with all users whose birthday
-    is matching DATE.
-
-    Returns nothing.
-    Doesn't raise any errors.
-    """
-    # 'context.args' == 'arguments of the message'
-    # 'context.args' may be or may not be present
-    if context.args:
-        # arguments is a list of strings
-        arguments = context.args
-        # take the first argument in the message,
-        # typically its either a numbers (DATE) or a text (USER)
-        first_argument = arguments[0]
-
-        # decide which search function to use
-        # 'isnumeric()' == 'consists of mathematical characters'
-        if first_argument.isnumeric():
-            search_result = database_search_by_date(first_argument)
-        else:
-            search_result = database_search_by_name(first_argument)
-    # if there's no arguments,
-    # take a user's name as an argument
-    else:
-        user_name = update.effective_user.name
-        search_result = database_search_by_name(user_name)
-
-    # check for a valid result
-    if search_result is None:
-        # replace result's 'None' with a fail message
-        search_result = search_fail()
-
-    await context.bot.send_message(
-        # message destination is a chat where it was used
-        chat_id=update.effective_chat.id,
-        text=search_result,
-    )
-
-
 async def birthday_yell(context: ContextTypes.DEFAULT_TYPE) -> None:
     """
     Celebrate a birth day!
@@ -176,9 +121,11 @@ async def birthday_yell(context: ContextTypes.DEFAULT_TYPE) -> None:
     Doesn't raise any errors.
     """
     today = datetime.now()
+
     # '%d.%m' == 'D.M' == 'Day.Month', ex.: '31.12'
     today_day_and_month = today.strftime('%d.%m')
     birthday_people = database_search_by_date(today_day_and_month)
+
     if birthday_people:
         await context.bot.send_message(
             # message destination is a chat where it was used
@@ -201,12 +148,19 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Returns nothing.
     Doesn't raise any errors.
     """
+    # there are two states of this message:
+    # 0: the code failed
+    # 1: the code succeed
+    # having the initial value set as one of these states
+    # allows to make one less check on the function's state
     message = remove_fail()
+
     username = update.effective_user.username
     target_line = database_search_by_name(username)
+
     if target_line:
-        message = remove_success()
         database_remove(target_line)
+        message = remove_success()
 
     await context.bot.send_message(
         # message destination is a chat where it was used
@@ -219,7 +173,11 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     username = update.effective_user.username
     session_data = session_user_data_extract(username)
 
-    # session_data contains at least 4 elements
+    # session_data contains 4 elements:
+    # 1     <- a day    (an integer between 1 and 31)
+    # 1     <- a month  (an integer between 1 and 12)
+    # 1900  <- a year   (an integer between 0 and 9999)
+    # 1     <- a step   (an integer between 0 and 2)
     # '[3]' == '4th element in list'
     step = session_data[3]
 
