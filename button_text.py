@@ -1,14 +1,14 @@
 def key_add():
-    return 'Прибавить на 2',
+    return 'Прибавить на 2'
 
 
 def key_substract():
-    return 'Убавить на 1',
+    return 'Убавить на 1'
 
 
 def key_continue():
-    return 'Продолжить',
+    return 'Продолжить'
 
 
 def key_abort():
-    return 'Отмена',
+    return 'Отмена'

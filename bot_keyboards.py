@@ -5,29 +5,43 @@ from telegram import (
     InlineKeyboardMarkup as keyboard_finalize,
 )
 
+# for easier text management
+from button_text import (
+    key_add,
+    key_abort,
+    key_continue,
+    key_substract,
+)
+# for syncing the callback data
+from callback_manager import (
+    callback_substract,
+    callback_abort,
+    callback_add,
+    callback_continue,
+)
 
 def birthday_set_keyboard():
     keyboard = [
         # top row
         [
             keyboard_option(
-                text='Убавить на 1',
-                callback_data='substract_one',
+                text=key_substract(),
+                callback_data=callback_substract(),
             ),
             keyboard_option(
-                text='Прибавить на 2',
-                callback_data='add_two',
+                text=key_add(),
+                callback_data=callback_add(),
             ),
         ],
         # second row
         [
             keyboard_option(
-                text='Продолжить',
-                callback_data='continue',
+                text=key_continue(),
+                callback_data=callback_continue(),
             ),
             keyboard_option(
-                text='Отмена',
-                callback_data='abort',
+                text=key_abort(),
+                callback_data=callback_abort(),
             ),
         ]
     ]

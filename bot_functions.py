@@ -98,7 +98,7 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Returns nothing.
     Doesn't raise any errors.
     """
-    username = update.effective_user.name
+    username = update.effective_user.username
     # start the user session
     session_start(username)
 
@@ -138,11 +138,14 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Remove a birthday.
 
-    Takes no arguments.D
+    Takes no arguments.
+
     Take a USER who called this function
     and check if they are in a database.
+
     If they are, remove their line from
     the database and aknowledge them of this.
+
     If they aren't, aknowledge them of this.
 
     Returns nothing.
@@ -170,32 +173,22 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    username = update.effective_user.username
-    session_data = session_user_data_extract(username)
-
-    # session_data contains 4 elements:
-    # 1     <- a day    (an integer between 1 and 31)
-    # 1     <- a month  (an integer between 1 and 12)
-    # 1900  <- a year   (an integer between 0 and 9999)
-    # 1     <- a step   (an integer between 0 and 2)
-    # '[3]' == '4th element in list'
-    step = session_data[3]
-
-    # the date that will be changed in this function
-    interactive_date = session_data[step]
-
-    dates = [
-        'day',
-        'month',
-        'year',
-    ]
-    # 'f' == 'format' == 'put variables in place of names'
-    interactive_text = f'\n{dates[step]}: {interactive_date}'
-
     query = update.callback_query
     await query.answer()
     # take the callback data from the keyboard button
     data = query.data
+
+    username = update.effective_user.username
+    session_data = session_user_data_extract(username)
+    # session_data contains 4 elements:
+    # 1     <- a step   (an integer between 0 and 2)
+    # 1     <- a day    (an integer between 1 and 31)
+    # 1     <- a month  (an integer between 1 and 12)
+    # 1900  <- a year   (an integer between 0 and 9999)
+    # '[3]' == '4th element in list'
+    step = session_data[0]
+    # the date that will be changed in this function
+    interactive_date = session_data[step]
 
     # main function of this button
     # looks bad, but sometimes simpler is better
@@ -211,25 +204,35 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data == callback_continue():
         step += 1
 
-    # record the result, even if nothing has changed
-    session_data[step] = interactive_date
+    dates = ('day', 'month', 'year')
+    # 'f' == 'format' == 'put variables in place of names'
+    # '\n' == 'new line' == 'make the text begin below the current text'
+    # 'step - 1' is for index compatibility
+    # between 'session_data' and 'dates'
+    interactive_text = f'\n{dates[step - 1]}: {interactive_date}'
 
-    # write the result back in the user file
-    session_user_data_write(username, session_data)
-
+    # I'm afraid of making any early return
+    # in this function, so I placed this code
+    # before the step checks so this message text
+    # would be overriden by the step checks
     await query.edit_message_text(
         text=birthday_set_keyboard_text() + interactive_text,
         reply_markup=birthday_set_keyboard()
     )
 
-    # guard check if the user have ended their interaction
+    # check if the user have ended their interaction
     # bad ending: the user refused to give their birthday
-    if step <= 0:
+    if step < 0:
         await query.edit_message_text(
             text='over',
         )
     # good ending: the user gave their birthday
-    if step >= 3:
+    if step > 2:
         await query.edit_message_text(
             text='done',
         )
+
+    # record the result, even if nothing has changed
+    session_data[step] = interactive_date
+    # write the result back in the user file
+    session_user_data_write(username, session_data)
