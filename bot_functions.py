@@ -198,13 +198,24 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data == callback_substract():
         interactive_date -= 1
 
+    # record the result, even if nothing has changed
+    session_data[step] = interactive_date
+
     if data == callback_abort():
         step -= 1
 
     if data == callback_continue():
         step += 1
 
-    dates = ('day', 'month', 'year')
+    # record the result, even if nothing has changed
+    session_data[0] = step
+
+    # write the results back in the user file
+    session_user_data_write(username, session_data)
+
+    # '''' is a placeholder
+    dates = ('day', 'month', 'year', '',)
+    interactive_date = session_data[step]
     # 'f' == 'format' == 'put variables in place of names'
     # '\n' == 'new line' == 'make the text begin below the current text'
     # 'step - 1' is for index compatibility
@@ -222,17 +233,12 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # check if the user have ended their interaction
     # bad ending: the user refused to give their birthday
-    if step < 0:
+    if step < 1:
         await query.edit_message_text(
             text='over',
         )
     # good ending: the user gave their birthday
-    if step > 2:
+    if step > 3:
         await query.edit_message_text(
             text='done',
         )
-
-    # record the result, even if nothing has changed
-    session_data[step] = interactive_date
-    # write the result back in the user file
-    session_user_data_write(username, session_data)
