@@ -213,8 +213,7 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # write the results back in the user file
     session_user_data_write(username, session_data)
 
-    # '''' is a placeholder
-    dates = ('day', 'month', 'year', '',)
+    dates = ('day', 'month', 'year',)
     interactive_date = session_data[step]
     # 'f' == 'format' == 'put variables in place of names'
     # '\n' == 'new line' == 'make the text begin below the current text'
