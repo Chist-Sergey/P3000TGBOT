@@ -187,8 +187,12 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # 1900  <- a year   (an integer between 0 and 9999)
     # '[3]' == '4th element in list'
     step = session_data[0]
+    # IndexError fix
+    fix = 0
+    if step >= 4:
+        fix -= 1
     # the date that will be changed in this function
-    interactive_date = session_data[step]
+    interactive_date = session_data[step + fix]
 
     # main function of this button
     # looks bad, but sometimes simpler is better
@@ -213,8 +217,8 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # write the results back in the user file
     session_user_data_write(username, session_data)
 
-    dates = ('day', 'month', 'year',)
-    interactive_date = session_data[step]
+    dates = ('day', 'month', 'year', '(',)
+    interactive_date = session_data[step + fix]
     # 'f' == 'format' == 'put variables in place of names'
     # '\n' == 'new line' == 'make the text begin below the current text'
     # 'step - 1' is for index compatibility
