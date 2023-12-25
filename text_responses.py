@@ -3,19 +3,15 @@ def sechude_active() -> str:
 
 
 def write_success() -> str:
-    return 'Запомнил.\nПосмотреть ДР - /kogda_dr'
-
-
-def write_fail() -> str:
-    return 'Допишите к команде дату, пожалуйста.\nНапример, /ya_rodilsa 01.01'
+    return 'Запомнил.\nПосмотреть ДР - /ya_rodilsa'
 
 
 def write_exists() -> str:
-    return 'Уже помню.\nПосмотреть ДР - /kogda_dr'
+    return 'Уже помню.\nПосмотреть ДР - /ya_rodilsa'
 
 
 def search_fail() -> str:
-    return 'Не помню.\nЗапомнить ДР - /ya_rodilsa (дд.мм)'
+    return 'Не помню.\nЗапомнить ДР - /ya_rodilsa'
 
 
 def celebrate(people: str) -> str:
@@ -24,11 +20,11 @@ def celebrate(people: str) -> str:
 
 
 def remove_success() -> str:
-    return 'Забыл.\nЗапомнить ДР - /ya_rodilsa (дд.мм)'
+    return 'Забыл.\nЗапомнить ДР - /ya_rodilsa'
 
 
 def remove_fail() -> str:
-    return 'Уже забыл.\nЗапомнить ДР - /ya_rodilsa (дд.мм)'
+    return 'Уже забыл.\nЗапомнить ДР - /ya_rodilsa'
 
 
 def birthday_set_keyboard_text() -> str:

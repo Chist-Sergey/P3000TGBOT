@@ -1,18 +1,23 @@
-def database_write(name: str, date) -> None:
+from session_functions import (
+    session_user_data_extract,
+)
+
+def database_write(username: str) -> None:
     """
-    Use this function to write a pair of user name
-    and birthday date to a database text file.
+    Use this function to write data from
+    a user session file to a database
 
     It's a simple open-write-close operation.
 
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    # 'a' == 'append' == 'apply at the end'
+    dates = session_user_data_extract(username)
+    day, month, year = dates[0], dates[1], dates[2]
     with open('database.txt', 'a') as database:
-        # 'f' == 'format' == 'replace names with their values'
-        # '\n' == 'new line'
-        data_row = f'{name} {date}\n'
+        # 'f' == 'format' == 'put variables in place of names'
+        # '\n' == 'new line' == 'make the text begin below the current text'
+        data_row = f'{username} {day}.{month}.{year}\n'
         database.write(data_row)
 
 
@@ -98,6 +103,7 @@ def database_search_by_date(target: str):
     with open('database.txt', 'r') as database:
         # 'readlines' creates a list of strings,
         # contains every line as a separate element
+        # includes newlines (these -> '\n')
         database = database.readlines()
 
         matches = ''

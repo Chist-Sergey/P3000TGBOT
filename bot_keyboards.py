@@ -24,10 +24,12 @@ def birthday_set_keyboard():
     keyboard = [
         # top row
         [
+            # first option
             keyboard_option(
                 text=key_substract(),
                 callback_data=callback_substract(),
             ),
+            # second option
             keyboard_option(
                 text=key_add(),
                 callback_data=callback_add(),
@@ -35,13 +37,15 @@ def birthday_set_keyboard():
         ],
         # second row
         [
-            keyboard_option(
-                text=key_continue(),
-                callback_data=callback_continue(),
-            ),
+            # first option
             keyboard_option(
                 text=key_abort(),
                 callback_data=callback_abort(),
+            ),
+            # second option
+            keyboard_option(
+                text=key_continue(),
+                callback_data=callback_continue(),
             ),
         ]
     ]

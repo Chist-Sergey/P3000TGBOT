@@ -13,12 +13,13 @@ from datetime import datetime
 
 # for easier text management
 from text_responses import (
-    sechude_active,
-    search_fail,
+    birthday_set_keyboard_text,
     celebrate,
     remove_fail,
     remove_success,
-    birthday_set_keyboard_text,
+    sechude_active,
+    write_exists,
+    write_success,
 )
 # for working with keyboard's memory
 from session_functions import (
@@ -89,22 +90,23 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     bring up a message with a keyboard for
     the user to enter their birthday date.
 
-    If the operation was done successfully,
-    tell the user that the operation was successful.
-
-    If the operation wasn't done successfully,
-    remove this bot's message.
-
     Returns nothing.
     Doesn't raise any errors.
     """
+    keyboard = birthday_set_keyboard()
+    message = birthday_set_keyboard_text()
     username = update.effective_user.username
-    # start the user session
+
     session_start(username)
 
+    birthday_date = database_search_by_name(username)
+    if birthday_date:
+        message = birthday_date
+        keyboard = None
+
     await update.message.reply_text(
-        text=birthday_set_keyboard_text(),
-        reply_markup=birthday_set_keyboard()
+        text=message,
+        reply_markup=keyboard
     )
 
 
@@ -173,37 +175,59 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Input to set a birthday date.
+
+    Takes no arguments.
+
+    Allows the user to change their birthday date
+    by pressing buttons on the inline keyboard.
+
+    If the operation was done successfully,
+    tell the user that the operation was successful.
+
+    If the operation wasn't done successfully,
+    remove this bot's message.
+
+    Returns nothing.
+    Doesn't raise any errors.
+    """
+    dates = (
+        ['day', 31],
+        ['month', 12],
+        ['year', 9999],
+        ['boo!', 0],
+    )
+    keyboard = birthday_set_keyboard()
+    message = birthday_set_keyboard_text()
+    username = update.effective_user.username
+    # create, get and extract the user's input
     query = update.callback_query
     await query.answer()
-    # take the callback data from the keyboard button
     data = query.data
 
-    username = update.effective_user.username
     session_data = session_user_data_extract(username)
+
     # session_data contains 4 elements:
-    # 1     <- a step   (an integer between 0 and 2)
     # 1     <- a day    (an integer between 1 and 31)
     # 1     <- a month  (an integer between 1 and 12)
-    # 1900  <- a year   (an integer between 0 and 9999)
-    # '[3]' == '4th element in list'
-    step = session_data[0]
-    # IndexError fix
-    fix = 0
-    if step >= 4:
-        fix -= 1
-    # the date that will be changed in this function
-    interactive_date = session_data[step + fix]
+    # 1900  <- a year   (an integer between 1 and 9999)
+    # 0     <- a step   (an integer between -1 and 2)
+    # '[-1]' == 'last element in list' == '4th element in list'
+    step = session_data[-1]
+    date_interactive = session_data[step]
+    date_max = dates[step][1]
 
-    # main function of this button
-    # looks bad, but sometimes simpler is better
     if data == callback_add():
-        interactive_date += 2
+        if date_interactive < date_max:
+            date_interactive += 2
 
     if data == callback_substract():
-        interactive_date -= 1
+        if date_interactive > 1:
+            date_interactive -= 1
 
-    # record the result, even if nothing has changed
-    session_data[step] = interactive_date
+    # record the result
+    session_data[step] = date_interactive
 
     if data == callback_abort():
         step -= 1
@@ -211,37 +235,34 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data == callback_continue():
         step += 1
 
-    # record the result, even if nothing has changed
-    session_data[0] = step
+    # record the result
+    session_data[-1] = step
 
-    # write the results back in the user file
     session_user_data_write(username, session_data)
 
-    dates = ('day', 'month', 'year', '(',)
-    interactive_date = session_data[step + fix]
+    date_interactive = session_data[step]
+    date = dates[step][0]
     # 'f' == 'format' == 'put variables in place of names'
     # '\n' == 'new line' == 'make the text begin below the current text'
     # 'step - 1' is for index compatibility
     # between 'session_data' and 'dates'
-    interactive_text = f'\n{dates[step - 1]}: {interactive_date}'
-
-    # I'm afraid of making any early return
-    # in this function, so I placed this code
-    # before the step checks so this message text
-    # would be overriden by the step checks
-    await query.edit_message_text(
-        text=birthday_set_keyboard_text() + interactive_text,
-        reply_markup=birthday_set_keyboard()
-    )
+    interactive_text = f'\n{date}: {date_interactive}'
 
     # check if the user have ended their interaction
+    # good ending: the user entered their birthday
+    if step > 2:
+        message = write_success()
+        keyboard = None
+        interactive_text = ''
+        database_write(username)
+
+    # main "ending" is set before the last check
+    # to avoid BadRequest error due to a missing message
+    await query.edit_message_text(
+        text=message + interactive_text,
+        reply_markup=keyboard
+    )
+
     # bad ending: the user refused to give their birthday
-    if step < 1:
-        await query.edit_message_text(
-            text='over',
-        )
-    # good ending: the user gave their birthday
-    if step > 3:
-        await query.edit_message_text(
-            text='done',
-        )
+    if step < 0:
+        await query.delete_message()
