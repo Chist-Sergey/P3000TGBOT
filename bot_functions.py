@@ -32,7 +32,7 @@ from bot_keyboards import (
     birthday_set_keyboard,
 )
 # for syncing the callback names with keyboard
-from callback_manager import (
+from callback_values import (
     callback_add,
     callback_abort,
     callback_continue,
@@ -196,6 +196,7 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ['day', 31],
         ['month', 12],
         ['year', 9999],
+        # a fix to an IndexError
         ['boo!', 0],
     )
     keyboard = birthday_set_keyboard()
