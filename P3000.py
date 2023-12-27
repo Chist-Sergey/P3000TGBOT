@@ -107,10 +107,10 @@ if __name__ == '__main__':
     # generates a data row
     test_data_list = []
     for number in range(test_data_auto_amount):
-        test_data = '{} {}.{}'.format(
+        test_data = '{}.{}.{}'.format(
+            10 + number,
+            10 + number,
             1000 + number,
-            10 + number,
-            10 + number,
         )
         test_data_list.append(test_data)
 

@@ -7,18 +7,38 @@ def database_write(username: str) -> None:
     Use this function to write data from
     a user session file to a database
 
-    It's a simple open-write-close operation.
+    It's a simple open-format-write-close operation.
 
     This function returns nothing.
     This function doesn't raise any errors.
     """
     dates = session_user_data_extract(username)
     day, month, year = dates[0], dates[1], dates[2]
-    with open('database.txt', 'a') as database:
-        # 'f' == 'format' == 'put variables in place of names'
-        # '\n' == 'new line' == 'make the text begin below the current text'
-        data_row = f'{username} {day}.{month}.{year}\n'
-        database.write(data_row)
+
+    # looks bad but it gets the job done
+    # this is a facion check so there are
+    # won't be anything like '1.1.1'
+    # ex: '9.11.3' -> '09.11.0003'
+    # ex: '20.2.300' -> '20.02.0300'
+    # ex: '14.8.1901' -> '14.08.1901'
+    if day < 10:
+        day = '0' + str(day)
+    if month < 10:
+        month = '0' + str(month)
+    if year < 10:
+        year = '000' + str(year)
+    elif year < 100:
+        year = '00' + str(year)
+    elif year < 1000:
+        year = '0' + str(year)
+
+    # 'a' == 'append' == 'write at the end of the file'
+    database = open('database.txt', 'a')
+    # 'f' == 'format' == 'put variables in place of names'
+    # '\n' == 'new line' == 'make the text begin below the current text'
+    data_row = f'{username} {day}.{month}.{year}\n'
+    database.write(data_row)
+    database.close()
 
 
 def database_remove(target_line: str) -> None:
@@ -44,8 +64,14 @@ def database_remove(target_line: str) -> None:
     # to match the contents of a 'database_contents',
     # as all elements in there have a newline,
     # but the target line does not
-    # '\n' == 'newline' == 'same as "return" button on your keyboard'
-    target_line += '\n'
+    # '\n' == 'newline' == 'text will begin in a new row below'
+    # target_line += '\n'
+    # NOTE: this line is disabled for the next reason:
+    # 'database_search_by_name' returns a string with
+    # a newline already attached to it
+    # since there is no other function thar uses 'database_remove'
+    # besides 'birthday_rm', this feature is no longer needed
+    # horever, this may result in compatability problems in the future
 
     # a guard code in case the target is not found
     # if the guard code is passed, this means that

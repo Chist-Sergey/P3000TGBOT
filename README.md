@@ -41,6 +41,7 @@ while in a concole window:
 The DB consists of two columns: the username and a birthday date in a format 'DD.MM' (without apostrophes).
 
 TODO (in order):
+separate the databases based on chat id
 sync the bot to UTC+8
 update this documentation
 look at the option to make a keyboard constructor
