@@ -193,9 +193,9 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Doesn't raise any errors.
     """
     dates = (
-        ['day', 31],
-        ['month', 12],
-        ['year', 9999],
+        ['День', 31],
+        ['Месяц', 12],
+        ['Год', 9999],
         # a fix to an IndexError
         ['boo!', 0],
     )

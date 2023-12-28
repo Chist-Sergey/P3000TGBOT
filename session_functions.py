@@ -5,12 +5,12 @@ def session_start(username: str) -> None:
     Returns nothing.
     Raises no errors.
     """
-    # '1\n1\n1900'\n0 ==
+    # '1\n1\n1970'\n0 ==
     # 1
     # 1
-    # 1900
+    # 1970
     # 0
-    starting_data = '1\n1\n1900\n0'
+    starting_data = '1\n1\n1970\n0'
 
     with open(
     # 'f' == 'format' == 'put variables in place of names'

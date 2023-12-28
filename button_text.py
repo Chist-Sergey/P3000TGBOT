@@ -1,9 +1,9 @@
 def key_add():
-    return 'Прибавить'
+    return '+2'
 
 
 def key_substract():
-    return 'Убавить'
+    return '-1'
 
 
 def key_continue():
