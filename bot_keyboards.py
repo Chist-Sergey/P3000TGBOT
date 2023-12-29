@@ -6,38 +6,9 @@ from telegram import (
 )
 
 # for easier text management
-from button_text import (
-    key_add,
-    key_abort,
-    key_continue,
-    key_substract,
-    key_k1_r1_o1,
-    key_k1_r1_o2,
-    key_k1_r1_o3,
-    key_k1_r2_o1,
-    key_k1_r2_o2,
-    key_k1_r2_o3,
-    key_k1_r3_o1,
-    key_k1_r3_o2,
-    key_k1_r3_o3,
-    key_k1_r4_o2,
-)
-# for syncing the callback data
-from callback_values import (
-    callback_substract,
-    callback_abort,
-    callback_add,
-    callback_continue,
-    callback_k1_r1_o1,
-    callback_k1_r1_o2,
-    callback_k1_r1_o3,
-    callback_k1_r2_o1,
-    callback_k1_r2_o2,
-    callback_k1_r2_o3,
-    callback_k1_r3_o1,
-    callback_k1_r3_o2,
-    callback_k1_r3_o3,
-    callback_k1_r4_o2,
+from button_manager import (
+    BadKeyboard,
+    Year1,
 )
 
 def birthday_set_keyboard():
@@ -46,26 +17,26 @@ def birthday_set_keyboard():
         [
             # first option
             keyboard_option(
-                text=key_substract(),
-                callback_data=callback_substract(),
+                text=BadKeyboard.button_substract()[0],
+                callback_data=BadKeyboard.button_substract()[1],
             ),
             # second option
             keyboard_option(
-                text=key_add(),
-                callback_data=callback_add(),
+                text=BadKeyboard.button_add()[0],
+                callback_data=BadKeyboard.button_add()[1],
             ),
         ],
         # second row
         [
             # first option
             keyboard_option(
-                text=key_abort(),
-                callback_data=callback_abort(),
+                text=BadKeyboard.button_abort()[0],
+                callback_data=BadKeyboard.button_abort()[1],
             ),
             # second option
             keyboard_option(
-                text=key_continue(),
-                callback_data=callback_continue(),
+                text=BadKeyboard.button_continue()[0],
+                callback_data=BadKeyboard.button_continue()[1],
             ),
         ]
     ]
@@ -75,77 +46,77 @@ def birthday_set_keyboard():
     return reply_markup
 
 
-def birthday_year_1_keyboard():
-    keyboard = [
-        # first row
-        [
-            # first option
-            keyboard_option(
-                text=key_k1_r1_o1(),
-                callback_data=callback_k1_r1_o1(),
-            ),
-            # second option
-            keyboard_option(
-                text=key_k1_r1_o2(),
-                callback_data=callback_k1_r1_o2(),
-            ),
-            # third option
-            keyboard_option(
-                text=key_k1_r1_o3(),
-                callback_data=callback_k1_r1_o3(),
-            ),
-        ],
-        # second row
-        [
-            # first option
-            keyboard_option(
-                text=key_k1_r2_o1(),
-                callback_data=callback_k1_r2_o1(),
-            ),
-            # second option
-            keyboard_option(
-                text=key_k1_r2_o2(),
-                callback_data=callback_k1_r2_o2(),
-            ),
-            # third option
-            keyboard_option(
-                text=key_k1_r2_o3(),
-                callback_data=callback_k1_r2_o3(),
-            ),
-        ],
-        # third row
-        [
-            # first option
-            keyboard_option(
-                text=key_k1_r3_o1,
-                callback_data=callback_k1_r3_o1(),
-            ),
-            # second option
-            keyboard_option(
-                text=key_k1_r3_o2,
-                callback_data=callback_k1_r3_o2(),
-            ),
-            # third option
-            keyboard_option(
-                text=key_k1_r3_o3(),
-                callback_data=callback_k1_r3_o3(),
-            ),
-        ],
-        # forth row
-        [
-            # first option
-            keyboard_option(
-                text=key_abort(),
-                callback_data=callback_abort(),
-            ),
-            # second option
-            keyboard_option(
-                text=key_k1_r4_o2(),
-                callback_data=callback_k1_r4_o2(),
-            ),
-        ],
-    ]
+# def birthday_year_1_keyboard():
+#     keyboard = [
+#         # first row
+#         [
+#             # first option
+#             keyboard_option(
+#                 text=key_y1_r1_o1(),
+#                 callback_data=callback_k1_r1_o1(),
+#             ),
+#             # second option
+#             keyboard_option(
+#                 text=key_y1_r1_o2(),
+#                 callback_data=callback_k1_r1_o2(),
+#             ),
+#             # third option
+#             keyboard_option(
+#                 text=key_y1_r1_o3(),
+#                 callback_data=callback_k1_r1_o3(),
+#             ),
+#         ],
+#         # second row
+#         [
+#             # first option
+#             keyboard_option(
+#                 text=key_y1_r2_o1(),
+#                 callback_data=callback_k1_r2_o1(),
+#             ),
+#             # second option
+#             keyboard_option(
+#                 text=key_y1_r2_o2(),
+#                 callback_data=callback_k1_r2_o2(),
+#             ),
+#             # third option
+#             keyboard_option(
+#                 text=key_y1_r2_o3(),
+#                 callback_data=callback_k1_r2_o3(),
+#             ),
+#         ],
+#         # third row
+#         [
+#             # first option
+#             keyboard_option(
+#                 text=key_y1_r3_o1,
+#                 callback_data=callback_k1_r3_o1(),
+#             ),
+#             # second option
+#             keyboard_option(
+#                 text=key_y1_r3_o2,
+#                 callback_data=callback_k1_r3_o2(),
+#             ),
+#             # third option
+#             keyboard_option(
+#                 text=key_y1_r3_o3(),
+#                 callback_data=callback_k1_r3_o3(),
+#             ),
+#         ],
+#         # forth row
+#         [
+#             # first option
+#             keyboard_option(
+#                 text=key_abort(),
+#                 callback_data=callback_abort(),
+#             ),
+#             # second option
+#             keyboard_option(
+#                 text=key_y1_r4_o2(),
+#                 callback_data=callback_k1_r4_o2(),
+#             ),
+#         ],
+#     ]
 
-    reply_markup = keyboard_finalize(keyboard)
+#     reply_markup = keyboard_finalize(keyboard)
 
-    return reply_markup
+#     return reply_markup

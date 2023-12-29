@@ -48,6 +48,5 @@ deny repating requests on database writing
 separate the databases based on chat id
 sync the bot to UTC+8
 update this documentation
-look at the option to make a keyboard constructor
 docker-compose (on hold 'til I find a way to sign up)
 migrate to a database
