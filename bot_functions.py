@@ -249,7 +249,7 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # check if the user have ended their interaction
     # good ending: the user entered their birthday
-    if step > 2:
+    if step > 1:
         message = write_success()
         keyboard = None
         interactive_text = ''
