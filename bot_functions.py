@@ -32,12 +32,7 @@ from bot_keyboards import (
     birthday_set_keyboard,
 )
 # for syncing the callback names with keyboard
-from callback_values import (
-    callback_add,
-    callback_abort,
-    callback_continue,
-    callback_substract,
-)
+from button_manager import BadKeyboard as kb
 # to access database
 from database_functions import (
     database_remove,
@@ -219,21 +214,21 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     date_interactive = session_data[step]
     date_max = dates[step][1]
 
-    if data == callback_add():
+    if data == kb.button_add()[1]:
         if date_interactive < date_max:
             date_interactive += 2
 
-    if data == callback_substract():
+    if data == kb.button_substract()[1]:
         if date_interactive > 1:
             date_interactive -= 1
 
     # record the result
     session_data[step] = date_interactive
 
-    if data == callback_abort():
+    if data == kb.button_abort()[1]:
         step -= 1
 
-    if data == callback_continue():
+    if data == kb.button_continue()[1]:
         step += 1
 
     # record the result
