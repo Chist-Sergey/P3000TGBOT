@@ -1,6 +1,8 @@
 # P30000TLBOT
 Open-Source Telegram-bot for celebrating birthday dates.
 
+Created using "python-telegram-bot"
+
 Intended use: in a telegram group chat,
 controlled using the bot's own commands.
 
@@ -41,8 +43,10 @@ while in a concole window:
 The DB consists of two columns: the username and a birthday date in a format 'DD.MM' (without apostrophes).
 
 TODO (in order):
-separate the databases based on group chat id
 sync the bot to UTC+8
+limit max days based on month
+deny repeating requests on database writing
+separate the databases based on group chat id
 update this documentation
 look at the option to make a keyboard constructor
 docker-compose (on hold 'til I find a way to sign up)
