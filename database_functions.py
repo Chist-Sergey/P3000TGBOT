@@ -13,30 +13,24 @@ def database_write(username: str) -> None:
     This function doesn't raise any errors.
     """
     dates = session_user_data_extract(username)
-    day, month, year = dates[0], dates[1], dates[2]
+    day, month = dates[0], dates[1]
 
     # looks bad but it gets the job done
     # this is a facion check so there are
-    # won't be anything like '1.1.1'
-    # ex: '9.11.3' -> '09.11.0003'
-    # ex: '20.2.300' -> '20.02.0300'
-    # ex: '14.8.1901' -> '14.08.1901'
+    # won't be anything like '1.1'
+    # ex: '9.11' -> '09.11'
+    # ex: '20.2' -> '20.02'
+    # ex: '1.8' -> '01.08'
     if day < 10:
         day = '0' + str(day)
     if month < 10:
         month = '0' + str(month)
-    if year < 10:
-        year = '000' + str(year)
-    elif year < 100:
-        year = '00' + str(year)
-    elif year < 1000:
-        year = '0' + str(year)
 
     # 'a' == 'append' == 'write at the end of the file'
     database = open('database.txt', 'a')
     # 'f' == 'format' == 'put variables in place of names'
     # '\n' == 'new line' == 'make the text begin below the current text'
-    data_row = f'{username} {day}.{month}.{year}\n'
+    data_row = f'{username} {day}.{month}\n'
     database.write(data_row)
     database.close()
 

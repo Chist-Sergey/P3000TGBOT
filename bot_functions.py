@@ -118,9 +118,9 @@ async def birthday_yell(context: ContextTypes.DEFAULT_TYPE) -> None:
     Doesn't raise any errors.
     """
     today = datetime.now()
-
     # '%d.%m' == 'D.M' == 'Day.Month', ex.: '31.12'
     today_day_and_month = today.strftime('%d.%m')
+
     birthday_people = database_search_by_date(today_day_and_month)
 
     if birthday_people:
@@ -190,9 +190,8 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     dates = (
         ['День', 31],
         ['Месяц', 12],
-        ['Год', 9999],
         # a fix to an IndexError
-        ['boo!', 0],
+        ['', 0],
     )
     keyboard = birthday_set_keyboard()
     message = birthday_set_keyboard_text()
@@ -207,9 +206,8 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # session_data contains 4 elements:
     # 1     <- a day    (an integer between 1 and 31)
     # 1     <- a month  (an integer between 1 and 12)
-    # 1900  <- a year   (an integer between 1 and 9999)
     # 0     <- a step   (an integer between -1 and 2)
-    # '[-1]' == 'last element in list' == '4th element in list'
+    # '[-1]' == 'last element in list' == '3rd element in list'
     step = session_data[-1]
     date_interactive = session_data[step]
     date_max = dates[step][1]
@@ -246,7 +244,7 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # check if the user have ended their interaction
     # good ending: the user entered their birthday
-    if step > 2:
+    if step > 1:
         message = write_success()
         keyboard = None
         interactive_text = ''
