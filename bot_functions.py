@@ -18,7 +18,6 @@ from text_responses import (
     remove_fail,
     remove_success,
     sechude_active,
-    write_exists,
     write_success,
 )
 # for working with keyboard's memory
@@ -32,7 +31,7 @@ from bot_keyboards import (
     birthday_set_keyboard,
 )
 # for syncing the callback names with keyboard
-from button_manager import BadKeyboard as kb
+from button_manager import GeneralButtons as kb
 # to access database
 from database_functions import (
     database_remove,
@@ -223,7 +222,7 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # record the result
     session_data[step] = date_interactive
 
-    if data == kb.button_abort()[1]:
+    if data == kb.button_back()[1]:
         step -= 1
 
     if data == kb.button_continue()[1]:

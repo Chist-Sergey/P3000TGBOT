@@ -7,7 +7,7 @@ from telegram import (
 
 # for easier text management
 from button_manager import (
-    BadKeyboard,
+    GeneralButtons,
     Year1,
 )
 
@@ -17,26 +17,26 @@ def birthday_set_keyboard():
         [
             # first option
             keyboard_option(
-                text=BadKeyboard.button_substract()[0],
-                callback_data=BadKeyboard.button_substract()[1],
+                text=GeneralButtons.button_substract()[0],
+                callback_data=GeneralButtons.button_substract()[1],
             ),
             # second option
             keyboard_option(
-                text=BadKeyboard.button_add()[0],
-                callback_data=BadKeyboard.button_add()[1],
+                text=GeneralButtons.button_add()[0],
+                callback_data=GeneralButtons.button_add()[1],
             ),
         ],
         # second row
         [
             # first option
             keyboard_option(
-                text=BadKeyboard.button_abort()[0],
-                callback_data=BadKeyboard.button_abort()[1],
+                text=GeneralButtons.button_back()[0],
+                callback_data=GeneralButtons.button_back()[1],
             ),
             # second option
             keyboard_option(
-                text=BadKeyboard.button_continue()[0],
-                callback_data=BadKeyboard.button_continue()[1],
+                text=GeneralButtons.button_continue()[0],
+                callback_data=GeneralButtons.button_continue()[1],
             ),
         ]
     ]

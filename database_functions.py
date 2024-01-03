@@ -99,6 +99,7 @@ def database_search_by_name(target: str):
     with open('database.txt', 'r') as database:
         # 'readlines' creates a list of strings,
         # contains every line as a separate element
+        # includes newlines (these -> '\n')
         database = database.readlines()
 
         for line in database:
