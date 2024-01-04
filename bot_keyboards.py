@@ -8,30 +8,43 @@ from telegram import (
 # for easier text management
 from button_manager import (
     GeneralButtons,
-    Year1,
+    Months,
 )
 
-def birthday_set_keyboard():
+def birthday_set_keyboard_months():
     keyboard = [
         # top row
         [
             # first option
             keyboard_option(
-                text=GeneralButtons.button_substract()[0],
-                callback_data=GeneralButtons.button_substract()[1],
+                text=Months.jan_feb_mar()[0],
+                callback_data=Months.jan_feb_mar()[1],
             ),
             # second option
             keyboard_option(
-                text=GeneralButtons.button_add()[0],
-                callback_data=GeneralButtons.button_add()[1],
+                text=Months.apr_may_jun()[0],
+                callback_data=Months.apr_may_jun()[1],
             ),
         ],
         # second row
         [
             # first option
             keyboard_option(
-                text=GeneralButtons.button_back()[0],
-                callback_data=GeneralButtons.button_back()[1],
+                text=Months.jul_aug_sep()[0],
+                callback_data=Months.jul_aug_sep()[1],
+            ),
+            # second option
+            keyboard_option(
+                text=Months.okt_nov_dec()[0],
+                callback_data=Months.okt_nov_dec()[1],
+            ),
+        ],
+        # third row
+        [
+            # first option
+            keyboard_option(
+                text=GeneralButtons.button_abort()[0],
+                callback_data=GeneralButtons.button_abort()[1],
             ),
             # second option
             keyboard_option(

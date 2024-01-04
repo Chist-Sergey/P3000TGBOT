@@ -16,72 +16,72 @@ class GeneralButtons:
 
 
 class Months:
-    def button_11():
-        return ('(1-3)\nЯнварь\nФевраль\nМарт', '13',)
+    def jan_feb_mar():
+        return ('(1-3)\nЯнварь\nФевраль\nМарт', '0',)
 
 
-    def button_12():
-        return ('(4-6)\nАпрель\nМай\nИюнь', '46',)
+    def apr_may_jun():
+        return ('(4-6)\nАпрель\nМай\nИюнь', '3',)
 
 
-    def button_21():
-        return ('(7-9)\nИюль\nАвгуст\nСентябрь', '79',)
+    def jul_aug_sep():
+        return ('(7-9)\nИюль\nАвгуст\nСентябрь', '6',)
 
 
-    def button_22():
-        return ('(9-12)\nОктябрь\nНоябрь\nДекабрь', '90',)
+    def okt_nov_dec():
+        return ('(10-12)\nОктябрь\nНоябрь\nДекабрь', '8',)
 
 
 class Months1:
-    def button_11():
-        return ('(1) Январь', '1',)
+    def jan():
+        return ('(1) Январь', '0',)
 
 
-    def button_21():
-        return ('(2) Февраль', '2',)
+    def feb():
+        return ('(2) Февраль', '1',)
 
 
-    def button_31():
-        return ('(3) Март', '3',)
+    def mar():
+        return ('(3) Март', '2',)
 
 
 class Months2:
-    def button_11():
-        return ('(4) Апрель', '1',)
+    def apr():
+        return ('(4) Апрель', '0',)
 
 
-    def button_21():
-        return ('(5) Май', '2',)
+    def may():
+        return ('(5) Май', '1',)
 
 
-    def button_31():
-        return ('(6) Июнь', '3',)
+    def jun():
+        return ('(6) Июнь', '2',)
 
 
 class Months3:
-    def button_11():
-        return ('(7) Июль', '1',)
+    def jul():
+        return ('(7) Июль', '0',)
 
 
-    def button_21():
-        return ('(8) Август', '2',)
+    def aug():
+        return ('(8) Август', '1',)
 
 
-    def button_31():
-        return ('(9) Сентябрь', '3',)
+    def sep():
+        return ('(9) Сентябрь', '2',)
 
 
 class Months4:
-    def button_11():
-        return ('(10) Октябрь', '1',)
+    def okt():
+        return ('(10) Октябрь', '0',)
 
 
-    def button_21():
-        return ('(11) Ноябрь', '2',)
+    def nov():
+        return ('(11) Ноябрь', '1',)
 
 
-    def button_31():
-        return ('(12) Декабрь', '3',)
+    def dec():
+        return ('(12) Декабрь', '2',)
 
 
 # class Days:
