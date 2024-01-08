@@ -20,18 +20,24 @@ from text_responses import (
     sechude_active,
     write_success,
 )
-# for working with keyboard's memory
+# for easier keyboard management
+from bot_keyboards import (
+    birthday_set_keyboard_months,
+    birthday_set_keyboard_apr_may_jun,
+    birthday_set_keyboard_jan_feb_mar,
+    birthday_set_keyboard_jul_aug_sep,
+    birthday_set_keyboard_oct_nov_dec,
+)
+# for syncing the callback names with keyboard
+from button_manager import (
+    ControlButton,
+    MonthsButton,
+)
 from session_functions import (
     session_start,
     session_user_data_extract,
     session_user_data_write,
 )
-# for easier keyboard management
-from bot_keyboards import (
-    birthday_set_keyboard,
-)
-# for syncing the callback names with keyboard
-from button_manager import GeneralButtons as kb
 # to access database
 from database_functions import (
     database_remove,
@@ -87,7 +93,7 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Returns nothing.
     Doesn't raise any errors.
     """
-    keyboard = birthday_set_keyboard()
+    keyboard = birthday_set_keyboard_months()
     message = birthday_set_keyboard_text()
     username = update.effective_user.username
 
@@ -186,14 +192,13 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Returns nothing.
     Doesn't raise any errors.
     """
-    dates = (
-        ['День', 31],
-        ['Месяц', 12],
-        # a fix to an IndexError
-        ['', 0],
+    keyboard_select = (
+        birthday_set_keyboard_jan_feb_mar(),
+        birthday_set_keyboard_apr_may_jun(),
+        birthday_set_keyboard_jul_aug_sep(),
+        birthday_set_keyboard_oct_nov_dec(),
     )
-    keyboard = birthday_set_keyboard()
-    message = birthday_set_keyboard_text()
+    keyboard = birthday_set_keyboard_months()
     username = update.effective_user.username
     # create, get and extract the user's input
     query = update.callback_query
@@ -202,58 +207,28 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     session_data = session_user_data_extract(username)
 
-    # session_data contains 4 elements:
-    # 1     <- a day    (an integer between 1 and 31)
-    # 1     <- a month  (an integer between 1 and 12)
-    # 0     <- a step   (an integer between -1 and 2)
-    # '[-1]' == 'last element in list' == '3rd element in list'
-    step = session_data[-1]
-    date_interactive = session_data[step]
-    date_max = dates[step][1]
+    step = session_data[0]
 
-    if data == kb.button_add()[1]:
-        if date_interactive < date_max:
-            date_interactive += 2
-
-    if data == kb.button_substract()[1]:
-        if date_interactive > 1:
-            date_interactive -= 1
-
-    # record the result
-    session_data[step] = date_interactive
-
-    if data == kb.button_back()[1]:
-        step -= 1
-
-    if data == kb.button_continue()[1]:
-        step += 1
-
-    # record the result
-    session_data[-1] = step
+    if data == ControlButton.back()[1]:
+        step -= 2
+    elif step == 1:
+        keyboard = keyboard_select(data)
+    step += 1
 
     session_user_data_write(username, session_data)
 
-    date_interactive = session_data[step]
-    date = dates[step][0]
-    # 'f' == 'format' == 'put variables in place of names'
-    # '\n' == 'new line' == 'make the text begin below the current text'
-    # 'step - 1' is for index compatibility
-    # between 'session_data' and 'dates'
-    interactive_text = f'\n{date}: {date_interactive}'
-
     # check if the user have ended their interaction
     # good ending: the user entered their birthday
-    if step > 1:
+    if step > 3:
         message = write_success()
         keyboard = None
-        interactive_text = ''
         database_write(username)
 
     # main "ending" is set before the last check
     # to avoid BadRequest error due to a missing message
     await query.edit_message_text(
-        text=message + interactive_text,
-        reply_markup=keyboard
+        message=message,
+        reply_markup=keyboard,
     )
 
     # bad ending: the user refused to give their birthday

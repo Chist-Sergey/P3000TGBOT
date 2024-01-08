@@ -1,6 +1,4 @@
-from session_functions import (
-    session_user_data_extract,
-)
+from session_functions import session_user_data_extract
 
 def database_write(username: str) -> None:
     """
@@ -13,7 +11,9 @@ def database_write(username: str) -> None:
     This function doesn't raise any errors.
     """
     dates = session_user_data_extract(username)
-    day, month = dates[0], dates[1]
+
+    month = dates[1]
+    day = dates[2]
 
     # looks bad but it gets the job done
     # this is a facion check so there are

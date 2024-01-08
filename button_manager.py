@@ -1,98 +1,76 @@
-class GeneralButtons:
-    def button_continue():
-        return ('Продолжить', 'continue',)
-
-
-    def button_back():
+class ControlButton:
+    def back():
         return ('Назад', 'back',)
 
 
-    def button_abort():
-        return ('Отмена', 'abort',)
+    def abort():
+        return ('Отмена', 'back',)
 
 
-    def button_finish():
-        return ('Готово', 'finish',)
+    def finish():
+        return ('Готово', 'continue',)
 
 
-class Months:
+class MonthsButton:
     def jan_feb_mar():
         return ('(1-3)\nЯнварь\nФевраль\nМарт', '0',)
 
 
     def apr_may_jun():
-        return ('(4-6)\nАпрель\nМай\nИюнь', '3',)
+        return ('(4-6)\nАпрель\nМай\nИюнь', '1',)
 
 
     def jul_aug_sep():
-        return ('(7-9)\nИюль\nАвгуст\nСентябрь', '6',)
+        return ('(7-9)\nИюль\nАвгуст\nСентябрь', '2',)
 
 
     def okt_nov_dec():
-        return ('(10-12)\nОктябрь\nНоябрь\nДекабрь', '8',)
+        return ('(10-12)\nОктябрь\nНоябрь\nДекабрь', '3',)
 
 
-class Months1:
     def jan():
-        return ('(1) Январь', '0',)
+        return ('(1) Январь', '4',)
 
 
     def feb():
-        return ('(2) Февраль', '1',)
+        return ('(2) Февраль', '5',)
 
 
     def mar():
-        return ('(3) Март', '2',)
+        return ('(3) Март', '6',)
 
 
-class Months2:
     def apr():
-        return ('(4) Апрель', '0',)
+        return ('(4) Апрель', '7',)
 
 
     def may():
-        return ('(5) Май', '1',)
+        return ('(5) Май', '8',)
 
 
     def jun():
-        return ('(6) Июнь', '2',)
+        return ('(6) Июнь', '9',)
 
 
-class Months3:
     def jul():
-        return ('(7) Июль', '0',)
+        return ('(7) Июль', '10',)
 
 
     def aug():
-        return ('(8) Август', '1',)
+        return ('(8) Август', '11',)
 
 
     def sep():
-        return ('(9) Сентябрь', '2',)
+        return ('(9) Сентябрь', '12',)
 
 
-class Months4:
     def okt():
-        return ('(10) Октябрь', '0',)
+        return ('(10) Октябрь', '13',)
 
 
     def nov():
-        return ('(11) Ноябрь', '1',)
+        return ('(11) Ноябрь', '14',)
 
 
     def dec():
-        return ('(12) Декабрь', '2',)
-
-
-# class Days:
-#     def __init__(self, month):
-#         max_days = (
-#             0,
-#             31, 28, 31,
-#             30, 31, 30,
-#             31, 31, 30,
-#             31, 30, 31,
-#         )
-#         max_day = max_days[month]
-
-#         return max_day
+        return ('(12) Декабрь', '15',)
