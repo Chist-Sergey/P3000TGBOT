@@ -176,39 +176,39 @@ class DaysButton:
         return ('20', '24')
 
 
-    def twentyone():
+    def twenty_one():
         return ('21', '25')
 
 
-    def twentytwo():
+    def twenty_two():
         return ('22', '26')
 
 
-    def twentythree():
+    def twenty_three():
         return ('23', '27')
 
 
-    def twentyfour():
+    def twenty_four():
         return ('24', '28')
 
 
-    def twentyfive():
+    def twenty_five():
         return ('25', '29')
 
 
-    def twentysix():
+    def twenty_six():
         return ('26', '30')
 
 
-    def twentyseven():
+    def twenty_seven():
         return ('27', '32')
 
 
-    def twentyeight():
+    def twenty_eight():
         return ('28', '32')
 
 
-    def twentynine():
+    def twenty_nine():
         return ('29', '33')
 
 
@@ -216,5 +216,5 @@ class DaysButton:
         return ('30', '34')
 
 
-    def thirtyone():
+    def thirty_one():
         return ('31', '35')
