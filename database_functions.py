@@ -12,19 +12,8 @@ def database_write(username: str) -> None:
     """
     dates = session_user_data_extract(username)
 
-    month = dates[1]
-    day = dates[2]
-
-    # looks bad but it gets the job done
-    # this is a facion check so there are
-    # won't be anything like '1.1'
-    # ex: '9.11' -> '09.11'
-    # ex: '20.2' -> '20.02'
-    # ex: '1.8' -> '01.08'
-    if day < 10:
-        day = '0' + str(day)
-    if month < 10:
-        month = '0' + str(month)
+    day = dates[1]
+    month = dates[2]
 
     # 'a' == 'append' == 'write at the end of the file'
     database = open('database.txt', 'a')

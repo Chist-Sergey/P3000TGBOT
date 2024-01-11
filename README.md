@@ -44,10 +44,8 @@ The DB consists of two columns: the username and a birthday date in a format 'DD
 
 TODO (in order):
 sync the bot to UTC+8
-limit max days based on month
 deny repeating requests on database writing
 separate the databases based on group chat id
 update this documentation
-look at the option to make a keyboard constructor
 docker-compose (on hold 'til I find a way to sign up)
 migrate to a database

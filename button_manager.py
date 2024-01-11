@@ -4,76 +4,76 @@ class ControlButton:
 
 
     def abort():
-        return ('Отмена', 'back',)
+        return ('Отмена', 'abort',)
 
 
     def finish():
-        return ('Готово', 'continue',)
+        return ('Готово', 'finish',)
 
 
 class MonthsButton:
     def jan_feb_mar():
-        return ('(1-3)\nЯнварь\nФевраль\nМарт', '0',)
+        return ('Янв, Фев, Мар', '0',)
 
 
     def apr_may_jun():
-        return ('(4-6)\nАпрель\nМай\nИюнь', '1',)
+        return ('Апр, Май, Июн', '1',)
 
 
     def jul_aug_sep():
-        return ('(7-9)\nИюль\nАвгуст\nСентябрь', '2',)
+        return ('Июл, Авг, Сен', '2',)
 
 
     def okt_nov_dec():
-        return ('(10-12)\nОктябрь\nНоябрь\nДекабрь', '3',)
+        return ('Окт, Ноя, Дек', '3',)
 
 
     def jan():
-        return ('(1) Январь', '4',)
+        return ('(1) Январь', '01',)
 
 
     def feb():
-        return ('(2) Февраль', '5',)
+        return ('(2) Февраль', '02',)
 
 
     def mar():
-        return ('(3) Март', '6',)
+        return ('(3) Март', '03',)
 
 
     def apr():
-        return ('(4) Апрель', '7',)
+        return ('(4) Апрель', '04',)
 
 
     def may():
-        return ('(5) Май', '8',)
+        return ('(5) Май', '05',)
 
 
     def jun():
-        return ('(6) Июнь', '9',)
+        return ('(6) Июнь', '06',)
 
 
     def jul():
-        return ('(7) Июль', '10',)
+        return ('(7) Июль', '07',)
 
 
     def aug():
-        return ('(8) Август', '11',)
+        return ('(8) Август', '08',)
 
 
     def sep():
-        return ('(9) Сентябрь', '12',)
+        return ('(9) Сентябрь', '09',)
 
 
     def okt():
-        return ('(10) Октябрь', '13',)
+        return ('(10) Октябрь', '10',)
 
 
     def nov():
-        return ('(11) Ноябрь', '14',)
+        return ('(11) Ноябрь', '11',)
 
 
     def dec():
-        return ('(12) Декабрь', '15',)
+        return ('(12) Декабрь', '12',)
 
 
 class DaysButton:
@@ -98,123 +98,123 @@ class DaysButton:
 
 
     def one():
-        return ('1', '5')
+        return ('1', '01')
 
 
     def two():
-        return ('2', '6')
+        return ('2', '02')
 
 
     def three():
-        return ('3', '7')
+        return ('3', '03')
 
 
     def four():
-        return ('4', '8')
+        return ('4', '04')
 
 
     def five():
-        return ('5', '9')
+        return ('5', '05')
 
 
     def sex():
-        return ('6', '10')
+        return ('6', '06')
 
 
     def seven():
-        return ('7', '11')
+        return ('7', '07')
 
 
     def eight():
-        return ('8', '12')
+        return ('8', '08')
 
 
     def nine():
-        return ('9', '13')
+        return ('9', '09')
 
 
     def ten():
-        return ('10', '14')
+        return ('10', '10')
 
 
     def eleven():
-        return ('11', '15')
+        return ('11', '11')
 
 
     def twelve():
-        return ('12', '16')
+        return ('12', '12')
 
 
     def thirteen():
-        return ('13', '17')
+        return ('13', '13')
 
 
     def fourteen():
-        return ('14', '18')
+        return ('14', '14')
 
 
     def fifteen():
-        return ('15', '19')
+        return ('15', '15')
 
 
     def sixteen():
-        return ('16', '20')
+        return ('16', '16')
 
 
     def seventeen():
-        return ('17', '21')
+        return ('17', '17')
 
     def eighteen():
-        return ('18', '22')
+        return ('18', '18')
 
 
     def nineteen():
-        return ('19', '23')
+        return ('19', '19')
 
 
     def twenty():
-        return ('20', '24')
+        return ('20', '20')
 
 
     def twenty_one():
-        return ('21', '25')
+        return ('21', '21')
 
 
     def twenty_two():
-        return ('22', '26')
+        return ('22', '22')
 
 
     def twenty_three():
-        return ('23', '27')
+        return ('23', '23')
 
 
     def twenty_four():
-        return ('24', '28')
+        return ('24', '24')
 
 
     def twenty_five():
-        return ('25', '29')
+        return ('25', '25')
 
 
     def twenty_six():
-        return ('26', '30')
+        return ('26', '26')
 
 
     def twenty_seven():
-        return ('27', '32')
+        return ('27', '27')
 
 
     def twenty_eight():
-        return ('28', '32')
+        return ('28', '28')
 
 
     def twenty_nine():
-        return ('29', '33')
+        return ('29', '29')
 
 
     def thirty():
-        return ('30', '34')
+        return ('30', '30')
 
 
     def thirty_one():
-        return ('31', '35')
+        return ('31', '31')

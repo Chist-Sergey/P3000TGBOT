@@ -28,4 +28,8 @@ def remove_fail() -> str:
 
 
 def birthday_set_keyboard_text() -> str:
-    return 'Введите дату своего ДР, используя кнопки на сообщении.'
+    return 'Введите дату своего ДР, используя кнопки на сообщении:'
+
+
+def birthday_set_keyboard_final_text(username, session_data) -> str:
+    return f'Я запомню: "{username} {session_data[1]}.{session_data[2]}".'

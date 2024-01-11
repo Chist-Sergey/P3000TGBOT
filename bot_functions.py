@@ -14,6 +14,7 @@ from datetime import datetime
 # for easier text management
 from text_responses import (
     birthday_set_keyboard_text,
+    birthday_set_keyboard_final_text,
     celebrate,
     remove_fail,
     remove_success,
@@ -27,6 +28,13 @@ from bot_keyboards import (
     birthday_set_keyboard_jan_feb_mar,
     birthday_set_keyboard_jul_aug_sep,
     birthday_set_keyboard_oct_nov_dec,
+    birthday_set_keyboard_days,
+    birthday_set_keyboard_day_1_to_6,
+    birthday_set_keyboard_day_7_to_12,
+    birthday_set_keyboard_day_13_to_18,
+    birthday_set_keyboard_day_19_to_24,
+    birthday_set_keyboard_day_25_to_31,
+    birthday_set_keyboard_final,
 )
 # for syncing the callback names with keyboard
 from button_manager import (
@@ -192,13 +200,21 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Returns nothing.
     Doesn't raise any errors.
     """
-    keyboard_select = (
+    keyboard_select_month = (
         birthday_set_keyboard_jan_feb_mar(),
         birthday_set_keyboard_apr_may_jun(),
         birthday_set_keyboard_jul_aug_sep(),
         birthday_set_keyboard_oct_nov_dec(),
     )
+    keyboard_select_day = (
+        birthday_set_keyboard_day_1_to_6(),
+        birthday_set_keyboard_day_7_to_12(),
+        birthday_set_keyboard_day_13_to_18(),
+        birthday_set_keyboard_day_19_to_24(),
+        birthday_set_keyboard_day_25_to_31(),
+    )
     keyboard = birthday_set_keyboard_months()
+    message = birthday_set_keyboard_text()
     username = update.effective_user.username
     # create, get and extract the user's input
     query = update.callback_query
@@ -206,31 +222,46 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     data = query.data
 
     session_data = session_user_data_extract(username)
-
     step = session_data[0]
 
     if data == ControlButton.back()[1]:
-        step -= 2
-    elif step == 1:
-        keyboard = keyboard_select(data)
-    step += 1
+        step = 0
 
-    session_user_data_write(username, session_data)
-
-    # check if the user have ended their interaction
-    # good ending: the user entered their birthday
-    if step > 3:
+    elif data == ControlButton.finish()[1]:
         message = write_success()
         keyboard = None
         database_write(username)
 
-    # main "ending" is set before the last check
-    # to avoid BadRequest error due to a missing message
+    elif data == ControlButton.abort()[1]:
+        await query.delete_message()
+
+    elif step == 0:
+        index = int(data)
+        keyboard = keyboard_select_month[index]
+        step += 1
+
+    elif step == 1:
+        # month
+        session_data[2] = data
+        keyboard = birthday_set_keyboard_days()
+        step += 1
+
+    elif step == 2:
+        index = int(data)
+        keyboard = keyboard_select_day[index]
+        step += 1
+
+    elif step == 3:
+        # day
+        session_data[1] = data
+        message = birthday_set_keyboard_final_text(username, session_data)
+        keyboard = birthday_set_keyboard_final()
+
+    # step
+    session_data[0] = step
+    session_user_data_write(username, session_data)
+
     await query.edit_message_text(
-        message=message,
+        text=message,
         reply_markup=keyboard,
     )
-
-    # bad ending: the user refused to give their birthday
-    if step < 0:
-        await query.delete_message()
