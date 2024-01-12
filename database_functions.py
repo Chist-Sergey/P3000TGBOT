@@ -3,7 +3,7 @@ from session_functions import session_user_data_extract
 def database_write(username: str) -> None:
     """
     Use this function to write data from
-    a user session file to a database
+    a user session file to a database.
 
     It's a simple open-format-write-close operation.
 
@@ -12,8 +12,9 @@ def database_write(username: str) -> None:
     """
     dates = session_user_data_extract(username)
 
-    day = dates[1]
-    month = dates[2]
+    # '[:-1]' == 'remove the last element' == 'remove a newline'
+    day = dates[1][:-1]
+    month = dates[2][:-1]
 
     # 'a' == 'append' == 'write at the end of the file'
     database = open('database.txt', 'a')
@@ -42,19 +43,6 @@ def database_remove(target_line: str) -> None:
     # a newline (\n) at the end of it
     database_contents = database.readlines()
     database.close()
-
-    # a newline is added to a 'target_line'
-    # to match the contents of a 'database_contents',
-    # as all elements in there have a newline,
-    # but the target line does not
-    # '\n' == 'newline' == 'text will begin in a new row below'
-    # target_line += '\n'
-    # NOTE: this line is disabled for the next reason:
-    # 'database_search_by_name' returns a string with
-    # a newline already attached to it
-    # since there is no other function thar uses 'database_remove'
-    # besides 'birthday_rm', this feature is no longer needed
-    # horever, this may result in compatability problems in the future
 
     # a guard code in case the target is not found
     # if the guard code is passed, this means that

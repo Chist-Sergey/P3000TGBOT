@@ -1,3 +1,5 @@
+# '\n' == 'new line' == 'make the text begin below the current text'
+
 def sechude_active() -> str:
     return 'Опять работать.'
 
@@ -16,7 +18,9 @@ def search_fail() -> str:
 
 def celebrate(people: str) -> str:
     return ('Помниться мне, сегодня надо кого-то поздравить!\n'
-            f'{people}')
+        # 'f' == 'format' == 'put variables in place of names'
+        f'{people}'
+    )
 
 
 def remove_success() -> str:
@@ -28,8 +32,12 @@ def remove_fail() -> str:
 
 
 def birthday_set_keyboard_text() -> str:
-    return 'Введите дату своего ДР, используя кнопки на сообщении:'
+    return 'Когда у Вас ДР?'
 
 
 def birthday_set_keyboard_final_text(username, session_data) -> str:
-    return f'Я запомню: "{username} {session_data[1]}.{session_data[2]}".'
+    # '[:-1]' == 'remove the last element' == 'remove a newline'
+    day = session_data[1][:-1]
+    month = session_data[2][:-1]
+    # 'f' == 'format' == 'put variables in place of names'
+    return f'Я запомню: "{username} {day}.{month}".'

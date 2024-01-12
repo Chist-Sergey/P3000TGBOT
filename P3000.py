@@ -95,13 +95,13 @@ if __name__ == '__main__':
     test_function = database_remove
     test_data_auto_amount = 10
     test_data_manual = [
-        '@asdfg 56:78',
-        '@sdlfk 76:58',
-        '@mkgtj 98:76',
-        '@sdfkl 37:84',
-        '@tbytj 93:85',
-        '@lkjli 27:38',
-        '@ChistovBackend 09.09',
+        'asdfg 56:78',
+        'sdlfk 76:58',
+        'mkgtj 98:76',
+        'sdfkl 37:84',
+        'tbytj 93:85',
+        'lkjli 27:38',
+        'ChistovBackend 09.09',
     ]
 
     # generates a data row

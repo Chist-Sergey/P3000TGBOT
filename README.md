@@ -47,5 +47,6 @@ sync the bot to UTC+8
 deny repeating requests on database writing
 separate the databases based on group chat id
 update this documentation
+do something with this newline chaos!!
 docker-compose (on hold 'til I find a way to sign up)
 migrate to a database

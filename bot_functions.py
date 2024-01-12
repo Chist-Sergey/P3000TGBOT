@@ -39,7 +39,6 @@ from bot_keyboards import (
 # for syncing the callback names with keyboard
 from button_manager import (
     ControlButton,
-    MonthsButton,
 )
 from session_functions import (
     session_start,
@@ -200,6 +199,7 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Returns nothing.
     Doesn't raise any errors.
     """
+    # a collection of keyboards to choose from
     keyboard_select_month = (
         birthday_set_keyboard_jan_feb_mar(),
         birthday_set_keyboard_apr_may_jun(),
@@ -213,28 +213,34 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
         birthday_set_keyboard_day_19_to_24(),
         birthday_set_keyboard_day_25_to_31(),
     )
+    username = update.effective_user.username
+    # default values to fall back to
     keyboard = birthday_set_keyboard_months()
     message = birthday_set_keyboard_text()
-    username = update.effective_user.username
     # create, get and extract the user's input
     query = update.callback_query
     await query.answer()
     data = query.data
 
     session_data = session_user_data_extract(username)
-    step = session_data[0]
+    step = int(session_data[0])
 
+    # there's so much 'elif's due to hard logic of this function
     if data == ControlButton.back()[1]:
         step = 0
 
+    # operation is done successfully
     elif data == ControlButton.finish()[1]:
         message = write_success()
         keyboard = None
         database_write(username)
 
+    # operation isn't done successfully
     elif data == ControlButton.abort()[1]:
         await query.delete_message()
 
+    # don't get confused: those conditions apply
+    # AFTER the button press
     elif step == 0:
         index = int(data)
         keyboard = keyboard_select_month[index]
@@ -242,7 +248,8 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif step == 1:
         # month
-        session_data[2] = data
+        # '\n' == 'new line'
+        session_data[2] = data + '\n'
         keyboard = birthday_set_keyboard_days()
         step += 1
 
@@ -253,12 +260,14 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif step == 3:
         # day
-        session_data[1] = data
+        # '\n' == 'new line'
+        session_data[1] = data + '\n'
         message = birthday_set_keyboard_final_text(username, session_data)
         keyboard = birthday_set_keyboard_final()
 
     # step
-    session_data[0] = step
+    # '\n' == 'new line'
+    session_data[0] = str(step) + '\n'
     session_user_data_write(username, session_data)
 
     await query.edit_message_text(
