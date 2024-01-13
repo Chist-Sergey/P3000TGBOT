@@ -10,6 +10,10 @@ def database_write(username: str) -> None:
     This function returns nothing.
     This function doesn't raise any errors.
     """
+    # guard condition to prevent multiple database writings
+    if database_search_by_name(username):
+        return None
+
     dates = session_user_data_extract(username)
 
     # '[:-1]' == 'remove the last element' == 'remove a newline'
