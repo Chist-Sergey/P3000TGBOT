@@ -9,7 +9,13 @@ from telegram.ext import (
 )
 
 # get and set a time
-from datetime import datetime
+from datetime import (
+    datetime,
+    time as dt_time,
+)
+
+# set a time zone
+from zoneinfo import ZoneInfo
 
 # for easier text management
 from text_responses import (
@@ -64,17 +70,35 @@ async def birthday_loop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # message destination is a chat where it was used
     target_chat = update.effective_message.chat_id
     # tell the bot to run a job repeatedly
-    context.job_queue.run_repeating(
+    context.job_queue.run_daily(
         # which job
         callback=birthday_yell,
-        # at what interval (in seconds)
-        # '42300 seconds' == '12 hours' == 'twice a day'
-        interval=42300,
-        # when it should start from now (in seconds)
-        # '60 seconds' == '1 minute'
-        first=60,
+        # at what time
+        time=dt_time(
+            hour=10,
+            minute=0,
+            tzinfo=ZoneInfo('Etc/GMT+7'),
+        ),
         # where the text will be sent
-        chat_id=target_chat
+        chat_id=target_chat,
+        # to distinguish jobs from one another
+        name='Morning Check',
+    )
+    # 'run_daily' allows to run only a single job
+    # while I want it to run twice a day
+    context.job_queue.run_daily(
+        # which job
+        callback=birthday_yell,
+        # at what time
+        time=dt_time(
+            hour=22,
+            minute=0,
+            tzinfo=ZoneInfo('Etc/GMT+7'),
+        ),
+        # where the text will be sent
+        chat_id=target_chat,
+        # to distinguish jobs from one another
+        name='Evening Check',
     )
 
     # send a reply message to the user
