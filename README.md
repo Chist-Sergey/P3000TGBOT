@@ -43,9 +43,9 @@ while in a concole window:
 The DB consists of two columns: the username and a birthday date in a format 'DD.MM' (without apostrophes).
 
 TODO (in order):
-sync the bot to UTC+8
 separate the databases based on group chat id
 update this documentation
 do something with this newline chaos!!
+take a look to use a different jobQueue option
 docker-compose (on hold 'til I find a way to sign up)
 migrate to a database
