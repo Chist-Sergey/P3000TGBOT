@@ -43,9 +43,10 @@ while in a concole window:
 The DB consists of two columns: the username and a birthday date in a format 'DD.MM' (without apostrophes).
 
 TODO (in order):
-separate the databases based on group chat id
+add blank files in the folders 'user_data', 'databases'
 update this documentation
 do something with this newline chaos!!
+trim those ugle chat id's
 take a look to use a different jobQueue option
 docker-compose (on hold 'til I find a way to sign up)
 migrate to a database
