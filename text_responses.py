@@ -17,7 +17,7 @@ def search_fail() -> str:
 
 
 def celebrate(people: str) -> str:
-    return ('Помниться мне, сегодня надо кого-то поздравить!\n'
+    return ('Помнится мне, сегодня надо кого-то поздравить!\n'
         # 'f' == 'format' == 'put variables in place of names'
         f'{people}'
     )
