@@ -1,6 +1,7 @@
 from session_functions import session_user_data_extract
 
-def database_write(username: str, chat_id: str) -> None:
+
+def database_write(username: str, chat_id: int) -> None:
     """
     Use this function to write data from
     a user session file to a database.
@@ -11,7 +12,7 @@ def database_write(username: str, chat_id: str) -> None:
     This function doesn't raise any errors.
     """
     # guard condition to prevent multiple database writings
-    if database_search_by_name(username):
+    if database_search_by_name(username, chat_id):
         return None
 
     dates = session_user_data_extract(username)
@@ -21,7 +22,7 @@ def database_write(username: str, chat_id: str) -> None:
     month = dates[2][:-1]
 
     # 'a' == 'append' == 'write at the end of the file'
-    database = open('databases/' + chat_id + '.txt', 'a')
+    database = open('databases/' + str(chat_id) + '.txt', 'a')
     # 'f' == 'format' == 'put variables in place of names'
     # '\n' == 'new line' == 'make the text begin below the current text'
     data_row = f'{username} {day}.{month}\n'
@@ -29,7 +30,7 @@ def database_write(username: str, chat_id: str) -> None:
     database.close()
 
 
-def database_remove(target_line: str, chat_id: str) -> None:
+def database_remove(target_line: str, chat_id: int) -> None:
     """
     Use this function to remove a line of user name
     and birthday date from a database text file.
@@ -40,7 +41,7 @@ def database_remove(target_line: str, chat_id: str) -> None:
     This function doesn't raise any errors.
     """
     # 'r' == 'reading'
-    database = open('databases/' + chat_id + '.txt', 'r')
+    database = open('databases/' + str(chat_id) + '.txt', 'r')
     # 'readlines' creates a list of strings,
     # contains every line as a separate element
     # note that every string in list have
@@ -60,12 +61,12 @@ def database_remove(target_line: str, chat_id: str) -> None:
     new_content = ''.join(database_contents)
 
     # 'w' == 'erase everything in file and start writing fresh'
-    database = open('databases/' + chat_id + '.txt', 'w')
+    database = open('databases/' + str(chat_id) + '.txt', 'w')
     database.write(new_content)
     database.close()
 
 
-def database_search_by_name(target: str, chat_id: str):
+def database_search_by_name(target: str, chat_id: int):
     """
     Use this function to search and retrive
     a matched string from a database text file.
@@ -77,7 +78,7 @@ def database_search_by_name(target: str, chat_id: str):
     string is matched, None if not mached.
     This function doesn't raise any errors.
     """
-    with open('databases/' + chat_id + '.txt', 'r') as database:
+    with open('databases/' + str(chat_id) + '.txt', 'r') as database:
         # 'readlines' creates a list of strings,
         # contains every line as a separate element
         # includes newlines (these -> '\n')
@@ -90,7 +91,7 @@ def database_search_by_name(target: str, chat_id: str):
         return None
 
 
-def database_search_by_date(target: str, chat_id: str):
+def database_search_by_date(target: str, chat_id: int):
     """
     Use this function to search and retrive
     all matched strings from a database text file.
@@ -102,7 +103,7 @@ def database_search_by_date(target: str, chat_id: str):
     with all matches, None if not mached.
     This function doesn't raise any errors.
     """
-    with open('databases/' + chat_id + '.txt', 'r') as database:
+    with open('databases/' + str(chat_id) + '.txt', 'r') as database:
         # 'readlines' creates a list of strings,
         # contains every line as a separate element
         # includes newlines (these -> '\n')

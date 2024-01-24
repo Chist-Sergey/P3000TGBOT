@@ -63,7 +63,7 @@ if __name__ == '__main__':
 
     # setup the commands
     birthday_set_handler = CommandHandler('ya_rodilsa', birthday_set)
-    birthday_loop_handler = CommandHandler('rabotay', birthday_loop)
+    birthday_loop_handler = CommandHandler('start', birthday_loop)
     birthday_remove_handler = CommandHandler('ya_oshibsa', birthday_rm)
     birthday_button_handler = CallbackQueryHandler(birthday_btn)
 

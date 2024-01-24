@@ -69,6 +69,10 @@ async def birthday_loop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     # message destination is a chat where it was used
     target_chat = update.effective_message.chat_id
+    try:
+        open('databases/' + str(target_chat) + '.txt', 'r').close()
+    except FileNotFoundError:
+        open('databases/' + str(target_chat) + '.txt', 'w').close()
     # tell the bot to run a job repeatedly
     context.job_queue.run_daily(
         # which job
@@ -127,11 +131,11 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = birthday_set_keyboard_months()
     message = birthday_set_keyboard_text()
     username = update.effective_user.username
-    chat_id = update.effective_chat.id
+    target_chat = update.effective_chat.id
 
     session_start(username)
 
-    birthday_date = database_search_by_name(username, chat_id)
+    birthday_date = database_search_by_name(username, target_chat)
     if birthday_date:
         message = birthday_date
         keyboard = None
@@ -154,17 +158,20 @@ async def birthday_yell(context: ContextTypes.DEFAULT_TYPE) -> None:
     Returns nothing.
     Doesn't raise any errors.
     """
-    chat_id = context.job.chat_id
+    target_chat = context.job.chat_id
     today = datetime.now()
     # '%d.%m' == 'D.M' == 'Day.Month', ex.: '31.12'
     today_day_and_month = today.strftime('%d.%m')
 
-    birthday_people = database_search_by_date(today_day_and_month, chat_id)
+    birthday_people = database_search_by_date(
+        today_day_and_month,
+        target_chat,
+    )
 
     if birthday_people:
         await context.bot.send_message(
             # message destination is a chat where it was used
-            chat_id=chat_id,
+            chat_id=target_chat,
             text=celebrate(birthday_people),
         )
 
@@ -186,7 +193,7 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Returns nothing.
     Doesn't raise any errors.
     """
-    chat_id = update.effective_chat.id
+    target_chat = update.effective_chat.id
     # there are two states of this message:
     # 0: the code failed
     # 1: the code succeed
@@ -195,15 +202,15 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = remove_fail()
 
     username = update.effective_user.username
-    target_line = database_search_by_name(username, chat_id)
+    target_line = database_search_by_name(username, target_chat)
 
     if target_line:
-        database_remove(target_line, chat_id)
+        database_remove(target_line, target_chat)
         message = remove_success()
 
     await context.bot.send_message(
         # message destination is a chat where it was used
-        chat_id=chat_id,
+        chat_id=target_chat,
         text=message,
     )
 
