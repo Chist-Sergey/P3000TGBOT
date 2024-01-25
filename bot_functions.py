@@ -79,7 +79,7 @@ async def birthday_loop(update: Update, context: ContextTypes.DEFAULT_TYPE):
         callback=birthday_yell,
         # at what time
         time=dt_time(
-            hour=10,
+            hour=8,
             minute=0,
             tzinfo=ZoneInfo('Etc/GMT+7'),
         ),
@@ -95,7 +95,7 @@ async def birthday_loop(update: Update, context: ContextTypes.DEFAULT_TYPE):
         callback=birthday_yell,
         # at what time
         time=dt_time(
-            hour=22,
+            hour=20,
             minute=0,
             tzinfo=ZoneInfo('Etc/GMT+7'),
         ),
