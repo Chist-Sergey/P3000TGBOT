@@ -40,7 +40,7 @@ def database_remove(target_line: str, chat_id: int) -> None:
     This function returns nothing.
     This function doesn't raise any errors.
     """
-    # 'r' == 'reading'
+    # 'r' == 'read'
     database = open('databases/' + str(chat_id) + '.txt', 'r')
     # 'readlines' creates a list of strings,
     # contains every line as a separate element
@@ -60,7 +60,7 @@ def database_remove(target_line: str, chat_id: int) -> None:
     # stitch the list of strings back to a single string
     new_content = ''.join(database_contents)
 
-    # 'w' == 'erase everything in file and start writing fresh'
+    # 'w' == 'overwrite'
     database = open('databases/' + str(chat_id) + '.txt', 'w')
     database.write(new_content)
     database.close()

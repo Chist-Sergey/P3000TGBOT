@@ -19,7 +19,7 @@ def session_start(username: str) -> None:
     with open(
         # 'f' == 'format' == 'put variables in place of names'
         file=f'user_data/{username}.txt',
-        # 'w' == 'write'
+        # 'w' == 'overwrite'
         mode='w',
     ) as user_file:
 
@@ -63,7 +63,7 @@ def session_user_data_write(username: str, session_data: list) -> None:
     with open(
         # 'f' == 'format' == 'put variables in place of names'
         file=f'user_data/{username}.txt',
-        # 'w' == 'write'
+        # 'w' == 'overwrite'
         mode='w',
     ) as user_file:
 

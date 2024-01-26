@@ -7,16 +7,16 @@ from telegram.ext import (
     # core
     ContextTypes,
 )
-
 # get and set a time
 from datetime import (
     datetime,
-    time as dt_time,
 )
 
-# set a time zone
-from zoneinfo import ZoneInfo
-
+# for easier time management in a 'job_queue'
+from options import (
+    job_time_first,
+    job_time_second,
+)
 # for easier text management
 from text_responses import (
     birthday_set_keyboard_text,
@@ -46,12 +46,13 @@ from bot_keyboards import (
 from button_manager import (
     ControlButton,
 )
+# to access a session
 from session_functions import (
     session_start,
     session_user_data_extract,
     session_user_data_write,
 )
-# to access database
+# to access a database
 from database_functions import (
     database_remove,
     database_search_by_date,
@@ -69,36 +70,35 @@ async def birthday_loop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     # message destination is a chat where it was used
     target_chat = update.effective_message.chat_id
+
+    # check if the database already exist
     try:
+        # 'r' == 'read'
         open('databases/' + str(target_chat) + '.txt', 'r').close()
     except FileNotFoundError:
+        # creates a new text file with the name equal to the id of the chat
+        # 'w' == 'overwrite'
         open('databases/' + str(target_chat) + '.txt', 'w').close()
+
     # tell the bot to run a job repeatedly
     context.job_queue.run_daily(
         # which job
         callback=birthday_yell,
         # at what time
-        time=dt_time(
-            hour=8,
-            minute=0,
-            tzinfo=ZoneInfo('Etc/GMT+7'),
-        ),
+        time=job_time_first(),
         # where the text will be sent
         chat_id=target_chat,
         # to distinguish jobs from one another
         name='Morning Check',
     )
+
     # 'run_daily' allows to run only a single job
     # while I want it to run twice a day
     context.job_queue.run_daily(
         # which job
         callback=birthday_yell,
         # at what time
-        time=dt_time(
-            hour=20,
-            minute=0,
-            tzinfo=ZoneInfo('Etc/GMT+7'),
-        ),
+        time=job_time_second(),
         # where the text will be sent
         chat_id=target_chat,
         # to distinguish jobs from one another
@@ -160,7 +160,7 @@ async def birthday_yell(context: ContextTypes.DEFAULT_TYPE) -> None:
     """
     target_chat = context.job.chat_id
     today = datetime.now()
-    # '%d.%m' == 'D.M' == 'Day.Month', ex.: '31.12'
+    # '%d.%m' == 'DD.MM' == 'Day.Month', ex.: '31.12'
     today_day_and_month = today.strftime('%d.%m')
 
     birthday_people = database_search_by_date(
@@ -247,10 +247,13 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
         birthday_set_keyboard_day_19_to_24(),
         birthday_set_keyboard_day_25_to_31(),
     )
+
     username = update.effective_user.username
+
     # default values to fall back to
     keyboard = birthday_set_keyboard_months()
     message = birthday_set_keyboard_text()
+
     # create, get and extract the user's input
     query = update.callback_query
     await query.answer()
@@ -267,7 +270,8 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == ControlButton.finish()[1]:
         message = write_success()
         keyboard = None
-        database_write(username, chat_id=update.effective_chat.id)
+        target_chat = update.effective_chat.id
+        database_write(username, target_chat)
 
     # operation isn't done successfully
     elif data == ControlButton.abort()[1]:
