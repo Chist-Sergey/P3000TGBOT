@@ -32,8 +32,8 @@ def job_time_second():
 def job_time_zone():
 
     # I higly recommend you to change the offset only
-    #                            |
-    #                            V
+    #                            |      although I'm unaware of
+    #                            V      the possible consequences
     timezone = ZoneInfo('Etc/GMT+7')
 
     return timezone

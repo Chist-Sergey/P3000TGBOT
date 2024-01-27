@@ -5,7 +5,12 @@ Created using "python-telegram-bot"
 
 Intended use: in a telegram group chat.
 
-Available commands:
+# Features
+- Checks for birthday twice a day at the time of your like!
+- Easy controls. Has only two commands and it doesn't require any arguments!
+- Confidential. A personal birthday list for every chat!
+
+# Available commands:
     /ya_rodilsa - set up a birthday date.
     /ya_rodilsa - look up a birthday date.
     /ya_oshibsa - remove a record of a birthday date
@@ -14,7 +19,7 @@ Available commands:
     /ya_rodilsa
     /ya_oshibsa
 
-Instructions for the bot set-up:
+# Instructions for the bot set-up:
     1. From the bot's folder directory, create a ".env" file.
     2. Wirte to it the following text:
 
@@ -36,13 +41,9 @@ To stop the bot, press the combination of keys
 while in a concole window:
     control + C
 
+# How it works
 The DB consists of two columns: the username and a birthday date in a format: DD.MM (example: 31.12)
 
-TODO (in order):
-add blank files in the folders 'user_data', 'databases'
-make a valid makefile
-do something with this newline chaos!!
-trim those ugle chat id's
-take a look to use a different jobQueue option
-docker-compose (on hold 'til I find a way to sign up)
+# TODO (in order):
+docker-compose for it to do all the set up instead of the user (on hold 'til I find a way to sign up)
 migrate to a database
