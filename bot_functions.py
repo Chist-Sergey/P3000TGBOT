@@ -264,7 +264,11 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # there's so much 'elif's due to hard logic of this function
     if data == ControlButton.back()[1]:
-        step = 0
+        if step > 2:
+            step = 2
+            keyboard = birthday_set_keyboard_days()
+        else:
+            step = 0
 
     # operation is done successfully
     elif data == ControlButton.finish()[1]:
