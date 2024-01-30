@@ -7,6 +7,10 @@ from telegram.ext import (
     # core
     ContextTypes,
 )
+from telegram.error import (
+    # to make an exception to reduce logging pollution
+    BadRequest,
+)
 # get and set a time
 from datetime import (
     datetime,
@@ -312,7 +316,10 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     session_data[0] = str(step) + '\n'
     session_user_data_write(username, session_data)
 
-    await query.edit_message_text(
-        text=message,
-        reply_markup=keyboard,
-    )
+    try:
+        await query.edit_message_text(
+            text=message,
+            reply_markup=keyboard,
+        )
+    except BadRequest:
+        pass
