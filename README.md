@@ -5,12 +5,12 @@ Created using "python-telegram-bot"
 
 Intended use: in a telegram group chat.
 
-# Features
+## Features
 - Checks for birthday twice a day at the time of your like!
 - Easy controls. Has only two commands and it doesn't require any arguments!
-- Confidential. A personal birthday list for every chat!
+- Confidential. A personal birthday list for every group chat!
 
-# Available commands:
+## Available commands:
     /ya_rodilsa - set up a birthday date.
     /ya_rodilsa - look up a birthday date.
     /ya_oshibsa - remove a record of a birthday date
@@ -19,7 +19,7 @@ Intended use: in a telegram group chat.
     /ya_rodilsa
     /ya_oshibsa
 
-# Instructions for the bot set-up:
+## Instructions for the bot set-up:
     1. From the bot's folder directory, create a ".env" file.
     2. Wirte to it the following text:
 
@@ -46,11 +46,12 @@ Intended use: in a telegram group chat.
 
         /start@Pozdravitel3000_bot
 
-# How it works
-On time, the bot gets a current date by using 'datetime.now()', formats it to 'Day.Month' and then checks it against the dates in a database.
+### How it works
+On a prescribed time, the bot gets a current date by using 'datetime.now()', formats it to 'Day.Month' and then checks it against the dates in a database.
 
-The DB consists of two columns: the username and a birthday date in a format: DD.MM (example: 31.12)
+The DB consists of two columns: the username and a birthday date in a format: username DD.MM
+Example: Pozdravitel3000_bot 31.12
 
-# TODO (in order):
-docker-compose for it to do all the set up instead of the user (on hold 'til I find a way to sign up)
-migrate to a database
+### TODO (in order):
+docker-compose to do all the bot set up instead of the user (on hold 'til I find a way to sign up on Docker)
+migrate to a database system like SQLite or Docker's innate PostgreSQL
