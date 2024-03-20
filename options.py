@@ -10,7 +10,7 @@ from zoneinfo import ZoneInfo
 def job_time_first():
     time = dt_time(
 
-        hour=8,                 # your attention here
+        hour=8,                 # your value here
         minute=0,
 
         tzinfo=job_time_zone(),
@@ -21,7 +21,7 @@ def job_time_first():
 def job_time_second():
     time = dt_time(
 
-        hour=20,                # your attention here
+        hour=20,                # your value here
         minute=0,
 
         tzinfo=job_time_zone(),
@@ -30,11 +30,9 @@ def job_time_second():
 
 
 def job_time_zone():
-
-    # I higly recommend you to change the offset only
-    #                            |      although I'm unaware of
-    #                            V      the possible consequences
-    timezone = ZoneInfo('Etc/GMT+7')
+    timezone = ZoneInfo(
+        'Etc/GMT+7'             # your offset here
+    )
 
     return timezone
 

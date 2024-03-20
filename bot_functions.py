@@ -70,7 +70,7 @@ async def birthday_loop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Initiates the bot's checking cycle with 'jobQueue'.
 
     Returns nothing.
-    Doesn't raise any errors.
+    Raises no errors.
     """
     # message destination is a chat where it was used
     target_chat = update.effective_message.chat_id
@@ -79,6 +79,7 @@ async def birthday_loop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         # 'r' == 'read'
         open('databases/' + str(target_chat) + '.txt', 'r').close()
+
     except FileNotFoundError:
         # creates a new text file with the name equal to the id of the chat
         # 'w' == 'overwrite'
@@ -97,7 +98,7 @@ async def birthday_loop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     # 'run_daily' allows to run only a single job
-    # while I want it to run twice a day
+    # at a time so just invoke it a second time
     context.job_queue.run_daily(
         # which job
         callback=birthday_yell,
@@ -130,7 +131,7 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     the user to enter their birthday date.
 
     Returns nothing.
-    Doesn't raise any errors.
+    Raises no errors.
     """
     keyboard = birthday_set_keyboard_months()
     message = birthday_set_keyboard_text()
@@ -154,27 +155,32 @@ async def birthday_yell(context: ContextTypes.DEFAULT_TYPE) -> None:
     """
     Celebrate a birth day!
 
-    Takes no arguments.D
+    Takes no arguments.
+
     Checks for someone's birthday today,
     sends a message if someone has a birthday,
-    does nothing if there isn't.
+    does nothing if nobody has a birthday this day.
 
     Returns nothing.
-    Doesn't raise any errors.
+    Raises no errors.
     """
     target_chat = context.job.chat_id
     today = datetime.now()
     # '%d.%m' == 'DD.MM' == 'Day.Month', ex.: '31.12'
     today_day_and_month = today.strftime('%d.%m')
 
-    birthday_people = database_search_by_date(
-        today_day_and_month,
-        target_chat,
-    )
+    # investigating a strange error like of
+    # 'Text should be a string, got NoneType'
+    try:
+        birthday_people = database_search_by_date(
+            today_day_and_month,
+            target_chat,
+        )
+    except AttributeError:
+        pass
 
     if birthday_people:
         await context.bot.send_message(
-            # message destination is a chat where it was used
             chat_id=target_chat,
             text=celebrate(birthday_people),
         )
@@ -195,7 +201,7 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     If they aren't, aknowledge them of this.
 
     Returns nothing.
-    Doesn't raise any errors.
+    Raises no errors.
     """
     target_chat = update.effective_chat.id
     # there are two states of this message:
@@ -235,9 +241,9 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     remove this bot's message.
 
     Returns nothing.
-    Doesn't raise any errors.
+    Raises no errors.
     """
-    # a collection of keyboards to choose from
+    # collection of keyboards to choose from
     keyboard_select_month = (
         birthday_set_keyboard_jan_feb_mar(),
         birthday_set_keyboard_apr_may_jun(),
@@ -251,9 +257,7 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
         birthday_set_keyboard_day_19_to_24(),
         birthday_set_keyboard_day_25_to_31(),
     )
-
     username = update.effective_user.username
-
     # default values to fall back to
     keyboard = birthday_set_keyboard_months()
     message = birthday_set_keyboard_text()
@@ -281,7 +285,7 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
         target_chat = update.effective_chat.id
         database_write(username, target_chat)
 
-    # operation isn't done successfully
+    # operation is cancelled
     elif data == ControlButton.abort()[1]:
         await query.delete_message()
 
@@ -316,10 +320,13 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     session_data[0] = str(step) + '\n'
     session_user_data_write(username, session_data)
 
+    # try-except to suppress an expexted error message
+    # from flooding the logs
     try:
         await query.edit_message_text(
             text=message,
             reply_markup=keyboard,
         )
+    # when the message is deleted before editing
     except BadRequest:
         pass

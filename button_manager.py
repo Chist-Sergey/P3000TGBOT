@@ -23,40 +23,40 @@ class MonthsButton:
         return ('Окт, Ноя, Дек', '3',)
 
     def jan():
-        return ('(1) Январь', '01',)
+        return ('Январь', '01',)
 
     def feb():
-        return ('(2) Февраль', '02',)
+        return ('Февраль', '02',)
 
     def mar():
-        return ('(3) Март', '03',)
+        return ('Март', '03',)
 
     def apr():
-        return ('(4) Апрель', '04',)
+        return ('Апрель', '04',)
 
     def may():
-        return ('(5) Май', '05',)
+        return ('Май', '05',)
 
     def jun():
-        return ('(6) Июнь', '06',)
+        return ('Июнь', '06',)
 
     def jul():
-        return ('(7) Июль', '07',)
+        return ('Июль', '07',)
 
     def aug():
-        return ('(8) Август', '08',)
+        return ('Август', '08',)
 
     def sep():
-        return ('(9) Сентябрь', '09',)
+        return ('Сентябрь', '09',)
 
     def okt():
-        return ('(10) Октябрь', '10',)
+        return ('Октябрь', '10',)
 
     def nov():
-        return ('(11) Ноябрь', '11',)
+        return ('Ноябрь', '11',)
 
     def dec():
-        return ('(12) Декабрь', '12',)
+        return ('Декабрь', '12',)
 
 
 class DaysButton:
