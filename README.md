@@ -31,11 +31,12 @@ Intended use: in a telegram group chat.
         TOKEN = '5553535420:AABBCDJtttx-xlXsb055qOFrTH1s-c6yM22'
 
     4. From the bot's folder directory, type in a console:
+    *For MacOS/Linux, use "python3" and "pip3" instead.*
 
-        python3 -m venv venv
+        python -m venv venv
         source venv/scripts/bin/Activate
-        pip3 install -r requirements.txt
-        python3 P3000.py
+        pip install -r requirements.txt
+        python P3000.py
 
     ***To stop the bot***, press the combination of keys:
         control + C
