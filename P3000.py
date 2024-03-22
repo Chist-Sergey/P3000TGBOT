@@ -35,9 +35,6 @@ from bot_functions import (
     birthday_set,
     birthday_btn,
 )
-from bot_debug import (
-    birthday_force,
-)
 
 # monitor the bot's behavior
 from logging import basicConfig, WARNING
@@ -69,7 +66,6 @@ if __name__ == '__main__':
     birthday_loop_handler = CommandHandler('start', birthday_loop)
     birthday_remove_handler = CommandHandler('ya_oshibsa', birthday_rm)
     birthday_button_handler = CallbackQueryHandler(birthday_btn)
-    birthday_force_handler = CommandHandler('pozdrav', birthday_force)
 
     # tell said commands to the bot for it to recognize them
     # POSITION MATTERS: the bot will check them in order of appearence
@@ -77,7 +73,6 @@ if __name__ == '__main__':
     application.add_handler(birthday_set_handler)
     application.add_handler(birthday_remove_handler)
     application.add_handler(birthday_loop_handler)
-    application.add_handler(birthday_force_handler)
     # ask the server for anything new every couple of seconds
     application.run_polling(poll_interval=3.0)
 
