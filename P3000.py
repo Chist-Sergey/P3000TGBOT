@@ -74,7 +74,7 @@ if __name__ == '__main__':
     application.add_handler(birthday_remove_handler)
     application.add_handler(birthday_loop_handler)
     # ask the server for anything new every couple of seconds
-    application.run_polling(poll_interval=3.0)
+    application.run_polling(poll_interval=2.0)
 
 """
 a template for testing functions.

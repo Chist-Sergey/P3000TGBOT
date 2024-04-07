@@ -20,6 +20,10 @@ Intended use: in a telegram group chat.
     /ya_oshibsa
 
 ## Instructions for the bot set-up:
+    0. Clone a repository on your computer:
+
+        git clone --filter=tree:0 https://github.com/Chist-Sergey/P3000TLBOT
+
     1. From the bot's folder directory, create a ".env" file.
     2. Wirte to it the following text:
 
