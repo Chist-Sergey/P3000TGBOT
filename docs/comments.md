@@ -1,22 +1,21 @@
-## Comments
+## Comments  
 
-Writing comments is optional.
-Comments must be written in lowercase, above the code its related to, and written  except then referencing to something.
-Comments must be 
+Comments are written to clarify things  
+that can't be clarified by using proper variable names.  
+Comments must be written above the code its related to,  
+in lowercase, except then referencing to something.
+Comments are not limited by a single line.
 
-and can be written multiple times.
-
-example (newline after this colon is included):
+Example:  
 
     # comment above the code
     # more comment above the code
     # 'variable' == 'description' == 'more description'
     code below the comment
     more code below the comment
-    a template for testing functions.
 
-When dealing with long comments,
-break a line where it wouldn't distort the logical continuation, such as conditional statements like 'and', or punctuation marks like ','.
+When dealing with long comments, break the line where it 
+would not make a sentance look finished.
 
 TODO: add best practice
 Best practice:

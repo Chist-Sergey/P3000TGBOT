@@ -1,5 +1,5 @@
 """
-## Testing
+## Testing (manual)
 
 How to use this testing template:
 
