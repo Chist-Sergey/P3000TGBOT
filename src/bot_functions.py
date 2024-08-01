@@ -12,6 +12,7 @@ from telegram.error import (
 )
 from datetime import (
     datetime,
+    time,
 )
 from zoneinfo import (
     ZoneInfo,
@@ -66,6 +67,7 @@ from src.database_functions import (
 
 from os import listdir
 
+
 async def birthday_loop(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
@@ -80,11 +82,11 @@ async def birthday_loop(
     target_chat = update.effective_message.chat_id
 
     timezone = ZoneInfo(f'Etc/GMT+{TIME_HOUR_OFFSET}')
-    job_time_first = datetime.time(
+    job_time_first = time(
         hour=TIME_HOUR_FIRST,
         tzinfo=timezone,
     )
-    job_time_second = datetime.time(
+    job_time_second = time(
         hour=TIME_HOUR_SECOND,
         tzinfo=timezone,
     )
@@ -97,7 +99,7 @@ async def birthday_loop(
     except FileNotFoundError:
         open('databases/' + str(target_chat) + '.txt', 'w').close()
 
-    for target_chat in listdir():
+    for target_chat in listdir('databases/'):
         context.job_queue.run_daily(
             # what job to run
             callback=birthday_yell,
