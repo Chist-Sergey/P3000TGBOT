@@ -64,6 +64,7 @@ from src.database_functions import (
     database_write,
 )
 
+from os import listdir
 
 async def birthday_loop(
     update: Update,
@@ -96,23 +97,24 @@ async def birthday_loop(
     except FileNotFoundError:
         open('databases/' + str(target_chat) + '.txt', 'w').close()
 
-    context.job_queue.run_daily(
-        # what job to run
-        callback=birthday_yell,
-        time=job_time_first,
-        chat_id=target_chat,
-        name='Morning Check',
-    )
+    for target_chat in listdir():
+        context.job_queue.run_daily(
+            # what job to run
+            callback=birthday_yell,
+            time=job_time_first,
+            chat_id=target_chat,
+            name='Morning Check',
+        )
 
-    # 'run_daily' allows to run only a single job
-    # at a time so just invoke it a second time
-    context.job_queue.run_daily(
-        # what job to run
-        callback=birthday_yell,
-        time=job_time_second,
-        chat_id=target_chat,
-        name='Evening Check',
-    )
+        # 'run_daily' allows to run only a single job
+        # at a time so just invoke it a second time
+        context.job_queue.run_daily(
+            # what job to run
+            callback=birthday_yell,
+            time=job_time_second,
+            chat_id=target_chat,
+            name='Evening Check',
+        )
 
     # send a reply message to the user
     await context.bot.send_message(
