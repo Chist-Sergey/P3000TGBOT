@@ -4,6 +4,10 @@ def sechude_active() -> str:
     return 'Опять работать.'
 
 
+def sechude_active_already() -> str:
+    return 'Уже работаю. Спасибо, что напомнили мне.'
+
+
 def write_success() -> str:
     return 'Запомнил.\nПосмотреть ДР - /ya_rodilsa'
 

@@ -34,6 +34,7 @@ from src.text_responses import (
     remove_fail,
     remove_success,
     sechude_active,
+    sechude_active_already,
     write_success,
 )
 
@@ -80,6 +81,7 @@ async def birthday_loop(
     """
     # "return to sender"
     target_chat = update.effective_message.chat_id
+    message = sechude_active()
 
     timezone = ZoneInfo(f'Etc/GMT+{TIME_HOUR_OFFSET}')
     job_time_first = time(
@@ -100,12 +102,20 @@ async def birthday_loop(
         open('databases/' + str(target_chat) + '.txt', 'w').close()
 
     for target_chat in listdir('databases/'):
+        # prevent repeating jobs
+        current_jobs = context.job_queue.get_jobs_by_name(
+            f'Morning Check on {target_chat}'
+        )
+        if current_jobs:
+            message = sechude_active_already()
+            continue
+
         context.job_queue.run_daily(
             # what job to run
             callback=birthday_yell,
             time=job_time_first,
             chat_id=target_chat,
-            name='Morning Check',
+            name=f'Morning Check on {target_chat}',
         )
 
         # 'run_daily' allows to run only a single job
@@ -115,13 +125,13 @@ async def birthday_loop(
             callback=birthday_yell,
             time=job_time_second,
             chat_id=target_chat,
-            name='Evening Check',
+            name=f'Evening Check on {target_chat}',
         )
 
     # send a reply message to the user
     await context.bot.send_message(
         chat_id=target_chat,
-        text=sechude_active(),
+        text=message,
     )
 
 
@@ -244,7 +254,10 @@ async def birthday_rm(
     )
 
 
-async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def birthday_btn(
+    update: Update,
+    _: ContextTypes.DEFAULT_TYPE
+) -> None:
     """
     Input to set a birthday date.
 
