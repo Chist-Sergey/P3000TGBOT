@@ -1,4 +1,4 @@
-def session_start(username: str) -> None:
+def start(username: str) -> None:
     """
     Use this once to initialize a session with the user.
 
@@ -26,7 +26,7 @@ def session_start(username: str) -> None:
         user_file.write(starting_data)
 
 
-def session_user_data_extract(username: str) -> list:
+def extract(username: str) -> list:
     """
     Extract the user data from a text file.
 
@@ -47,7 +47,7 @@ def session_user_data_extract(username: str) -> list:
     return user_data
 
 
-def session_user_data_write(username: str, session_data: list) -> None:
+def write(username: str, session_data: list) -> None:
     """
     Write the session data in a text file.
 

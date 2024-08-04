@@ -1,7 +1,7 @@
-from src.session_functions import session_user_data_extract
+from src.session_functions import extract
 
 
-def database_write(username: str, chat_id: int) -> None:
+def write(username: str, chat_id: int) -> None:
     """
     Use this function to write data from
     a user session file to a database.
@@ -12,10 +12,10 @@ def database_write(username: str, chat_id: int) -> None:
     This function doesn't raise any errors.
     """
     # guard condition to prevent multiple database writings
-    if database_search_by_name(username, chat_id):
+    if search_by_name(username, chat_id):
         return None
 
-    dates = session_user_data_extract(username)
+    dates = extract(username)
 
     # '[:-1]' == 'remove the last element' == 'remove a newline'
     day = dates[1][:-1]
@@ -30,7 +30,7 @@ def database_write(username: str, chat_id: int) -> None:
     database.close()
 
 
-def database_remove(target_line: str, chat_id: int) -> None:
+def remove(target_line: str, chat_id: int) -> None:
     """
     Use this function to remove a line of user name
     and birthday date from a database text file.
@@ -66,7 +66,7 @@ def database_remove(target_line: str, chat_id: int) -> None:
     database.close()
 
 
-def database_search_by_name(target: str, chat_id: int):
+def search_by_name(target: str, chat_id: int):
     """
     Use this function to search and retrive
     a matched string from a database text file.
@@ -91,7 +91,7 @@ def database_search_by_name(target: str, chat_id: int):
         return None
 
 
-def database_search_by_date(target: str, chat_id: int):
+def search_by_date(target: str, chat_id: int):
     """
     Use this function to search and retrive
     all matched strings from a database text file.

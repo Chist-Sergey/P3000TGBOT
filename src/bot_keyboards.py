@@ -8,45 +8,45 @@ from telegram import (
 )
 
 from src.button_manager import (
-    ControlButton,
-    MonthsButton,
-    DaysButton,
+    Control,
+    Months,
+    Days,
 )
 
 
-def birthday_set_keyboard_months():
+def months():
     keyboard = [
         # top row
         [
             # left option
             keyboard_option(
-                text=MonthsButton.jan_feb_mar()[0],
-                callback_data=MonthsButton.jan_feb_mar()[1],
+                text=Months.jan_feb_mar()[0],
+                callback_data=Months.jan_feb_mar()[1],
             ),
             # right option
             keyboard_option(
-                text=MonthsButton.apr_may_jun()[0],
-                callback_data=MonthsButton.apr_may_jun()[1],
+                text=Months.apr_may_jun()[0],
+                callback_data=Months.apr_may_jun()[1],
             ),
         ],
         # middle row
         [
             # left option
             keyboard_option(
-                text=MonthsButton.jul_aug_sep()[0],
-                callback_data=MonthsButton.jul_aug_sep()[1],
+                text=Months.jul_aug_sep()[0],
+                callback_data=Months.jul_aug_sep()[1],
             ),
             # right option
             keyboard_option(
-                text=MonthsButton.okt_nov_dec()[0],
-                callback_data=MonthsButton.okt_nov_dec()[1],
+                text=Months.okt_nov_dec()[0],
+                callback_data=Months.okt_nov_dec()[1],
             ),
         ],
         # bottom row
         [
             keyboard_option(
-                text=ControlButton.abort()[0],
-                callback_data=ControlButton.abort()[1],
+                text=Control.abort()[0],
+                callback_data=Control.abort()[1],
             ),
         ],
     ]
@@ -56,34 +56,34 @@ def birthday_set_keyboard_months():
     return reply_markup
 
 
-def birthday_set_keyboard_jan_feb_mar():
+def jan_feb_mar():
     keyboard = [
         # first row
         [
             keyboard_option(
-                text=MonthsButton.jan()[0],
-                callback_data=MonthsButton.jan()[1],
+                text=Months.jan()[0],
+                callback_data=Months.jan()[1],
             ),
         ],
         # second row
         [
             keyboard_option(
-                text=MonthsButton.feb()[0],
-                callback_data=MonthsButton.feb()[1],
+                text=Months.feb()[0],
+                callback_data=Months.feb()[1],
             ),
         ],
         # third row
         [
             keyboard_option(
-                text=MonthsButton.mar()[0],
-                callback_data=MonthsButton.mar()[1],
+                text=Months.mar()[0],
+                callback_data=Months.mar()[1],
             ),
         ],
         # bottom row
         [
             keyboard_option(
-                text=ControlButton.back()[0],
-                callback_data=ControlButton.back()[1],
+                text=Control.back()[0],
+                callback_data=Control.back()[1],
             ),
         ],
     ]
@@ -93,34 +93,34 @@ def birthday_set_keyboard_jan_feb_mar():
     return reply_markup
 
 
-def birthday_set_keyboard_apr_may_jun():
+def apr_may_jun():
     keyboard = [
         # first row
         [
             keyboard_option(
-                text=MonthsButton.apr()[0],
-                callback_data=MonthsButton.apr()[1],
+                text=Months.apr()[0],
+                callback_data=Months.apr()[1],
             ),
         ],
         # second row
         [
             keyboard_option(
-                text=MonthsButton.may()[0],
-                callback_data=MonthsButton.may()[1],
+                text=Months.may()[0],
+                callback_data=Months.may()[1],
             ),
         ],
         # third row
         [
             keyboard_option(
-                text=MonthsButton.jun()[0],
-                callback_data=MonthsButton.jun()[1],
+                text=Months.jun()[0],
+                callback_data=Months.jun()[1],
             ),
         ],
         # bottom row
         [
             keyboard_option(
-                text=ControlButton.back()[0],
-                callback_data=ControlButton.back()[1],
+                text=Control.back()[0],
+                callback_data=Control.back()[1],
             ),
         ],
     ]
@@ -130,34 +130,34 @@ def birthday_set_keyboard_apr_may_jun():
     return reply_markup
 
 
-def birthday_set_keyboard_jul_aug_sep():
+def jul_aug_sep():
     keyboard = [
         # first row
         [
             keyboard_option(
-                text=MonthsButton.jul()[0],
-                callback_data=MonthsButton.jul()[1],
+                text=Months.jul()[0],
+                callback_data=Months.jul()[1],
             ),
         ],
         # second row
         [
             keyboard_option(
-                text=MonthsButton.aug()[0],
-                callback_data=MonthsButton.aug()[1],
+                text=Months.aug()[0],
+                callback_data=Months.aug()[1],
             ),
         ],
         # third row
         [
             keyboard_option(
-                text=MonthsButton.sep()[0],
-                callback_data=MonthsButton.sep()[1],
+                text=Months.sep()[0],
+                callback_data=Months.sep()[1],
             ),
         ],
         # bottom row
         [
             keyboard_option(
-                text=ControlButton.back()[0],
-                callback_data=ControlButton.back()[1],
+                text=Control.back()[0],
+                callback_data=Control.back()[1],
             ),
         ],
     ]
@@ -167,34 +167,34 @@ def birthday_set_keyboard_jul_aug_sep():
     return reply_markup
 
 
-def birthday_set_keyboard_oct_nov_dec():
+def oct_nov_dec():
     keyboard = [
         # first row
         [
             keyboard_option(
-                text=MonthsButton.okt()[0],
-                callback_data=MonthsButton.okt()[1],
+                text=Months.okt()[0],
+                callback_data=Months.okt()[1],
             ),
         ],
         # second row
         [
             keyboard_option(
-                text=MonthsButton.nov()[0],
-                callback_data=MonthsButton.nov()[1],
+                text=Months.nov()[0],
+                callback_data=Months.nov()[1],
             ),
         ],
         # third row
         [
             keyboard_option(
-                text=MonthsButton.dec()[0],
-                callback_data=MonthsButton.dec()[1],
+                text=Months.dec()[0],
+                callback_data=Months.dec()[1],
             ),
         ],
         # bottom row
         [
             keyboard_option(
-                text=ControlButton.back()[0],
-                callback_data=ControlButton.back()[1],
+                text=Control.back()[0],
+                callback_data=Control.back()[1],
             ),
         ],
     ]
@@ -204,45 +204,45 @@ def birthday_set_keyboard_oct_nov_dec():
     return reply_markup
 
 
-def birthday_set_keyboard_days():
+def keyboard_days():
     keyboard = [
         # first row
         [
             # left option
             keyboard_option(
-                text=DaysButton.one_to_six()[0],
-                callback_data=DaysButton.one_to_six()[1],
+                text=Days.one_to_six()[0],
+                callback_data=Days.one_to_six()[1],
             ),
             # right option
             keyboard_option(
-                text=DaysButton.seven_to_twelve()[0],
-                callback_data=DaysButton.seven_to_twelve()[1],
+                text=Days.seven_to_twelve()[0],
+                callback_data=Days.seven_to_twelve()[1],
             ),
         ],
         # second row
         [
             # left option
             keyboard_option(
-                text=DaysButton.thirteen_to_eighteen()[0],
-                callback_data=DaysButton.thirteen_to_eighteen()[1],
+                text=Days.thirteen_to_eighteen()[0],
+                callback_data=Days.thirteen_to_eighteen()[1],
             ),
             # right option
             keyboard_option(
-                text=DaysButton.nineteen_to_twentyfour()[0],
-                callback_data=DaysButton.nineteen_to_twentyfour()[1],
+                text=Days.nineteen_to_twentyfour()[0],
+                callback_data=Days.nineteen_to_twentyfour()[1],
             ),
         ],
         # bottom row
         [
             # left option
             keyboard_option(
-                text=ControlButton.back()[0],
-                callback_data=ControlButton.back()[1],
+                text=Control.back()[0],
+                callback_data=Control.back()[1],
             ),
             # right option
             keyboard_option(
-                text=DaysButton.twentyfive_to_thirtyone()[0],
-                callback_data=DaysButton.twentyfive_to_thirtyone()[1],
+                text=Days.twentyfive_to_thirtyone()[0],
+                callback_data=Days.twentyfive_to_thirtyone()[1],
             ),
         ],
     ]
@@ -252,107 +252,52 @@ def birthday_set_keyboard_days():
     return reply_markup
 
 
-def birthday_set_keyboard_day_1_to_6():
+def day_1_to_6():
     keyboard = [
         # first row
         [
             # left option
             keyboard_option(
-                text=DaysButton.one()[0],
-                callback_data=DaysButton.one()[1],
+                text=Days.one()[0],
+                callback_data=Days.one()[1],
             ),
             # right option
             keyboard_option(
-                text=DaysButton.two()[0],
-                callback_data=DaysButton.two()[1],
+                text=Days.two()[0],
+                callback_data=Days.two()[1],
             ),
         ],
         # second row
         [
             # left option
             keyboard_option(
-                text=DaysButton.three()[0],
-                callback_data=DaysButton.three()[1],
+                text=Days.three()[0],
+                callback_data=Days.three()[1],
             ),
             # right option
             keyboard_option(
-                text=DaysButton.four()[0],
-                callback_data=DaysButton.four()[1],
-            ),
-        ],
-        # third row
-        [
-            # left option
-            keyboard_option(
-                text=DaysButton.five()[0],
-                callback_data=DaysButton.five()[1],
-            ),
-            # right option
-            keyboard_option(
-                text=DaysButton.sex()[0],
-                callback_data=DaysButton.sex()[1],
-            ),
-        ],
-        # bottom row
-        [
-            keyboard_option(
-                text=ControlButton.back()[0],
-                callback_data=ControlButton.back()[1],
-            ),
-        ],
-    ]
-
-    reply_markup = keyboard_finalize(keyboard)
-
-    return reply_markup
-
-
-def birthday_set_keyboard_day_7_to_12():
-    keyboard = [
-        # first row
-        [
-            # left option
-            keyboard_option(
-                text=DaysButton.seven()[0],
-                callback_data=DaysButton.seven()[1],
-            ),
-            # right option
-            keyboard_option(
-                text=DaysButton.eight()[0],
-                callback_data=DaysButton.eight()[1],
-            ),
-        ],
-        # second row
-        [
-            # left option
-            keyboard_option(
-                text=DaysButton.nine()[0],
-                callback_data=DaysButton.nine()[1],
-            ),
-            # right option
-            keyboard_option(
-                text=DaysButton.ten()[0],
-                callback_data=DaysButton.ten()[1],
+                text=Days.four()[0],
+                callback_data=Days.four()[1],
             ),
         ],
         # third row
         [
             # left option
             keyboard_option(
-                text=DaysButton.eleven()[0],
-                callback_data=DaysButton.eleven()[1],
+                text=Days.five()[0],
+                callback_data=Days.five()[1],
             ),
             # right option
             keyboard_option(
-                text=DaysButton.twelve()[0],
-                callback_data=DaysButton.twelve()[1],
+                text=Days.sex()[0],
+                callback_data=Days.sex()[1],
             ),
         ],
         # bottom row
         [
             keyboard_option(
-                text=ControlButton.back()[0],
-                callback_data=ControlButton.back()[1],
+                text=Control.back()[0],
+                callback_data=Control.back()[1],
             ),
         ],
     ]
@@ -362,52 +307,52 @@ def birthday_set_keyboard_day_7_to_12():
     return reply_markup
 
 
-def birthday_set_keyboard_day_13_to_18():
+def day_7_to_12():
     keyboard = [
         # first row
         [
             # left option
             keyboard_option(
-                text=DaysButton.thirteen()[0],
-                callback_data=DaysButton.thirteen()[1],
+                text=Days.seven()[0],
+                callback_data=Days.seven()[1],
             ),
             # right option
             keyboard_option(
-                text=DaysButton.fourteen()[0],
-                callback_data=DaysButton.fourteen()[1],
+                text=Days.eight()[0],
+                callback_data=Days.eight()[1],
             ),
         ],
         # second row
         [
             # left option
             keyboard_option(
-                text=DaysButton.fifteen()[0],
-                callback_data=DaysButton.fifteen()[1],
+                text=Days.nine()[0],
+                callback_data=Days.nine()[1],
             ),
             # right option
             keyboard_option(
-                text=DaysButton.sixteen()[0],
-                callback_data=DaysButton.sixteen()[1],
+                text=Days.ten()[0],
+                callback_data=Days.ten()[1],
             ),
         ],
         # third row
         [
             # left option
             keyboard_option(
-                text=DaysButton.seventeen()[0],
-                callback_data=DaysButton.seventeen()[1],
+                text=Days.eleven()[0],
+                callback_data=Days.eleven()[1],
             ),
             # right option
             keyboard_option(
-                text=DaysButton.eighteen()[0],
-                callback_data=DaysButton.eighteen()[1],
+                text=Days.twelve()[0],
+                callback_data=Days.twelve()[1],
             ),
         ],
         # bottom row
         [
             keyboard_option(
-                text=ControlButton.back()[0],
-                callback_data=ControlButton.back()[1],
+                text=Control.back()[0],
+                callback_data=Control.back()[1],
             ),
         ],
     ]
@@ -417,53 +362,52 @@ def birthday_set_keyboard_day_13_to_18():
     return reply_markup
 
 
-def birthday_set_keyboard_day_19_to_24():
+def day_13_to_18():
     keyboard = [
         # first row
         [
             # left option
             keyboard_option(
-                text=DaysButton.nineteen()[0],
-                callback_data=DaysButton.nineteen()[1],
+                text=Days.thirteen()[0],
+                callback_data=Days.thirteen()[1],
             ),
             # right option
             keyboard_option(
-                text=DaysButton.twenty()[0],
-                callback_data=DaysButton.twenty()[1],
+                text=Days.fourteen()[0],
+                callback_data=Days.fourteen()[1],
             ),
         ],
         # second row
         [
             # left option
             keyboard_option(
-                text=DaysButton.twenty_one()[0],
-                callback_data=DaysButton.twenty_one()[1],
+                text=Days.fifteen()[0],
+                callback_data=Days.fifteen()[1],
             ),
             # right option
             keyboard_option(
-                text=DaysButton.twenty_two()[0],
-                callback_data=DaysButton.twenty_two()[1],
+                text=Days.sixteen()[0],
+                callback_data=Days.sixteen()[1],
             ),
         ],
         # third row
         [
             # left option
             keyboard_option(
-                text=DaysButton.twenty_three()[0],
-                callback_data=DaysButton.twenty_three()[1],
+                text=Days.seventeen()[0],
+                callback_data=Days.seventeen()[1],
             ),
             # right option
             keyboard_option(
-                text=DaysButton.twenty_four()[0],
-                callback_data=DaysButton.twenty_four()[1],
+                text=Days.eighteen()[0],
+                callback_data=Days.eighteen()[1],
             ),
         ],
         # bottom row
         [
-            # left option
             keyboard_option(
-                text=ControlButton.back()[0],
-                callback_data=ControlButton.back()[1],
+                text=Control.back()[0],
+                callback_data=Control.back()[1],
             ),
         ],
     ]
@@ -473,58 +417,53 @@ def birthday_set_keyboard_day_19_to_24():
     return reply_markup
 
 
-def birthday_set_keyboard_day_25_to_31():
+def day_19_to_24():
     keyboard = [
         # first row
         [
             # left option
             keyboard_option(
-                text=DaysButton.twenty_five()[0],
-                callback_data=DaysButton.twenty_five()[1],
+                text=Days.nineteen()[0],
+                callback_data=Days.nineteen()[1],
             ),
             # right option
             keyboard_option(
-                text=DaysButton.twenty_six()[0],
-                callback_data=DaysButton.twenty_six()[1],
+                text=Days.twenty()[0],
+                callback_data=Days.twenty()[1],
             ),
         ],
         # second row
         [
             # left option
             keyboard_option(
-                text=DaysButton.twenty_seven()[0],
-                callback_data=DaysButton.twenty_seven()[1],
+                text=Days.twenty_one()[0],
+                callback_data=Days.twenty_one()[1],
             ),
             # right option
             keyboard_option(
-                text=DaysButton.twenty_eight()[0],
-                callback_data=DaysButton.twenty_eight()[1],
+                text=Days.twenty_two()[0],
+                callback_data=Days.twenty_two()[1],
             ),
         ],
         # third row
         [
             # left option
             keyboard_option(
-                text=DaysButton.twenty_nine()[0],
-                callback_data=DaysButton.twenty_nine()[1],
+                text=Days.twenty_three()[0],
+                callback_data=Days.twenty_three()[1],
             ),
             # right option
             keyboard_option(
-                text=DaysButton.thirty()[0],
-                callback_data=DaysButton.thirty()[1],
+                text=Days.twenty_four()[0],
+                callback_data=Days.twenty_four()[1],
             ),
         ],
         # bottom row
         [
             # left option
             keyboard_option(
-                text=ControlButton.back()[0],
-                callback_data=ControlButton.back()[1],
-            ),
-            # right option
-            keyboard_option(
-                text=DaysButton.thirty_one()[0],
-                callback_data=DaysButton.thirty_one()[1],
+                text=Control.back()[0],
+                callback_data=Control.back()[1],
             ),
         ],
     ]
@@ -534,18 +473,79 @@ def birthday_set_keyboard_day_25_to_31():
     return reply_markup
 
 
-def birthday_set_keyboard_final():
+def day_25_to_31():
+    keyboard = [
+        # first row
+        [
+            # left option
+            keyboard_option(
+                text=Days.twenty_five()[0],
+                callback_data=Days.twenty_five()[1],
+            ),
+            # right option
+            keyboard_option(
+                text=Days.twenty_six()[0],
+                callback_data=Days.twenty_six()[1],
+            ),
+        ],
+        # second row
+        [
+            # left option
+            keyboard_option(
+                text=Days.twenty_seven()[0],
+                callback_data=Days.twenty_seven()[1],
+            ),
+            # right option
+            keyboard_option(
+                text=Days.twenty_eight()[0],
+                callback_data=Days.twenty_eight()[1],
+            ),
+        ],
+        # third row
+        [
+            # left option
+            keyboard_option(
+                text=Days.twenty_nine()[0],
+                callback_data=Days.twenty_nine()[1],
+            ),
+            # right option
+            keyboard_option(
+                text=Days.thirty()[0],
+                callback_data=Days.thirty()[1],
+            ),
+        ],
+        # bottom row
+        [
+            # left option
+            keyboard_option(
+                text=Control.back()[0],
+                callback_data=Control.back()[1],
+            ),
+            # right option
+            keyboard_option(
+                text=Days.thirty_one()[0],
+                callback_data=Days.thirty_one()[1],
+            ),
+        ],
+    ]
+
+    reply_markup = keyboard_finalize(keyboard)
+
+    return reply_markup
+
+
+def final():
     keyboard = [
         [
             # left option
             keyboard_option(
-                text=ControlButton.back()[0],
-                callback_data=ControlButton.back()[1],
+                text=Control.back()[0],
+                callback_data=Control.back()[1],
             ),
             # right option
             keyboard_option(
-                text=ControlButton.finish()[0],
-                callback_data=ControlButton.finish()[1],
+                text=Control.finish()[0],
+                callback_data=Control.finish()[1],
             ),
         ],
     ]

@@ -36,11 +36,11 @@ def remove_fail() -> str:
     return 'Уже забыл.\nЗапомнить ДР - /ya_rodilsa'
 
 
-def birthday_set_keyboard_text() -> str:
+def keyboard() -> str:
     return 'Когда у Вас ДР?'
 
 
-def birthday_set_keyboard_final_text(username, session_data) -> str:
+def keyboard_final(username, session_data) -> str:
     # '[:-1]' == 'remove the last element' == 'remove a newline'
     day = session_data[1][:-1]
     month = session_data[2][:-1]

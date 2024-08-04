@@ -19,7 +19,7 @@ from zoneinfo import (
 )
 from src.button_manager import (
     # to sync the callback names with keyboard
-    ControlButton,
+    Control,
 )
 from bot_options import (
     TIME_HOUR_FIRST,
@@ -27,43 +27,11 @@ from bot_options import (
     TIME_HOUR_SECOND,
 )
 
-from src.text_responses import (
-    birthday_set_keyboard_text,
-    birthday_set_keyboard_final_text,
-    celebrate,
-    remove_fail,
-    remove_success,
-    sechude_active,
-    sechude_active_already,
-    write_success,
-)
-
-from src.bot_keyboards import (
-    birthday_set_keyboard_months,
-    birthday_set_keyboard_apr_may_jun,
-    birthday_set_keyboard_jan_feb_mar,
-    birthday_set_keyboard_jul_aug_sep,
-    birthday_set_keyboard_oct_nov_dec,
-    birthday_set_keyboard_days,
-    birthday_set_keyboard_day_1_to_6,
-    birthday_set_keyboard_day_7_to_12,
-    birthday_set_keyboard_day_13_to_18,
-    birthday_set_keyboard_day_19_to_24,
-    birthday_set_keyboard_day_25_to_31,
-    birthday_set_keyboard_final,
-)
-
-from src.session_functions import (
-    session_start,
-    session_user_data_extract,
-    session_user_data_write,
-)
-
-from src.database_functions import (
-    database_remove,
-    database_search_by_date,
-    database_search_by_name,
-    database_write,
+from src import (
+    text_responses,
+    bot_keyboards,
+    session_functions,
+    database_functions,
 )
 
 from os import listdir
@@ -81,7 +49,7 @@ async def birthday_loop(
     """
     # "return to sender"
     target_chat = update.effective_message.chat_id
-    message = sechude_active()
+    message = text_responses.sechude_active()
 
     timezone = ZoneInfo(f'Etc/GMT+{TIME_HOUR_OFFSET}')
     job_time_first = time(
@@ -107,7 +75,7 @@ async def birthday_loop(
             f'Morning Check on {target_chat}'
         )
         if current_jobs:
-            message = sechude_active_already()
+            message = text_responses.sechude_active_already()
             continue
 
         context.job_queue.run_daily(
@@ -137,8 +105,7 @@ async def birthday_loop(
 
 async def birthday_set(
     update: Update,
-    # the context has to be included despite not being used
-    context: ContextTypes.DEFAULT_TYPE
+    _: ContextTypes.DEFAULT_TYPE
 ) -> None:
     """
     Set a birthday date.
@@ -155,14 +122,17 @@ async def birthday_set(
     Returns nothing.
     Raises no errors.
     """
-    keyboard = birthday_set_keyboard_months()
-    message = birthday_set_keyboard_text()
+    keyboard = bot_keyboards.months()
+    message = text_responses.keyboard()
     username = update.effective_user.username
     target_chat = update.effective_chat.id
 
-    session_start(username)
+    session_functions.start(username)
 
-    birthday_date = database_search_by_name(username, target_chat)
+    birthday_date = database_functions.search_by_name(
+        username,
+        target_chat,
+    )
     if birthday_date:
         message = birthday_date
         keyboard = None
@@ -177,7 +147,7 @@ async def birthday_yell(
     context: ContextTypes.DEFAULT_TYPE
 ) -> None:
     """
-    Celebrate a birth day!
+    text_responses.Celebrate a birth day!
 
     Takes no arguments.
 
@@ -196,7 +166,7 @@ async def birthday_yell(
     # investigating a strange error like of
     # 'Text should be a string, got NoneType'
     try:
-        birthday_people = database_search_by_date(
+        birthday_people = database_functions.search_by_date(
             today_day_and_month,
             target_chat,
         )
@@ -206,7 +176,7 @@ async def birthday_yell(
     if birthday_people:
         await context.bot.send_message(
             chat_id=target_chat,
-            text=celebrate(birthday_people),
+            text=text_responses.celebrate(birthday_people),
         )
 
 
@@ -230,15 +200,15 @@ async def birthday_rm(
     Returns nothing.
     Raises no errors.
     """
-    message = remove_fail()
+    message = text_responses.remove_fail()
     username = update.effective_user.username
     target_chat = update.effective_chat.id
 
-    target_line = database_search_by_name(username, target_chat)
+    target_line = database_functions.search_by_name(username, target_chat)
 
     if target_line:
-        database_remove(target_line, target_chat)
-        message = remove_success()
+        database_functions.remove(target_line, target_chat)
+        message = text_responses.remove_success()
 
     await context.bot.send_message(
         # "return to sender"
@@ -269,47 +239,47 @@ async def birthday_btn(
     Raises no errors.
     """
     keyboard_select_month = (
-        birthday_set_keyboard_jan_feb_mar(),
-        birthday_set_keyboard_apr_may_jun(),
-        birthday_set_keyboard_jul_aug_sep(),
-        birthday_set_keyboard_oct_nov_dec(),
+        bot_keyboards.jan_feb_mar(),
+        bot_keyboards.apr_may_jun(),
+        bot_keyboards.jul_aug_sep(),
+        bot_keyboards.oct_nov_dec(),
     )
     keyboard_select_day = (
-        birthday_set_keyboard_day_1_to_6(),
-        birthday_set_keyboard_day_7_to_12(),
-        birthday_set_keyboard_day_13_to_18(),
-        birthday_set_keyboard_day_19_to_24(),
-        birthday_set_keyboard_day_25_to_31(),
+        bot_keyboards.day_1_to_6(),
+        bot_keyboards.day_7_to_12(),
+        bot_keyboards.day_13_to_18(),
+        bot_keyboards.day_19_to_24(),
+        bot_keyboards.day_25_to_31(),
     )
     username = update.effective_user.username
-    keyboard = birthday_set_keyboard_months()
-    message = birthday_set_keyboard_text()
+    keyboard = bot_keyboards.months()
+    message = text_responses.keyboard()
 
     # create, get and extract the user's input
     query = update.callback_query
     await query.answer()
     data = query.data
 
-    session_data = session_user_data_extract(username)
+    session_data = session_functions.extract(username)
     step = int(session_data[0])
 
     # '[1]' (second parameter) is the button value
-    if data == ControlButton.back()[1]:
+    if data == Control.back()[1]:
         if step > 2:
             step = 2
-            keyboard = birthday_set_keyboard_days()
+            keyboard = bot_keyboards.keyboard_days()
         else:
             step = 0
 
     # operation is done successfully
-    elif data == ControlButton.finish()[1]:
-        message = write_success()
+    elif data == Control.finish()[1]:
+        message = text_responses.write_success()
         keyboard = None
         target_chat = update.effective_chat.id
-        database_write(username, target_chat)
+        database_functions.write(username, target_chat)
 
     # operation is cancelled
-    elif data == ControlButton.abort()[1]:
+    elif data == Control.abort()[1]:
         await query.delete_message()
 
     # don't get confused: those conditions apply
@@ -322,7 +292,7 @@ async def birthday_btn(
     elif step == 1:
         # month
         session_data[2] = data + '\n'
-        keyboard = birthday_set_keyboard_days()
+        keyboard = bot_keyboards.keyboard_days()
         step += 1
 
     elif step == 2:
@@ -333,11 +303,14 @@ async def birthday_btn(
     elif step == 3:
         # day
         session_data[1] = data + '\n'
-        message = birthday_set_keyboard_final_text(username, session_data)
-        keyboard = birthday_set_keyboard_final()
+        message = text_responses.keyboard_final(
+            username,
+            session_data,
+        )
+        keyboard = bot_keyboards.final()
 
     session_data[0] = str(step) + '\n'
-    session_user_data_write(username, session_data)
+    session_functions.write(username, session_data)
 
     # try-except to suppress an expexted error message
     # when the message is deleted before editing

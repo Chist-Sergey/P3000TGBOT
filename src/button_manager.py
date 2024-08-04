@@ -1,4 +1,4 @@
-class ControlButton:
+class Control:
     def back():
         return ('Назад', 'back',)
 
@@ -9,7 +9,7 @@ class ControlButton:
         return ('Готово', 'finish',)
 
 
-class MonthsButton:
+class Months:
     def jan_feb_mar():
         return ('Янв, Фев, Мар', '0',)
 
@@ -59,7 +59,7 @@ class MonthsButton:
         return ('Декабрь', '12',)
 
 
-class DaysButton:
+class Days:
     def one_to_six():
         return ('1-6', '0')
 
@@ -125,6 +125,7 @@ class DaysButton:
 
     def seventeen():
         return ('17', '17')
+
     def eighteen():
         return ('18', '18')
 
