@@ -208,13 +208,6 @@ async def birthday_yell(
             chat_id=target_chat,
             text=celebrate(birthday_people),
         )
-        # a feature requested
-        if today == '12.12':
-            for _ in range(9):
-                await context.bot.send_message(
-                    chat_id=target_chat,
-                    text=celebrate(birthday_people),
-                )
 
 
 async def birthday_rm(
