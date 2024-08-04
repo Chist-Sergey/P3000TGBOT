@@ -1,4 +1,4 @@
-from session_functions import session_user_data_extract
+from src.session_functions import session_user_data_extract
 
 
 def database_write(username: str, chat_id: int) -> None:

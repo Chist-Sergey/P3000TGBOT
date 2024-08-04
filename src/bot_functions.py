@@ -1,38 +1,44 @@
-# python-telegram-bot to work with Telegram api
+# bot_functions.py
+
 from telegram import (
-    # core
     Update,
 )
 from telegram.ext import (
-    # core
     ContextTypes,
 )
 from telegram.error import (
-    # to make an exception to reduce logging pollution
+    # to know what error to catch
     BadRequest,
 )
-# get and set a time
 from datetime import (
     datetime,
+    time,
+)
+from zoneinfo import (
+    ZoneInfo,
+)
+from src.button_manager import (
+    # to sync the callback names with keyboard
+    ControlButton,
+)
+from bot_options import (
+    TIME_HOUR_FIRST,
+    TIME_HOUR_OFFSET,
+    TIME_HOUR_SECOND,
 )
 
-# for easier time management in a 'job_queue'
-from options import (
-    job_time_first,
-    job_time_second,
-)
-# for easier text management
-from text_responses import (
+from src.text_responses import (
     birthday_set_keyboard_text,
     birthday_set_keyboard_final_text,
     celebrate,
     remove_fail,
     remove_success,
     sechude_active,
+    sechude_active_already,
     write_success,
 )
-# for easier keyboard management
-from bot_keyboards import (
+
+from src.bot_keyboards import (
     birthday_set_keyboard_months,
     birthday_set_keyboard_apr_may_jun,
     birthday_set_keyboard_jan_feb_mar,
@@ -46,78 +52,94 @@ from bot_keyboards import (
     birthday_set_keyboard_day_25_to_31,
     birthday_set_keyboard_final,
 )
-# for syncing the callback names with keyboard
-from button_manager import (
-    ControlButton,
-)
-# to access a session
-from session_functions import (
+
+from src.session_functions import (
     session_start,
     session_user_data_extract,
     session_user_data_write,
 )
-# to access a database
-from database_functions import (
+
+from src.database_functions import (
     database_remove,
     database_search_by_date,
     database_search_by_name,
     database_write,
 )
 
+from os import listdir
 
-async def birthday_loop(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+async def birthday_loop(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+) -> None:
     """
-    Initiates the bot's checking cycle with 'jobQueue'.
+    Initiates the bot's checking cycle with 'job_queue'.
 
     Returns nothing.
     Raises no errors.
     """
-    # message destination is a chat where it was used
+    # "return to sender"
     target_chat = update.effective_message.chat_id
+    message = sechude_active()
 
-    # check if the database already exist
+    timezone = ZoneInfo(f'Etc/GMT+{TIME_HOUR_OFFSET}')
+    job_time_first = time(
+        hour=TIME_HOUR_FIRST,
+        tzinfo=timezone,
+    )
+    job_time_second = time(
+        hour=TIME_HOUR_SECOND,
+        tzinfo=timezone,
+    )
+
+    # check if the database already exists
+    # if not, then create one
     try:
-        # 'r' == 'read'
         open('databases/' + str(target_chat) + '.txt', 'r').close()
 
     except FileNotFoundError:
-        # creates a new text file with the name equal to the id of the chat
-        # 'w' == 'overwrite'
         open('databases/' + str(target_chat) + '.txt', 'w').close()
 
-    # tell the bot to run a job repeatedly
-    context.job_queue.run_daily(
-        # which job
-        callback=birthday_yell,
-        # at what time
-        time=job_time_first(),
-        # where the text will be sent
-        chat_id=target_chat,
-        # to distinguish jobs from one another
-        name='Morning Check',
-    )
+    for target_chat in listdir('databases/'):
+        # prevent repeating jobs
+        current_jobs = context.job_queue.get_jobs_by_name(
+            f'Morning Check on {target_chat}'
+        )
+        if current_jobs:
+            message = sechude_active_already()
+            continue
 
-    # 'run_daily' allows to run only a single job
-    # at a time so just invoke it a second time
-    context.job_queue.run_daily(
-        # which job
-        callback=birthday_yell,
-        # at what time
-        time=job_time_second(),
-        # where the text will be sent
-        chat_id=target_chat,
-        # to distinguish jobs from one another
-        name='Evening Check',
-    )
+        context.job_queue.run_daily(
+            # what job to run
+            callback=birthday_yell,
+            time=job_time_first,
+            chat_id=target_chat,
+            name=f'Morning Check on {target_chat}',
+        )
+
+        # 'run_daily' allows to run only a single job
+        # at a time so just invoke it a second time
+        context.job_queue.run_daily(
+            # what job to run
+            callback=birthday_yell,
+            time=job_time_second,
+            chat_id=target_chat,
+            name=f'Evening Check on {target_chat}',
+        )
 
     # send a reply message to the user
     await context.bot.send_message(
         chat_id=target_chat,
-        text=sechude_active(),
+        text=message,
     )
 
 
-async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def birthday_set(
+    update: Update,
+    # the context has to be included despite not being used
+    context: ContextTypes.DEFAULT_TYPE
+) -> None:
     """
     Set a birthday date.
 
@@ -147,11 +169,13 @@ async def birthday_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(
         text=message,
-        reply_markup=keyboard
+        reply_markup=keyboard,
     )
 
 
-async def birthday_yell(context: ContextTypes.DEFAULT_TYPE) -> None:
+async def birthday_yell(
+    context: ContextTypes.DEFAULT_TYPE
+) -> None:
     """
     Celebrate a birth day!
 
@@ -184,9 +208,19 @@ async def birthday_yell(context: ContextTypes.DEFAULT_TYPE) -> None:
             chat_id=target_chat,
             text=celebrate(birthday_people),
         )
+        # a feature requested
+        if today == '12.12':
+            for _ in range(9):
+                await context.bot.send_message(
+                    chat_id=target_chat,
+                    text=celebrate(birthday_people),
+                )
 
 
-async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def birthday_rm(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE
+) -> None:
     """
     Remove a birthday.
 
@@ -203,15 +237,10 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Returns nothing.
     Raises no errors.
     """
-    target_chat = update.effective_chat.id
-    # there are two states of this message:
-    # 0: the code failed
-    # 1: the code succeed
-    # having the initial value set as one of these states
-    # allows to make one less check on the function's state
     message = remove_fail()
-
     username = update.effective_user.username
+    target_chat = update.effective_chat.id
+
     target_line = database_search_by_name(username, target_chat)
 
     if target_line:
@@ -219,13 +248,16 @@ async def birthday_rm(update: Update, context: ContextTypes.DEFAULT_TYPE):
         message = remove_success()
 
     await context.bot.send_message(
-        # message destination is a chat where it was used
+        # "return to sender"
         chat_id=target_chat,
         text=message,
     )
 
 
-async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def birthday_btn(
+    update: Update,
+    _: ContextTypes.DEFAULT_TYPE
+) -> None:
     """
     Input to set a birthday date.
 
@@ -243,7 +275,6 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Returns nothing.
     Raises no errors.
     """
-    # collection of keyboards to choose from
     keyboard_select_month = (
         birthday_set_keyboard_jan_feb_mar(),
         birthday_set_keyboard_apr_may_jun(),
@@ -258,7 +289,6 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
         birthday_set_keyboard_day_25_to_31(),
     )
     username = update.effective_user.username
-    # default values to fall back to
     keyboard = birthday_set_keyboard_months()
     message = birthday_set_keyboard_text()
 
@@ -270,7 +300,7 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
     session_data = session_user_data_extract(username)
     step = int(session_data[0])
 
-    # there's so much 'elif's due to hard logic of this function
+    # '[1]' (second parameter) is the button value
     if data == ControlButton.back()[1]:
         if step > 2:
             step = 2
@@ -298,7 +328,6 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif step == 1:
         # month
-        # '\n' == 'new line'
         session_data[2] = data + '\n'
         keyboard = birthday_set_keyboard_days()
         step += 1
@@ -310,23 +339,20 @@ async def birthday_btn(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif step == 3:
         # day
-        # '\n' == 'new line'
         session_data[1] = data + '\n'
         message = birthday_set_keyboard_final_text(username, session_data)
         keyboard = birthday_set_keyboard_final()
 
-    # step
-    # '\n' == 'new line'
     session_data[0] = str(step) + '\n'
     session_user_data_write(username, session_data)
 
     # try-except to suppress an expexted error message
+    # when the message is deleted before editing
     # from flooding the logs
     try:
         await query.edit_message_text(
             text=message,
             reply_markup=keyboard,
         )
-    # when the message is deleted before editing
     except BadRequest:
         pass
