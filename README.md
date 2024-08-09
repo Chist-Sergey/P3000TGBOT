@@ -5,17 +5,16 @@ My Pet Project, an Open-Source Telegram-bot for celebrating birthday dates.
 
 Created using "python-telegram-bot"  
 
-Intended use: in a telegram group chat.  
-
-Check out the "docs/" for the instructions to:  
-        Set up the bot                                    ([setup.md](docs/setup.md))  
-        Use the bot                                         ([about.md](docs/about.md))  
-        Modify/Develop the bot                     ([develop.md](docs/develop.md))  
-        Get dependencies for this bot          ([dependencies.md](docs/develop.md))
-
 ## Showcase
 
 (some links here of the bot interaction)
+
+## Docs
+
+Check out the "docs/" for the instructions to:  
+        Set up the bot                                    ([setup.md](docs/setup.md))  
+        Use the bot                                         ([about.md](docs/about.md))
+        Get dependencies for this bot          ([dependencies.md](docs/develop.md))
 
 ## TODO (in order):
 
