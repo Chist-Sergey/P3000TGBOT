@@ -3,10 +3,11 @@
 from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
-    # to use inline buttons data
+    # allows using inline buttons data
     CallbackQueryHandler,
 )
 
+# line is too long when using google style of import
 from src.bot_functions import (
     birthday_loop,
     birthday_rm,
@@ -14,23 +15,18 @@ from src.bot_functions import (
     birthday_btn,
 )
 
-from logging import basicConfig, WARNING
+from src import text_logger
+import sys
 
 # virtual enviroment for a safe key interaction
-from dotenv import load_dotenv
 from os import getenv
+from dotenv import load_dotenv
 
 # load the bot's key from an .env file
 load_dotenv()
 
 # enable logging
-basicConfig(
-    # how it would look like
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    # how much we want to observe
-    # 'WARNING' == 'anything unusual'
-    level=WARNING
-)
+sys.excepthook = text_logger.logger
 
 
 if __name__ == '__main__':
@@ -49,10 +45,4 @@ if __name__ == '__main__':
     application.add_handler(birthday_remove_handler)
     application.add_handler(birthday_loop_handler)
 
-    # catching errors to reduce logging pollution
-    try:
-        # start up the bot
-        application.run_polling(poll_interval=2.0)
-    # TODO: specify the error
-    except EOFError:
-        application.run_polling(poll_interval=2.0)
+    application.run_polling(poll_interval=2.0)

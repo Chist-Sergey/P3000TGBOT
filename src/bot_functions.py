@@ -8,7 +8,8 @@ from telegram.ext import (
 )
 from telegram.error import (
     # to know what error to catch
-    BadRequest,
+    BadRequest, 
+
 )
 from datetime import (
     datetime,
@@ -70,10 +71,16 @@ async def birthday_loop(
         open('databases/' + str(target_chat) + '.txt', 'w').close()
 
     for target_chat in listdir('databases/'):
-        # prevent repeating jobs
-        current_jobs = context.job_queue.get_jobs_by_name(
-            f'Morning Check on {target_chat}'
-        )
+        try:
+            # prevent repeating jobs
+            current_jobs = context.job_queue.get_jobs_by_name(
+                f'Morning Check on {target_chat}'
+            )
+        # possibly casused by user blocking the bot
+        # caused by chat not being found
+        except BadRequest:
+            continue
+
         if current_jobs:
             message = text_responses.sechude_active_already()
             continue
