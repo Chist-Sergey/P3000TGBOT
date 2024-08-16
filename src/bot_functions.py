@@ -8,8 +8,8 @@ from telegram.ext import (
 )
 from telegram.error import (
     # to know what error to catch
-    BadRequest, 
-
+    BadRequest,
+    Forbidden,
 )
 from datetime import (
     datetime,
@@ -78,7 +78,7 @@ async def birthday_loop(
             )
         # possibly casused by user blocking the bot
         # caused by chat not being found
-        except BadRequest:
+        except Forbidden:
             continue
 
         if current_jobs:
