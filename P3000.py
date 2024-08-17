@@ -15,18 +15,12 @@ from src.bot_functions import (
     birthday_btn,
 )
 
-from src import text_logger
-import sys
-
 # virtual enviroment for a safe key interaction
 from os import getenv
 from dotenv import load_dotenv
 
 # load the bot's key from an .env file
 load_dotenv()
-
-# enable logging
-sys.excepthook = text_logger.logger
 
 
 if __name__ == '__main__':
