@@ -7,7 +7,6 @@ from telegram.ext import (
     CallbackQueryHandler,
 )
 
-# line is too long when using google style of import
 from src.bot_functions import (
     birthday_loop,
     birthday_rm,
@@ -15,11 +14,11 @@ from src.bot_functions import (
     birthday_btn,
 )
 
-# virtual enviroment for a safe key interaction
 from os import getenv
 from dotenv import load_dotenv
 
 # load the bot's key from an .env file
+# it now can be accessed in 'getenv'
 load_dotenv()
 
 
