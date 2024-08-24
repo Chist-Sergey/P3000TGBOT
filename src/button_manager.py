@@ -22,6 +22,7 @@ class Months:
     def okt_nov_dec():
         return ('Окт, Ноя, Дек', '3',)
 
+    # zero is added for the length consistancy
     def jan():
         return ('Январь', '01',)
 
@@ -75,6 +76,7 @@ class Days:
     def twentyfive_to_thirtyone():
         return ('25-31', '4')
 
+    # zero is added for the length consistancy
     def one():
         return ('1', '01')
 

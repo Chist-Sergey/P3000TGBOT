@@ -1,18 +1,8 @@
 # P3000.py
 
-from telegram.ext import (
-    ApplicationBuilder,
-    CommandHandler,
-    # allows using inline buttons data
-    CallbackQueryHandler,
-)
+import telegram.ext as tl
 
-from src.bot_functions import (
-    birthday_loop,
-    birthday_rm,
-    birthday_set,
-    birthday_btn,
-)
+from src import bot_functions
 
 from os import getenv
 from dotenv import load_dotenv
@@ -23,19 +13,24 @@ load_dotenv()
 
 
 if __name__ == '__main__':
-    # making it all in one line to prevent security vulnerabilities
-    application = ApplicationBuilder().token(getenv('TOKEN')).build()
+    bot = tl.ApplicationBuilder().token(
+        getenv('TOKEN')).build()
 
-    birthday_set_handler = CommandHandler('ya_rodilsa', birthday_set)
-    birthday_loop_handler = CommandHandler('start', birthday_loop)
-    birthday_remove_handler = CommandHandler('ya_oshibsa', birthday_rm)
+    # tell the bot how it should react to certain things
+    birthday_set_handler = tl.CommandHandler(
+        'ya_rodilsa', bot_functions.birthday_set)
+    birthday_loop_handler = tl.CommandHandler(
+        'start', bot_functions.birthday_loop)
+    birthday_remove_handler = tl.CommandHandler(
+        'ya_oshibsa', bot_functions.birthday_rm)
 
-    birthday_button_handler = CallbackQueryHandler(birthday_btn)
+    birthday_button_handler = tl.CallbackQueryHandler(
+        bot_functions.birthday_btn)
 
     # POSITION MATTERS: the bot will check them in order of appearence
-    application.add_handler(birthday_button_handler)
-    application.add_handler(birthday_set_handler)
-    application.add_handler(birthday_remove_handler)
-    application.add_handler(birthday_loop_handler)
+    bot.add_handler(birthday_button_handler)
+    bot.add_handler(birthday_set_handler)
+    bot.add_handler(birthday_remove_handler)
+    bot.add_handler(birthday_loop_handler)
 
-    application.run_polling(poll_interval=2.0)
+    bot.run_polling(poll_interval=2.0)
