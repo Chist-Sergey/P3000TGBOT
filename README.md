@@ -18,4 +18,5 @@ Check out the "docs/" for the instructions to:
 
 ## TODO (in order):
 
+Add language translation?  
 Conteinerize the app (Docker)  
