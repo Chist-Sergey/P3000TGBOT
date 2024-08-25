@@ -302,4 +302,27 @@ async def birthday_button(
         pass
 
 
-def validate_options(options) -> bool:
+def validate_options(options) -> None:
+    """
+    Check if the user is smart enough to understand example pattern.
+
+    Raises many errors*
+
+    Valid options:
+        options[0] == 'RUS'
+        options[1] == 7
+        options[2] == (8, 20)
+    
+    NOT valid options:
+        options[0] == 'RU'
+        options[1] == Novosibirsk
+        options[2] == (-1, 99)
+    """
+    # lang
+    assert len(options[0]) == 3
+    # offset
+    assert type(options[1]) == int
+    # time
+    for time in options[2]:
+        assert time < 24
+        assert time > 0
