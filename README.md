@@ -18,5 +18,8 @@ Check out the "docs/" for the instructions to:
 
 ## TODO (in order):
 
+Specify errors in 'validate_options'  
+Write tests  
 Add language translation?  
 Conteinerize the app (Docker)  
+Setup CI/CD pipline  
