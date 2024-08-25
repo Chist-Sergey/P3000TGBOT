@@ -1,31 +1,43 @@
-# P3000.py
+# main.py
 
 import telegram.ext as tl
+import os
+import dotenv
 
 from src import bot_functions
 
-from os import getenv
-from dotenv import load_dotenv
+# _________________________________________________________
+# OPTIONS                            <- user attention here
+LANGUAGE = 'RUS'
+CHECK_BIRTHDAY_TIME_OFFSET = 7
+CHECK_BIRTHDAY_TIME_HOURS = (
+    8, 20,
+)
+# _________________________________________________________
 
 # load the bot's key from an .env file
 # it now can be accessed in 'getenv'
-load_dotenv()
-
+dotenv.load_dotenv()
 
 if __name__ == '__main__':
+    bot_options = (LANGUAGE,
+                   CHECK_BIRTHDAY_TIME_OFFSET,
+                   CHECK_BIRTHDAY_TIME_HOURS)
+    bot_functions.validate_options(bot_options)
+
     bot = tl.ApplicationBuilder().token(
-        getenv('TOKEN')).build()
+        os.getenv('TOKEN')).build()
 
     # tell the bot how it should react to certain things
     birthday_set_handler = tl.CommandHandler(
         'ya_rodilsa', bot_functions.birthday_set)
     birthday_loop_handler = tl.CommandHandler(
-        'start', bot_functions.birthday_loop)
+        'start', bot_functions.birthday_start)
     birthday_remove_handler = tl.CommandHandler(
-        'ya_oshibsa', bot_functions.birthday_rm)
+        'ya_oshibsa', bot_functions.birthday_remove)
 
     birthday_button_handler = tl.CallbackQueryHandler(
-        bot_functions.birthday_btn)
+        bot_functions.birthday_button)
 
     # POSITION MATTERS: the bot will check them in order of appearence
     bot.add_handler(birthday_button_handler)
