@@ -1,5 +1,3 @@
-# main.py
-
 import telegram.ext as tl
 import os
 import dotenv

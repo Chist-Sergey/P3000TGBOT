@@ -1,5 +1,3 @@
-# bot_keyboards.py
-
 from telegram import (
     # inline keyboard is located on the message, as opposed to
     # a regular keyboard that located on top of a regular one

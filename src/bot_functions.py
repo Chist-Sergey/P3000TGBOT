@@ -1,5 +1,3 @@
-# bot_functions.py
-
 import telegram
 import datetime
 import zoneinfo
