@@ -7,7 +7,7 @@ def write(username: str, chat_id: int) -> None:
 
     It's a simple open-format-write-close operation.
     """
-    # guard condition to prevent multiple database writings
+    # guard: prevent multiple database writings
     if search_by_name(username, chat_id):
         return None
 
