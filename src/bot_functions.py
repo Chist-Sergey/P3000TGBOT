@@ -3,9 +3,9 @@
 import telegram
 import datetime
 import zoneinfo
-from os import listdir
+import os
+from ..main import bot_options
 
-import bot_options
 from src import (
     text_responses,
     bot_keyboards,
@@ -16,7 +16,7 @@ from src import (
 
 
 
-async def birthday_loop(
+async def birthday_start(
     update: telegram.Update,
     context: telegram.ext.ContextTypes.DEFAULT_TYPE
 ) -> None:
@@ -28,8 +28,8 @@ async def birthday_loop(
     Sends a message to the user, aknowledging them of the job state.
     The job has two states:
     1. Running first time - the chat was added to a database
-                            and the job have begun.
-    2. Running already    - nothing has changed.
+    and the job have begun.
+    2. Running already - nothing has changed.
     """
     # "return to sender"
     target_chat = update.effective_message.chat_id
@@ -53,7 +53,7 @@ async def birthday_loop(
     except FileNotFoundError:
         open('databases/' + str(target_chat) + '.txt', 'w').close()
 
-    for target_chat in listdir('databases/'):
+    for target_chat in os.listdir('databases/'):
         # prevent repeating jobs
         try:
             current_jobs = context.job_queue.get_jobs_by_name(
@@ -70,7 +70,7 @@ async def birthday_loop(
 
         context.job_queue.run_daily(
             # what job to run
-            callback=birthday_yell,
+            callback=birthday_tell,
             time=job_time_first,
             chat_id=target_chat,
             name=f'Morning Check on {target_chat}',
@@ -80,7 +80,7 @@ async def birthday_loop(
         # at a time so just invoke it a second time
         context.job_queue.run_daily(
             # what job to run
-            callback=birthday_yell,
+            callback=birthday_tell,
             time=job_time_second,
             chat_id=target_chat,
             name=f'Evening Check on {target_chat}',
@@ -129,7 +129,7 @@ async def birthday_set(
     )
 
 
-async def birthday_yell(
+async def birthday_tell(
     context: telegram.ext.ContextTypes.DEFAULT_TYPE
 ) -> None:
     """
@@ -162,7 +162,7 @@ async def birthday_yell(
         )
 
 
-async def birthday_rm(
+async def birthday_remove(
     update: telegram.Update,
     context: telegram.ext.ContextTypes.DEFAULT_TYPE
 ) -> None:
@@ -198,7 +198,7 @@ async def birthday_rm(
     )
 
 
-async def birthday_btn(
+async def birthday_button(
     update: telegram.Update,
     _: telegram.ext.ContextTypes.DEFAULT_TYPE
 ) -> None:
@@ -291,9 +291,8 @@ async def birthday_btn(
     session_data[0] = str(step) + '\n'
     session_functions.write(username, session_data)
 
-    # try-except to suppress an EXPECTED error message
-    # when the message is deleted before editing
-    # from flooding the logs
+    # BadRequest is expected
+    # it's raised when the bot is trying to edit a deleted message
     try:
         await query.edit_message_text(
             text=message,
@@ -301,3 +300,6 @@ async def birthday_btn(
         )
     except telegram.error.BadRequest:
         pass
+
+
+def validate_options(options) -> bool:
