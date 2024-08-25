@@ -13,7 +13,7 @@ def start(username: str) -> None:
     starting_data = '0\n0\n0\n'
 
     # 'w' == 'write' == 'remove old content, place new content'
-    user_file = open(f'user_data/{username}.txt', 'w')
+    user_file = open(f'sessions/{username}.txt', 'w')
     user_file.write(starting_data)
     user_file.close()
 
@@ -27,7 +27,7 @@ def extract(username: str) -> list[str]:
     Returns a list of strings
     """
     # 'r' == 'read'
-    user_file = open(f'user_data/{username}.txt', 'r')
+    user_file = open(f'sessions/{username}.txt', 'r')
     user_data = user_file.readlines()
     user_file.close()
 
@@ -44,6 +44,6 @@ def write(username: str, session_data: list) -> None:
     session_data = ''.join(session_data)
 
     # 'w' == 'write' == 'remove old content, place new content'
-    user_file = open(f'user_data/{username}.txt', 'w')
+    user_file = open(f'sessions/{username}.txt', 'w')
     user_file.write(session_data)
     user_file.close()
