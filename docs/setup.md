@@ -1,5 +1,7 @@
 ## Instructions for the bot set-up:
 
+-1. Create a Telegram bot or get a Telegram Bot Token.  
+This can be done via [@BotFather](https://t.me/botfather) in Telegram.
 0. Clone a repository on your computer:
         git clone --filter=tree:0 https://github.com/Chist-Sergey/P3000TLBOT
 1. From the bot's folder directory, create a ".env" file.

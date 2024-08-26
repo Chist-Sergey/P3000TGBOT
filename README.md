@@ -22,4 +22,5 @@ Specify errors in 'validate_options'
 Write tests  
 Add language translation?  
 Conteinerize the app (Docker)  
+Clear up "setup.md"
 Setup CI/CD pipline  
