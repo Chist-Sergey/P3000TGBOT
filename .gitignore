@@ -127,10 +127,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-test_env/
-work_env/
-.test_env/
-.work_env/
+test_env
+work_env
 
 # Spyder project settings
 .spyderproject

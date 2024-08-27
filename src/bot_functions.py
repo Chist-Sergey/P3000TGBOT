@@ -2,7 +2,7 @@ import telegram
 import datetime
 import zoneinfo
 import os
-from ..main import bot_options
+from main import bot_options
 
 from src import (
     text_responses,

@@ -2,7 +2,7 @@ import telegram.ext as tl
 import os
 import dotenv
 
-from src import bot_functions
+import bot_functions
 
 # _________________________________________________________
 # OPTIONS                            <- user attention here
