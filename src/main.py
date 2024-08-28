@@ -1,6 +1,7 @@
 import telegram.ext as tl
 import os
 import dotenv
+import logging
 
 import bot_functions
 
@@ -16,6 +17,12 @@ CHECK_BIRTHDAY_TIME_HOURS = (
 # load the bot's key from an .env file
 # it now can be accessed in 'getenv'
 dotenv.load_dotenv()
+
+logging.basicConfig(filename='error_log.txt',
+                    filemode='a',
+                    format='%(asctime)s - %(name)s - %(message)s',
+                    datefmt='%H:%M:%S',
+                    level=logging.ERROR)
 
 if __name__ == '__main__':
     bot_options = (LANGUAGE,
