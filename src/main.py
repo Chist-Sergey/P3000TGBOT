@@ -30,8 +30,7 @@ if __name__ == '__main__':
                    CHECK_BIRTHDAY_TIME_HOURS)
     bot_functions.validate_options(bot_options)
 
-    bot = tl.ApplicationBuilder().token(
-        os.getenv('TOKEN')).build()
+    bot = tl.ApplicationBuilder().token(os.getenv('TOKEN')).build()
 
     # tell the bot how it should react to certain things
     birthday_set_handler = tl.CommandHandler(
