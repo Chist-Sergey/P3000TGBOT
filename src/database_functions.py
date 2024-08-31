@@ -47,7 +47,7 @@ def remove(target_line: str, chat_id: int) -> None:
 
     database_contents.remove(target_line)
 
-    # stitch the list of strings back to a single string
+    # stitch a list of strings to a single string
     new_content = ''.join(database_contents)
 
     # 'w' == 'write' == 'remove old content, place new content'
@@ -102,7 +102,4 @@ def search_by_date(target: str, chat_id: int) -> str | None:
         if target in line:
             matches += line
 
-    if not matches:
-        return None
-
-    return matches
+    return matches if matches else None
