@@ -148,8 +148,7 @@ async def birthday_tell(
     # 'Text should be a string, got NoneType'
     try:
         birthday_people = database_functions.search_by_date(
-            today_day_and_month, target_chat
-        )
+            today_day_and_month, target_chat)
     except AttributeError:
         pass
 
@@ -167,8 +166,6 @@ async def birthday_remove(
     """
     Remove a birthday.
 
-    Takes no arguments.
-
     Take a USER who called this function
     and check if they are in a database.
 
@@ -182,8 +179,7 @@ async def birthday_remove(
     target_chat = update.effective_chat.id
 
     target_line = database_functions.search_by_name(
-        username, target_chat
-    )
+        username, target_chat)
 
     if target_line:
         database_functions.remove(target_line, target_chat)
@@ -203,13 +199,11 @@ async def birthday_button(
     """
     Input to set a birthday date.
 
-    Takes no arguments.
-
-    Allows the user to change their birthday date
+    Allows the USER to change their birthday date
     by pressing buttons on the inline keyboard.
 
     If the operation was done successfully,
-    tell the user that the operation was successful.
+    tell that the operation was successful.
 
     If the operation wasn't done successfully,
     remove this bot's message.
@@ -238,54 +232,56 @@ async def birthday_button(
     data = query.data
 
     session_data = session_functions.extract(username)
+    # to be able to use numertic comparation,
+    # 'step' must be a number
     step = int(session_data[0])
 
-    # '[1]' == 'button value'
     if data == button_manager.Control.back()[1]:
+        # from confirmation to month select
         if step > 2:
             step = 2
             keyboard = bot_keyboards.keyboard_days()
+        # from day select to month select
         else:
             step = 0
 
-    # operation is done successfully
-    # '[1]' == 'button value'
     elif data == button_manager.Control.finish()[1]:
         message = text_responses.write_success()
         keyboard = None
         target_chat = update.effective_chat.id
         database_functions.write(username, target_chat)
 
-    # operation is cancelled
-    # '[1]' == 'button value'
     elif data == button_manager.Control.abort()[1]:
         await query.delete_message()
 
     # don't get confused: those conditions apply
     # AFTER the button press
+    # '0' == 'select range of months from all 12 months'
     elif step == 0:
         index = int(data)
         keyboard = keyboard_select_month[index]
         step += 1
 
+    # '1' == 'select 1 month from 3 months'
     elif step == 1:
         # month
         session_data[2] = data + '\n'
         keyboard = bot_keyboards.keyboard_days()
         step += 1
 
+    # '2' == 'select range of days from all 31 days'
     elif step == 2:
         index = int(data)
         keyboard = keyboard_select_day[index]
         step += 1
 
+    # '3' == 'select 1 day from 6 days'
     elif step == 3:
         # day
         session_data[1] = data + '\n'
         message = text_responses.keyboard_final(username, session_data)
         keyboard = bot_keyboards.final()
 
-    # step
     session_data[0] = str(step) + '\n'
     session_functions.write(username, session_data)
 
@@ -298,29 +294,3 @@ async def birthday_button(
         )
     except telegram.error.BadRequest:
         pass
-
-
-def validate_options(options) -> None:
-    """
-    Check if the user is smart enough to understand example pattern.
-
-    Raises many errors*
-
-    Valid options:
-        options[0] == 'RUS'
-        options[1] == 7
-        options[2] == (8, 20)
-    
-    NOT valid options:
-        options[0] == 'RU'
-        options[1] == Novosibirsk
-        options[2] == (-1, 99)
-    """
-    # lang
-    assert len(options[0]) == 3
-    # offset
-    assert type(options[1]) == int
-    # time
-    for time in options[2]:
-        assert time < 24
-        assert time > 0

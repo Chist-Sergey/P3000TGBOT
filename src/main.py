@@ -24,11 +24,36 @@ logging.basicConfig(filename='error_log.txt',
                     datefmt='%H:%M:%S',
                     level=logging.ERROR)
 
+
+def validate_options(options) -> None:
+    """
+    Check if the user have entered the right range in launch options.
+
+    Valid options:
+        options[0] == 'RUS'
+        options[1] == 7
+        options[2] == (8, 20)
+    
+    NOT valid options:
+        options[0] == 'RU'
+        options[1] == Novosibirsk
+        options[2] == (-1, 99)
+    """
+    # language
+    assert len(options[0]) == 3
+    # time offset / time delta / time zone
+    assert type(options[1]) == int
+    # time
+    for time in options[2]:
+        assert time < 24
+        assert time >= 0
+
+
 if __name__ == '__main__':
     bot_options = (LANGUAGE,
                    CHECK_BIRTHDAY_TIME_OFFSET,
                    CHECK_BIRTHDAY_TIME_HOURS)
-    bot_functions.validate_options(bot_options)
+    validate_options(bot_options)
 
     bot = tl.ApplicationBuilder().token(os.getenv('TOKEN')).build()
 

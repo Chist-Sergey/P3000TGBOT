@@ -27,8 +27,8 @@ def write(username: str, chat_id: int) -> None:
 
 def remove(target_line: str, chat_id: int) -> None:
     """
-    remove a line of user name
-    and birthday date from a database text file.
+    Remove a line of user name and birthday date
+    from a database text file.
 
     It's a simple open-remove-write-close operation.
     """
