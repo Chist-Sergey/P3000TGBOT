@@ -2,8 +2,8 @@ import telegram
 import datetime
 import zoneinfo
 import os
-from main import bot_options
 
+from main import BOT_OPTIONS
 from src import (
     text_responses,
     bot_keyboards,
@@ -13,78 +13,52 @@ from src import (
 )
 
 
-
 async def birthday_start(
     update: telegram.Update,
     context: telegram.ext.ContextTypes.DEFAULT_TYPE
 ) -> None:
     """
     Initiates the bot's checking cycle with 'job_queue'.
-
     The bot then tries to resume any jobs it already has.
 
-    Sends a message to the user, aknowledging them of the job state.
+    Sends a message to the user, telling them the state of the job.
+
     The job has two states:
     1. Running first time - the chat was added to a database
     and the job have begun.
     2. Running already - nothing has changed.
     """
-    # "return to sender"
     target_chat = update.effective_message.chat_id
     message = text_responses.sechude_active()
-
-    timezone = zoneinfo.ZoneInfo(
-        f'Etc/GMT+{bot_options.TIME_HOUR_OFFSET}'
-    )
-    job_time_first = datetime.time(
-        hour=bot_options.TIME_HOUR_FIRST,
-        tzinfo=timezone,
-    )
-    job_time_second = datetime.time(
-        hour=bot_options.TIME_HOUR_SECOND,
-        tzinfo=timezone,
-    )
+    tz_offset = BOT_OPTIONS['time zone/offset']
+    time_instances = BOT_OPTIONS['time of instance(s) in hours']
+    tzinfo = zoneinfo.ZoneInfo(f'Etc/GMT{tz_offset}')
+    job_times = [
+        datetime.time(hour=x, tzinfo=tzinfo) for x in time_instances
+    ]
+    active_chats = os.listdir('databases/')
 
     try:
         open('databases/' + str(target_chat) + '.txt', 'r').close()
-
     except FileNotFoundError:
         open('databases/' + str(target_chat) + '.txt', 'w').close()
 
-    for target_chat in os.listdir('databases/'):
-        # prevent repeating jobs
-        try:
-            current_jobs = context.job_queue.get_jobs_by_name(
-                f'Morning Check on {target_chat}'
-            )
-        # possibly casused by user blocking the bot
-        # caused by chat not being found
-        except telegram.error.Forbidden:
-            continue
-
+    for chat_id in active_chats:
+        # guard: repeating jobs
+        current_jobs = context.job_queue.get_jobs_by_name(chat_id)
         if current_jobs:
             message = text_responses.sechude_active_already()
             continue
 
-        context.job_queue.run_daily(
-            # what job to run
-            callback=birthday_tell,
-            time=job_time_first,
-            chat_id=target_chat,
-            name=f'Morning Check on {target_chat}',
-        )
+        for time in job_times:
+            context.job_queue.run_daily(
+                # what job to run
+                callback=birthday_tell,
+                time=time,
+                chat_id=target_chat,
+                name=chat_id,
+            )
 
-        # 'run_daily' allows to run only a single job
-        # at a time so just invoke it a second time
-        context.job_queue.run_daily(
-            # what job to run
-            callback=birthday_tell,
-            time=job_time_second,
-            chat_id=target_chat,
-            name=f'Evening Check on {target_chat}',
-        )
-
-    # send a reply message to the user
     await context.bot.send_message(
         chat_id=target_chat,
         text=message,
@@ -98,8 +72,6 @@ async def birthday_set(
     """
     Set a birthday date.
 
-    Takes no arguments.
-
     If the user is already present in a database,
     tell the user their birthday date.
 
@@ -107,10 +79,10 @@ async def birthday_set(
     bring up a message with a keyboard for
     the user to enter their birthday date.
     """
-    keyboard = bot_keyboards.months()
-    message = text_responses.keyboard()
-    username = update.effective_user.username
     target_chat = update.effective_chat.id
+    username = update.effective_user.username
+    message = text_responses.keyboard()
+    keyboard = bot_keyboards.months()
 
     session_functions.start(username)
 
@@ -133,29 +105,23 @@ async def birthday_tell(
     """
     Celebrate a birth day!
 
-    Takes no arguments.
+    Checks for someone's birthday today.
+    Sends a message if someone has a birthday.
 
-    Checks for someone's birthday today,
-    sends a message if someone has a birthday,
-    does nothing if nobody have birthday this day.
+    Does nothing if nobody have birthday this day.
     """
     target_chat = context.job.chat_id
+    message = text_responses.celebrate(birthday_people)
     today = datetime.time.now()
     # '%d.%m' == 'DD.MM' == 'Day.Month', ex.: '31.12'
     today_day_and_month = today.strfdatetime.time('%d.%m')
-
-    # investigating a strange error like of
-    # 'Text should be a string, got NoneType'
-    try:
-        birthday_people = database_functions.search_by_date(
-            today_day_and_month, target_chat)
-    except AttributeError:
-        pass
+    birthday_people = database_functions.search_by_date(
+        today_day_and_month, target_chat)
 
     if birthday_people:
         await context.bot.send_message(
             chat_id=target_chat,
-            text=text_responses.celebrate(birthday_people),
+            text=message,
         )
 
 
@@ -174,9 +140,9 @@ async def birthday_remove(
 
     If they aren't, aknowledge them of this.
     """
-    message = text_responses.remove_fail()
-    username = update.effective_user.username
     target_chat = update.effective_chat.id
+    username = update.effective_user.username
+    message = text_responses.remove_fail()
 
     target_line = database_functions.search_by_name(
         username, target_chat)
@@ -186,7 +152,6 @@ async def birthday_remove(
         message = text_responses.remove_success()
 
     await context.bot.send_message(
-        # "return to sender"
         chat_id=target_chat,
         text=message,
     )
@@ -223,8 +188,8 @@ async def birthday_button(
         bot_keyboards.day_25_to_31(),
     )
     username = update.effective_user.username
-    keyboard = bot_keyboards.months()
     message = text_responses.keyboard()
+    keyboard = bot_keyboards.months()
 
     # create, get and extract the user's input
     query = update.callback_query
@@ -237,18 +202,18 @@ async def birthday_button(
     step = int(session_data[0])
 
     if data == button_manager.Control.back()[1]:
-        # from confirmation to month select
+        # from 'confirmation' to 'month select'
         if step > 2:
             step = 2
             keyboard = bot_keyboards.keyboard_days()
-        # from day select to month select
+        # from 'day select' to 'month select'
         else:
             step = 0
 
     elif data == button_manager.Control.finish()[1]:
+        target_chat = update.effective_chat.id
         message = text_responses.write_success()
         keyboard = None
-        target_chat = update.effective_chat.id
         database_functions.write(username, target_chat)
 
     elif data == button_manager.Control.abort()[1]:
