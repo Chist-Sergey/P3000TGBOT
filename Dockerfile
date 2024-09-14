@@ -1,7 +1,6 @@
-FROM python:3.12-slim
+FROM python:alpine
 RUN mkdir /app
-COPY requirements.txt /app
-RUN pip3 install -r /app/requirements.txt --no-cache-dir
 COPY . /app
 WORKDIR /app
-CMD ["python3", "P3000.py"]
+RUN pip3 install -r requirements.txt --no-cache-dir
+CMD ["python3", "main.py"]
