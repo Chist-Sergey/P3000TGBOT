@@ -6,13 +6,11 @@ import logging
 import bot_functions
 
 BOT_OPTIONS: dict = {
-# _________________________________________________________
     'app language': 'RUS',
     'time zone/offset': '+7',
     'time of instance(s) in hours': (
         8, 20,
     ),
-# _________________________________________________________
 }
 
 # load the bot's key from an .env file
@@ -26,52 +24,7 @@ logging.basicConfig(filename='error_log.txt',
                     level=logging.ERROR)
 
 
-def validate_user_options() -> None:
-    """
-    Check if the user have entered the right range in launch options.
-
-    Valid options:
-        ['app language']: 'RUS'
-        ['time zone/offset']: '+7',
-        ['time of instance(s) in hours']: (8, 20)
-    
-    NOT valid options:
-        ['app language']: 'RU'
-        ['time zone/offset']: 'Novosibirsk',
-        ['time of instance(s) in hours']: (-1, 99)
-    """
-    # language
-    lang_type = type(BOT_OPTIONS['app language'])
-    lang_len = len(BOT_OPTIONS['app language'])
-    assert lang_type == str, (
-            'Invalid app language. Brackets (\') should stay as is.')
-    assert lang_len == 3, (
-            'Invalid app language. Example: ENG')
-
-    # time offset
-    time_type = type(BOT_OPTIONS['time zone/offset'])
-    time_len: int = len(BOT_OPTIONS['time zone/offset'])
-    time_value: str = BOT_OPTIONS['time zone/offset']
-    assert time_type == str, (
-            'Invalid time zone/offset. Brackets (\') should stay as is.')
-    assert time_len > 1, (
-            'Invalid time zone/offset. Must have at least one number.')
-    assert time_len < 4 or time_value < 24, (
-            'Invalid time zone/offset. Number too large.')
-    try:
-        int(time_value)
-    except ValueError as err:
-        return 'Invalid time zone/offset. Not a number.', err
-
-    # time
-    for time in BOT_OPTIONS['time of instance(s) in hours']:
-        assert time < 24
-        assert time >= 0
-
-
 if __name__ == '__main__':
-    validate_user_options()
-
     bot = tl.ApplicationBuilder().token(os.getenv('TOKEN')).build()
 
     # tell the bot how it should react to certain things
