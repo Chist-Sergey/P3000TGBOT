@@ -5,7 +5,7 @@ from telegram import (
     InlineKeyboardMarkup as finalize,
 )
 
-from src.button_manager import (
+from button_manager import (
     Control,
     Months,
     Days,
