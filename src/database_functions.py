@@ -1,4 +1,5 @@
-import session_functions
+# relative to 'main.py'
+from src import session_functions
 
 
 def write(username: str, chat_id: int) -> None:

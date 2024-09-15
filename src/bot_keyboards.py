@@ -5,7 +5,8 @@ from telegram import (
     InlineKeyboardMarkup as finalize,
 )
 
-from button_manager import (
+# relative to 'main.py'
+from src.button_manager import (
     Control,
     Months,
     Days,

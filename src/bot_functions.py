@@ -3,11 +3,14 @@ import datetime
 import zoneinfo
 import os
 
-import text_responses
-import bot_keyboards
-import session_functions
-import database_functions
-import button_manager
+# relative to 'main.py'
+from src import (
+    text_responses,
+    bot_keyboards,
+    session_functions,
+    database_functions,
+    button_manager,
+)
 from main import BOT_OPTIONS
 
 
