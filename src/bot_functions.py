@@ -260,3 +260,20 @@ async def birthday_button(
         )
     except telegram.error.BadRequest:
         pass
+
+
+def error_callback(error: telegram.error.TelegramError):
+    """
+    Reduce logging pollution by ignoring must common errors.
+
+    This should be used in 'telegram.ext.Updater.start_polling'
+    as a 'error_callback' parameter.
+    """
+    if (
+        # [Errno 8] nodename nor servname provided, or not known
+        # [Errno -3] Temporary failure in name resolution
+        isinstance(error, telegram.error.NetworkError)
+        # 'api.telegram.org' does not appear to be an IPv4 or IPv6 address
+        or isinstance(error, ValueError)
+    ):
+        pass
