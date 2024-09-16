@@ -18,7 +18,7 @@ Check out the "docs/" for the instructions to:
 ## TODO (in order):  
 
 Conteinerize the app (Docker)  
-Clear up "setup.md"
+Clear up "setup.md"  
 Setup CI/CD pipline  
 Write tests  
 Add language translation?  
