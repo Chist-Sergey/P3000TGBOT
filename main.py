@@ -44,10 +44,4 @@ if __name__ == '__main__':
     bot.add_handler(birthday_remove_handler)
     bot.add_handler(birthday_loop_handler)
 
-    # alternative to try-except
-    tl.Updater.start_polling(
-        self=bot.updater,
-        poll_interval=2.0,
-        error_callback=bot_functions.error_callback,
-    )
     bot.run_polling(poll_interval=2.0)
