@@ -6,7 +6,7 @@ from telegram import (
 )
 
 # relative to 'main.py'
-from src.button_manager import (
+from button_manager import (
     Control,
     Months,
     Days,

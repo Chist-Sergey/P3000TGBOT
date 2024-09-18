@@ -3,7 +3,7 @@ import os
 import dotenv
 import logging
 
-from src import bot_functions
+import bot_functions
 
 BOT_OPTIONS: dict = {
     'app language': 'RUS',
