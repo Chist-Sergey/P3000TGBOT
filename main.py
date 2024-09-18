@@ -13,13 +13,10 @@ BOT_OPTIONS: dict = {
     ),
 }
 
-# load the bot's key from an .env file
-# it now can be accessed in 'getenv'
+# bot's key can now be accessed via 'getenv'
 dotenv.load_dotenv()
 
-logging.basicConfig(filename='error_log.txt',
-                    filemode='a',
-                    format='%(asctime)s - %(name)s - %(message)s',
+logging.basicConfig(format='%(asctime)s - %(name)s - %(message)s',
                     datefmt='%H:%M:%S',
                     level=logging.ERROR)
 
