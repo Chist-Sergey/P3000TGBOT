@@ -20,5 +20,6 @@ Check out the "docs/" for the instructions to:
 Conteinerize the app (Docker)  
 Clear up "setup.md"  
 Setup CI/CD pipline  
+Add troubles to "troubleshooting.md"
 Write tests  
 Add language translation?  
