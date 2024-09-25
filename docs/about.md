@@ -27,6 +27,7 @@ Single brackets are preferred over double brackets.
 Following Google style, but not entirely.  
 List of things ignored: E116, E117, W503, F523, F524.  
 W504 is selected over W503.  
+No variable typing because its looks good without it.  
 
 ## Story  
 
