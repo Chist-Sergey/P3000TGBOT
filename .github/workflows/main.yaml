@@ -32,7 +32,7 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
-        passphrase: ${{ secrets.PASSPHRASE }}
+        password: ${{ secrets.INPUT_PROXY_PASSWORD }}
         script: |
           sudo docker pull chistovsergeivadimovich/p3000tlbot:latest
           sudo docker stop $(sudo docker ps -a -q)
