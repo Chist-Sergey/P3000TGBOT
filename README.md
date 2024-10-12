@@ -1,4 +1,4 @@
-# P30000TLBOT
+# P3000TGBOT
 
 My Pet Project, an Open-Source Telegram-bot for celebrating birthday dates.  
 
